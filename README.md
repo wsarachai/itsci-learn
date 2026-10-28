@@ -26,7 +26,7 @@
 7. [โครงสร้างโฟลเดอร์](#7-โครงสร้างโฟลเดอร์)
 8. [งานที่ทำบ่อย](#8-งานที่ทำบ่อย)
 9. [แก้ปัญหาที่พบบ่อย](#9-แก้ปัญหาที่พบบ่อย)
-10. [สำหรับผู้ดูแลเซิร์ฟเวอร์](#10-สำหรับผู้ดูแลเซิร์ฟเวอร์)
+10. [การ deploy บนเซิร์ฟเวอร์ 10.1.245.36](#10-การ-deploy-บนเซิร์ฟเวอร์-1011245136)
 
 ---
 
@@ -474,25 +474,288 @@ git push -u origin feature/ชื่องาน
 
 ---
 
-## 10. สำหรับผู้ดูแลเซิร์ฟเวอร์
+## 10. การ deploy บนเซิร์ฟเวอร์ 10.1.245.36
 
-เซิร์ฟเวอร์ `itsci-learn` (Ubuntu) รันแบบ A ที่ `/opt/itsci-learn` โดย `.env` ตั้ง `SITE_ADDRESS=10.1.245.36`
+ส่วนนี้สำหรับผู้ดูแลระบบ เซิร์ฟเวอร์รันระบบแบบ A (ทุกอย่างใน Docker) จากโค้ดบน branch `main` ของ GitHub
 
-- เว็บเข้าได้ทั้ง `http://` และ `https://` (ไม่ redirect) ยกเว้น `/phpmyadmin` ที่บังคับไป `https://`
-  เพราะ session ของ phpMyAdmin ใช้ข้าม http/https บน host เดียวกันไม่ได้ และไม่ควรส่งรหัส DB แบบไม่เข้ารหัส
-- phpMyAdmin ปิดการส่ง error report (`phpmyadmin/config.user.inc.php`) เพราะ extension ใน browser (เช่น MetaMask) ทำให้ request error-report ไปเปลี่ยน session ระหว่าง login
-- HTTPS ใช้ CA ภายในของ Caddy (`tls internal`) และ `default_sni` เพราะ Windows ไม่ส่ง SNI เมื่อเข้าด้วย IP **ห้ามลบ volume `caddy-data`** (ถ้าลบจะได้ CA ใหม่ ทุกเครื่องต้องติดตั้งใบรับรองใหม่)
-- ห้ามใช้ `compose.dev.yaml` บนเซิร์ฟเวอร์
+### 10.1 ข้อมูลเซิร์ฟเวอร์
 
-อัปเดตเซิร์ฟเวอร์หลัง push ขึ้น `main`:
+| รายการ | ค่า |
+| --- | --- |
+| IP | `10.1.245.36` (เครือข่ายภายในมหาวิทยาลัย เข้าจากภายนอกต้องผ่าน VPN) |
+| ชื่อเครื่อง | `itsci-245-36` |
+| ระบบปฏิบัติการ | Ubuntu 26.04 LTS, 32 CPU, RAM 30 GB |
+| Docker | Docker Engine 29 + Compose plugin v5 (ติดตั้งจาก `download.docker.com`) |
+| โฟลเดอร์โปรเจกต์ | `/opt/itsci-learn` (git clone ของ `https://github.com/wsarachai/itsci-learn.git` branch `main`) |
+| ไฟล์ตั้งค่า | `/opt/itsci-learn/.env` (สิทธิ์ `600` ไม่อยู่ใน Git) |
+| Backup | `/srv/backup` (cron ทุกวัน 02:30 เก็บ 14 วัน) |
+| Firewall (ufw) | เปิดเฉพาะ `22/tcp` (SSH), `80/tcp`, `443/tcp`, `443/udp` |
 
-```bash
-ssh itsci-learn 'cd /opt/itsci-learn && git pull && docker compose up -d --build'
+URL ที่ใช้งาน:
+
+| สิ่งที่ต้องการ | URL |
+| --- | --- |
+| หน้าเว็บ | http://10.1.245.36 หรือ https://10.1.245.36 |
+| API | https://10.1.245.36/api/health |
+| phpMyAdmin | https://10.1.245.36/phpmyadmin/ (เข้าด้วย `http://` จะถูก redirect ไป `https://`) |
+
+### 10.2 เข้าเซิร์ฟเวอร์ด้วย SSH key
+
+ขอบัญชีผู้ใช้จากผู้ดูแล แล้วตั้งค่าบนเครื่องตัวเอง (ทำครั้งเดียว) ใน PowerShell:
+
+```powershell
+ssh-keygen -t ed25519 -f $HOME\.ssh\id_ed25519_itscilearn -C itsci-learn
+notepad $HOME\.ssh\config
 ```
 
-Backup ฐานข้อมูล (cron ทุกวัน 02:30 เก็บ 14 วันที่ `/srv/backup`) หรือสั่งเอง:
+เพิ่มใน `config` (แทน `<user>` ด้วยชื่อบัญชีที่ได้รับ):
+
+```
+Host itsci-learn
+    HostName 10.1.245.36
+    User <user>
+    IdentityFile ~/.ssh/id_ed25519_itscilearn
+    IdentitiesOnly yes
+    ServerAliveInterval 60
+```
+
+ส่ง public key ขึ้นเซิร์ฟเวอร์ (ระบบจะถามรหัสผ่านบัญชีครั้งเดียว):
+
+```powershell
+Get-Content $HOME\.ssh\id_ed25519_itscilearn.pub | ssh itsci-learn "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+ssh itsci-learn        # ครั้งต่อไปเข้าได้โดยไม่ต้องใช้รหัสผ่าน
+```
+
+ทุกคำสั่งในหัวข้อถัดไปรัน **บนเซิร์ฟเวอร์** (หลัง `ssh itsci-learn`) เว้นแต่ระบุไว้
+
+### 10.3 อัปเดตระบบหลังมีโค้ดใหม่ (ทำบ่อยที่สุด)
+
+1. บนเครื่องตัวเอง: merge งานเข้า `main` แล้ว `git push`
+2. บนเซิร์ฟเวอร์:
+
+   ```bash
+   cd /opt/itsci-learn
+   git pull
+   docker compose up -d --build
+   docker compose ps          # รอจน api, web, db ขึ้น (healthy)
+   ```
+
+   หรือสั่งจากเครื่องตัวเองครั้งเดียว:
+
+   ```powershell
+   ssh itsci-learn "cd /opt/itsci-learn && git pull && docker compose up -d --build"
+   ```
+
+3. ตรวจผล:
+
+   ```bash
+   curl -sk https://10.1.245.36/api/health                          # {"status":"UP"}
+   curl -s -o /dev/null -w '%{http_code}\n' http://10.1.245.36/     # 200
+   ```
+
+Compose จะ build และสร้าง container ใหม่เฉพาะส่วนที่โค้ดเปลี่ยน ข้อมูลใน MySQL (volume `mysql-data`) ไม่หาย หน้าเว็บจะสะดุดประมาณ 30–60 วินาทีระหว่างที่ backend เริ่มใหม่
+
+### 10.4 ย้อนกลับเวอร์ชัน (rollback)
+
+ถ้า deploy แล้วมีปัญหา ให้กลับไปเวอร์ชันก่อนหน้าชั่วคราว:
 
 ```bash
-docker compose exec -T db sh -c 'mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction "$MYSQL_DATABASE"' \
-  | gzip > backup-$(date +%F).sql.gz
+cd /opt/itsci-learn
+git log --oneline -5                   # ดู commit ที่ต้องการ
+git checkout <commit>                  # เช่น git checkout a14a995
+docker compose up -d --build
 ```
+
+แก้ปัญหาใน `main` แล้วค่อยกลับมาใช้ `main`:
+
+```bash
+git checkout main && git pull && docker compose up -d --build
+```
+
+ถ้ามีการเปลี่ยนโครงสร้างตาราง ข้อมูลอาจไม่เข้ากับเวอร์ชันเก่า ให้พิจารณา restore backup ([ข้อ 10.7](#107-backup-และ-restore-ฐานข้อมูล)) ด้วย
+
+### 10.5 ดูสถานะและ log
+
+```bash
+cd /opt/itsci-learn
+docker compose ps                      # สถานะทุก container
+docker compose logs -f --tail 100 api  # log ของ backend (Ctrl+C เพื่อออก)
+docker compose logs --tail 100 caddy   # log ของ reverse proxy
+docker stats --no-stream               # CPU / RAM ของแต่ละ container
+df -h /                                # พื้นที่ดิสก์
+```
+
+ทุก container ตั้ง `restart: unless-stopped` จึงกลับมาเองหลังเครื่อง reboot และ log ของ Docker ถูกจำกัดไว้ที่ไฟล์ละ 10 MB × 3 ไฟล์ (`/etc/docker/daemon.json`)
+
+### 10.6 ไฟล์ `.env` บนเซิร์ฟเวอร์
+
+```ini
+SITE_ADDRESS=10.1.245.36
+MYSQL_DATABASE=itsci_learn
+MYSQL_USER=itsci
+MYSQL_PASSWORD='<รหัสผ่านของ itsci>'
+MYSQL_ROOT_PASSWORD='<รหัสผ่านของ root>'
+```
+
+- รหัสผ่านจริงมีเฉพาะในไฟล์นี้บนเซิร์ฟเวอร์ ห้าม commit และห้ามใส่ใน README (repo นี้เป็น public)
+- ครอบรหัสผ่านด้วย single quote `'...'` เสมอ ถ้ารหัสมีอักขระ `$` แล้วไม่ครอบ Docker Compose จะตีความเป็นตัวแปรและรหัสผิด
+- ดูค่าปัจจุบัน: `cat /opt/itsci-learn/.env` (เฉพาะผู้ดูแล)
+
+**เปลี่ยนรหัสผ่าน MySQL** (แก้ `.env` อย่างเดียวไม่พอ เพราะรหัสใน `.env` ใช้ตอนสร้างฐานข้อมูลครั้งแรกเท่านั้น):
+
+```bash
+cd /opt/itsci-learn
+docker compose exec db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD"'
+```
+
+ใน prompt ของ MySQL:
+
+```sql
+ALTER USER 'itsci'@'%' IDENTIFIED BY 'รหัสใหม่ของ itsci';
+ALTER USER 'root'@'%' IDENTIFIED BY 'รหัสใหม่ของ root';
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'รหัสใหม่ของ root';
+EXIT;
+```
+
+แล้วแก้ `MYSQL_PASSWORD` และ `MYSQL_ROOT_PASSWORD` ใน `.env` ให้ตรงกัน และสร้าง container ใหม่ให้ใช้รหัสใหม่:
+
+```bash
+nano .env
+docker compose up -d           # สร้าง db และ api ใหม่ ข้อมูลไม่หาย
+```
+
+### 10.7 Backup และ restore ฐานข้อมูล
+
+Cron ของผู้ใช้ที่ deploy (`crontab -l`) รัน backup ทุกวันเวลา 02:30:
+
+```
+30 2 * * * /opt/itsci-learn/backup.sh.local >> /srv/backup/backup.log 2>&1
+```
+
+`/opt/itsci-learn/backup.sh.local` (อยู่เฉพาะบนเซิร์ฟเวอร์ ไม่อยู่ใน Git):
+
+```bash
+#!/usr/bin/env bash
+# daily MySQL dump for itsci-learn, keeps 14 days
+set -euo pipefail
+cd /opt/itsci-learn
+out=/srv/backup/itsci-learn-$(date +%F).sql.gz
+docker compose exec -T db sh -c 'mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction "$MYSQL_DATABASE" 2>/dev/null' | gzip > "$out"
+find /srv/backup -name "itsci-learn-*.sql.gz" -mtime +14 -delete
+```
+
+Backup ทันที (เช่น ก่อน deploy ที่เปลี่ยนโครงสร้างตาราง):
+
+```bash
+/opt/itsci-learn/backup.sh.local && ls -lh /srv/backup
+```
+
+Restore จากไฟล์ backup:
+
+> ⚠️ ตารางที่อยู่ในไฟล์ backup จะถูกแทนที่ด้วยข้อมูลในไฟล์ทั้งหมด ให้ backup ข้อมูลปัจจุบันก่อน
+
+```bash
+cd /opt/itsci-learn
+gunzip -c /srv/backup/itsci-learn-2026-10-28.sql.gz \
+  | docker compose exec -T db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"'
+```
+
+ดึงไฟล์ backup มาเก็บที่เครื่องตัวเอง (รันบน Windows):
+
+```powershell
+scp itsci-learn:/srv/backup/itsci-learn-2026-10-28.sql.gz .
+```
+
+### 10.8 ใบรับรอง HTTPS
+
+Caddy ออกใบรับรองเองด้วย CA ภายใน (`tls internal`) เพราะเป็น IP ในเครือข่ายมหาวิทยาลัยที่ไม่มีชื่อโดเมน ผู้ใช้จะเห็นคำเตือนจนกว่าจะติดตั้ง root certificate:
+
+```bash
+cd /opt/itsci-learn
+docker compose cp caddy:/data/caddy/pki/authorities/local/root.crt /tmp/itsci-learn-root.crt
+```
+
+แล้วบน Windows:
+
+```powershell
+scp itsci-learn:/tmp/itsci-learn-root.crt .
+Import-Certificate -FilePath .\itsci-learn-root.crt -CertStoreLocation Cert:\CurrentUser\Root
+```
+
+- **ห้ามใช้ `docker compose down -v` บนเซิร์ฟเวอร์** เพราะจะลบ volume `mysql-data` (ข้อมูลทั้งหมด) และ `caddy-data` (CA ของ Caddy ถ้าหายจะได้ CA ใหม่ ทุกเครื่องต้องติดตั้งใบรับรองใหม่)
+- `caddy/Caddyfile` ตั้ง `default_sni {$SITE_ADDRESS}` ไว้ เพราะ Windows ไม่ส่ง SNI เมื่อเข้าด้วย IP ถ้าไม่มีบรรทัดนี้ HTTPS จะเชื่อมต่อไม่ได้
+- ถ้าภายหลังได้ชื่อโดเมน ให้ตั้ง `SITE_ADDRESS` เป็นชื่อโดเมนใน `.env` และเปลี่ยน `tls internal` เป็นใบรับรองของมหาวิทยาลัย
+
+### 10.9 ติดตั้งเซิร์ฟเวอร์ใหม่ตั้งแต่ต้น
+
+ใช้เมื่อย้ายไปเครื่องใหม่หรือติดตั้งใหม่ (Ubuntu 24.04 ขึ้นไป) รันด้วยบัญชีที่มีสิทธิ์ `sudo`
+
+**1. ติดตั้ง Docker, firewall และโฟลเดอร์**
+
+```bash
+sudo apt-get update && sudo apt-get -y upgrade
+sudo apt-get install -y ca-certificates curl ufw git
+
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+. /etc/os-release
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu ${VERSION_CODENAME} stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+echo '{ "log-driver": "json-file", "log-opts": { "max-size": "10m", "max-file": "3" } }' \
+  | sudo tee /etc/docker/daemon.json
+sudo systemctl enable --now docker && sudo systemctl restart docker
+sudo usermod -aG docker "$USER"        # ออกจาก SSH แล้วเข้าใหม่เพื่อให้มีผล
+
+sudo ufw allow OpenSSH
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 443/udp
+sudo ufw --force enable
+
+sudo install -d -o "$USER" -g "$USER" /opt/itsci-learn /srv/backup
+```
+
+Docker publish port ได้โดยไม่ผ่าน ufw จึงให้ `compose.yaml` publish เฉพาะ `caddy` (80/443) เท่านั้น **ห้ามใช้ `compose.dev.yaml` บนเซิร์ฟเวอร์** เพราะจะเปิด MySQL และ phpMyAdmin แบบไม่มี HTTPS
+
+**2. ดาวน์โหลดโค้ดและสร้าง `.env`**
+
+```bash
+git clone https://github.com/wsarachai/itsci-learn.git /opt/itsci-learn
+cd /opt/itsci-learn
+cp .env.example .env && chmod 600 .env
+nano .env          # ตั้ง SITE_ADDRESS เป็น IP ของเครื่อง และรหัสผ่านใหม่ตามข้อ 10.6
+```
+
+สร้างรหัสผ่านสุ่มได้ด้วย `openssl rand -hex 16`
+
+**3. เริ่มระบบ**
+
+```bash
+docker compose up -d --build
+docker compose ps
+```
+
+**4. ตั้ง backup** สร้าง `backup.sh.local` ตาม[ข้อ 10.7](#107-backup-และ-restore-ฐานข้อมูล) แล้ว:
+
+```bash
+chmod 700 /opt/itsci-learn/backup.sh.local
+echo "backup.sh.local" >> /opt/itsci-learn/.git/info/exclude
+(crontab -l 2>/dev/null; echo "30 2 * * * /opt/itsci-learn/backup.sh.local >> /srv/backup/backup.log 2>&1") | crontab -
+```
+
+**5. ความปลอดภัยเพิ่มเติม (แนะนำ)** หลังยืนยันว่าเข้าด้วย SSH key ได้แล้ว ให้ปิดการ login SSH ด้วยรหัสผ่าน:
+
+```bash
+echo 'PasswordAuthentication no' | sudo tee /etc/ssh/sshd_config.d/10-no-password.conf
+sudo systemctl reload ssh
+```
+
+### 10.10 การตั้งค่าที่ไม่ควรเปลี่ยน
+
+- เว็บเข้าได้ทั้ง `http://` และ `https://` (ไม่ redirect) ยกเว้น `/phpmyadmin` ที่บังคับไป `https://` เพราะ session ของ phpMyAdmin ใช้ข้าม http / https บน host เดียวกันไม่ได้ และไม่ควรส่งรหัสฐานข้อมูลแบบไม่เข้ารหัส Caddy จะลบ cookie phpMyAdmin เก่าที่ตั้งผ่าน `http` ให้อัตโนมัติ
+- phpMyAdmin ปิดการส่ง error report (`phpmyadmin/config.user.inc.php`) เพราะ extension ใน browser (เช่น MetaMask) ทำให้เกิด JavaScript error แล้ว request error-report ไปเปลี่ยน session ระหว่าง login ทำให้ขึ้น `Failed to set session cookie`
+- `phpmyadmin/alias.conf` ทำให้ phpMyAdmin อยู่ที่ path `/phpmyadmin/` ได้โดยไม่ต้องตั้ง `PMA_ABSOLUTE_URI` (ซึ่งจะผูกกับ http หรือ https อย่างใดอย่างหนึ่ง)
