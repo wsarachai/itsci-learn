@@ -2,6 +2,8 @@
 	# SITE_ADDRESS เช่น 10.1.245.36 หรือ localhost (ตั้งใน .env)
 	# ใช้ CA ภายในของ Caddy เพราะเป็น IP ในเครือข่ายมหาลัย
 	local_certs
+	# client บางตัว (เช่น Windows schannel) ไม่ส่ง SNI เมื่อเข้าด้วย IP
+	default_sni {$SITE_ADDRESS}
 }
 
 {$SITE_ADDRESS} {
