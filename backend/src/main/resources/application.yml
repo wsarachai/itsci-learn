@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: backend
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/itsci_learn}
+    username: ${SPRING_DATASOURCE_USERNAME:itsci}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+server:
+  port: 8080
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      base-path: /api/actuator
+      exposure:
+        include: health

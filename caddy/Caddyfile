@@ -1,0 +1,18 @@
+{
+	# SITE_ADDRESS เช่น 10.1.245.36 หรือ localhost (ตั้งใน .env)
+	# ใช้ CA ภายในของ Caddy เพราะเป็น IP ในเครือข่ายมหาลัย
+	local_certs
+}
+
+{$SITE_ADDRESS} {
+	tls internal
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy api:8080
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+}
