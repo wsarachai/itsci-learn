@@ -499,32 +499,38 @@ URL ที่ใช้งาน:
 | API | https://10.1.245.36/api/health |
 | phpMyAdmin | https://10.1.245.36/phpmyadmin/ (เข้าด้วย `http://` จะถูก redirect ไป `https://`) |
 
-### 10.2 เข้าเซิร์ฟเวอร์ด้วย SSH key
+### 10.2 เข้าเซิร์ฟเวอร์ด้วย SSH (username / password)
 
-ขอบัญชีผู้ใช้จากผู้ดูแล แล้วตั้งค่าบนเครื่องตัวเอง (ทำครั้งเดียว) ใน PowerShell:
+นักศึกษาเข้าเซิร์ฟเวอร์ด้วยบัญชี (username / password) ที่ได้รับจากผู้ดูแลเท่านั้น ใช้คำสั่ง `ssh` ที่มากับ Windows 10/11 ใน PowerShell:
 
 ```powershell
-ssh-keygen -t ed25519 -f $HOME\.ssh\id_ed25519_itscilearn -C itsci-learn
+ssh <user>@10.1.245.36
+```
+
+- แทน `<user>` ด้วย username ที่ได้รับ
+- ครั้งแรกจะถาม `Are you sure you want to continue connecting (yes/no)?` ให้พิมพ์ `yes`
+- แล้วพิมพ์ password (ตัวอักษรจะไม่ขึ้นบนจอ เป็นเรื่องปกติ) กด Enter
+- ออกจากเซิร์ฟเวอร์: พิมพ์ `exit`
+- เปลี่ยน password ของตัวเองหลังเข้าครั้งแรก: `passwd`
+
+ตั้งชื่อย่อ `itsci-learn` ไว้ จะได้ไม่ต้องพิมพ์ IP ทุกครั้ง (ไม่บังคับ):
+
+```powershell
 notepad $HOME\.ssh\config
 ```
 
-เพิ่มใน `config` (แทน `<user>` ด้วยชื่อบัญชีที่ได้รับ):
+เพิ่ม (แทน `<user>` ด้วย username ที่ได้รับ) แล้วบันทึก:
 
 ```
 Host itsci-learn
     HostName 10.1.245.36
     User <user>
-    IdentityFile ~/.ssh/id_ed25519_itscilearn
-    IdentitiesOnly yes
     ServerAliveInterval 60
 ```
 
-ส่ง public key ขึ้นเซิร์ฟเวอร์ (ระบบจะถามรหัสผ่านบัญชีครั้งเดียว):
+หลังจากนี้ใช้ `ssh itsci-learn` ได้เลย (ยังต้องพิมพ์ password ทุกครั้ง) ถ้า Notepad บอกว่าไม่มีโฟลเดอร์ ให้รัน `mkdir $HOME\.ssh -Force` ก่อน
 
-```powershell
-Get-Content $HOME\.ssh\id_ed25519_itscilearn.pub | ssh itsci-learn "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
-ssh itsci-learn        # ครั้งต่อไปเข้าได้โดยไม่ต้องใช้รหัสผ่าน
-```
+> คำสั่ง `ssh itsci-learn "..."` ในหัวข้อถัดไปจะถาม password ทุกครั้งที่รัน ถ้ายังไม่ได้ตั้งชื่อย่อ ให้ใช้ `ssh <user>@10.1.245.36 "..."` แทน
 
 ทุกคำสั่งในหัวข้อถัดไปรัน **บนเซิร์ฟเวอร์** (หลัง `ssh itsci-learn`) เว้นแต่ระบุไว้
 
@@ -555,7 +561,106 @@ ssh itsci-learn        # ครั้งต่อไปเข้าได้โ�
 
 Compose จะ build และสร้าง container ใหม่เฉพาะส่วนที่โค้ดเปลี่ยน ข้อมูลใน MySQL (volume `mysql-data`) ไม่หาย หน้าเว็บจะสะดุดประมาณ 30–60 วินาทีระหว่างที่ backend เริ่มใหม่
 
-### 10.4 ย้อนกลับเวอร์ชัน (rollback)
+### 10.4 Deploy ระหว่างพัฒนา (ทดสอบ branch บนเซิร์ฟเวอร์ก่อน merge)
+
+ใช้เมื่อต้องการลองงานที่ยังไม่เสร็จบนเซิร์ฟเวอร์จริง เช่น ให้อาจารย์หรือเพื่อนในทีมทดลองใช้ก่อน merge เข้า `main`
+หลักการคือสลับโฟลเดอร์ `/opt/itsci-learn` ไปใช้ branch ของงานนั้นชั่วคราว ทดสอบเสร็จแล้วสลับกลับ `main`
+
+```
+เครื่องตัวเอง (แบบ B)            GitHub                     10.1.245.36
+feature/xxx ── git push ──►  feature/xxx  ── git switch ──►  /opt/itsci-learn (ทดสอบ)
+     │                                                              │
+     └── merge เข้า main ── git push ──► main ── git switch main ──►  /opt/itsci-learn (ใช้งานจริง)
+```
+
+> เซิร์ฟเวอร์มีชุดเดียวและใช้ฐานข้อมูลเดียวกับ `main` ทดสอบได้ **ทีละ branch** และข้อมูลที่เพิ่มหรือแก้ระหว่างทดสอบจะอยู่ต่อหลังสลับกลับ `main`
+
+#### ขั้นที่ 1: เตรียม branch บนเครื่องตัวเอง
+
+พัฒนาและทดสอบในแบบ B ([ข้อ 6](#6-แบบ-b-โหมดพัฒนา-แก้โค้ดแล้วเห็นผลทันที)) จนใช้งานได้บนเครื่องตัวเองก่อน แล้ว push branch ขึ้น GitHub:
+
+```powershell
+git checkout -b feature/note-search      # ตั้งชื่อตามงาน
+git add .
+git commit -m "เพิ่มการค้นหาโน้ต"
+git push -u origin feature/note-search
+```
+
+#### ขั้นที่ 2: ตรวจว่าไม่มีใครทดสอบ branch อื่นค้างอยู่
+
+```powershell
+ssh itsci-learn "cd /opt/itsci-learn && git branch --show-current && git status --short"
+```
+
+- ต้องขึ้น `main` และไม่มีไฟล์แก้ค้าง ถ้าเป็นชื่อ branch อื่น แปลว่ามีคนทดสอบอยู่ ให้ตกลงกับเจ้าของงานก่อน
+- ถ้างานนี้เปลี่ยนโครงสร้างตาราง (เพิ่ม / แก้ `@Entity`) ให้ backup ก่อน: `ssh itsci-learn /opt/itsci-learn/backup.sh.local` เพราะ Hibernate (`ddl-auto: update`) จะเพิ่มคอลัมน์ให้ทันทีและไม่ลบคืนตอนสลับกลับ
+
+#### ขั้นที่ 3: สลับเซิร์ฟเวอร์ไปใช้ branch แล้ว deploy
+
+```bash
+cd /opt/itsci-learn
+git fetch origin
+git switch feature/note-search          # สร้าง branch ที่ track origin/feature/note-search ให้เอง
+docker compose up -d --build
+docker compose ps                       # รอจน api, web, db ขึ้น (healthy)
+```
+
+หรือสั่งจาก PowerShell บนเครื่องตัวเอง:
+
+```powershell
+$branch = "feature/note-search"
+ssh itsci-learn "cd /opt/itsci-learn && git fetch origin && git switch $branch && docker compose up -d --build"
+```
+
+แล้วทดสอบที่ http://10.1.245.36 และ https://10.1.245.36/api/health
+
+#### ขั้นที่ 4: แก้แล้ว deploy ซ้ำ
+
+แก้โค้ดบนเครื่องตัวเอง commit แล้ว `git push` จากนั้นบนเซิร์ฟเวอร์:
+
+```powershell
+ssh itsci-learn "cd /opt/itsci-learn && git pull && docker compose up -d --build"
+```
+
+ห้ามแก้โค้ดบนเซิร์ฟเวอร์โดยตรง (จะทำให้ `git pull` / `git switch` ไม่ผ่าน) ให้แก้บนเครื่องตัวเองแล้ว push เท่านั้น
+
+#### ขั้นที่ 5: ทดสอบผ่านแล้ว merge เข้า `main` และสลับเซิร์ฟเวอร์กลับ
+
+บนเครื่องตัวเอง:
+
+```powershell
+git checkout main
+git pull
+git merge feature/note-search
+git push
+git branch -d feature/note-search
+git push origin --delete feature/note-search
+```
+
+บนเซิร์ฟเวอร์:
+
+```bash
+cd /opt/itsci-learn
+git switch main
+git pull
+docker compose up -d --build --remove-orphans
+git branch -d feature/note-search
+git fetch --prune origin
+```
+
+`--remove-orphans` ลบ container ที่ branch ทดสอบเพิ่มไว้ใน `compose.yaml` แต่ `main` ไม่มี
+
+#### ถ้าเลิกงานนั้น (ไม่ merge)
+
+สลับกลับ `main` แบบเดียวกับขั้นที่ 5 (ข้ามส่วน merge บนเครื่องตัวเอง) แล้วลบ branch ด้วย `git branch -D feature/note-search` ถ้าการทดสอบทำให้ข้อมูลหรือตารางเสีย ให้ restore จาก backup ที่ทำไว้ในขั้นที่ 2 ([ข้อ 10.8](#108-backup-และ-restore-ฐานข้อมูล))
+
+#### สิ่งที่ไม่เปลี่ยนเมื่อสลับ branch
+
+- `.env` และ `backup.sh.local` ไม่อยู่ใน Git จึงไม่ถูกแตะ ระบบยังใช้รหัสผ่านและ backup เดิม
+- ข้อมูลใน MySQL (volume `mysql-data`) และใบรับรอง HTTPS (volume `caddy-data`) ใช้ร่วมกันทุก branch
+- ห้ามใช้ `compose.dev.yaml` บนเซิร์ฟเวอร์ แม้ระหว่างทดสอบ
+
+### 10.5 ย้อนกลับเวอร์ชัน (rollback)
 
 ถ้า deploy แล้วมีปัญหา ให้กลับไปเวอร์ชันก่อนหน้าชั่วคราว:
 
@@ -572,9 +677,9 @@ docker compose up -d --build
 git checkout main && git pull && docker compose up -d --build
 ```
 
-ถ้ามีการเปลี่ยนโครงสร้างตาราง ข้อมูลอาจไม่เข้ากับเวอร์ชันเก่า ให้พิจารณา restore backup ([ข้อ 10.7](#107-backup-และ-restore-ฐานข้อมูล)) ด้วย
+ถ้ามีการเปลี่ยนโครงสร้างตาราง ข้อมูลอาจไม่เข้ากับเวอร์ชันเก่า ให้พิจารณา restore backup ([ข้อ 10.8](#108-backup-และ-restore-ฐานข้อมูล)) ด้วย
 
-### 10.5 ดูสถานะและ log
+### 10.6 ดูสถานะและ log
 
 ```bash
 cd /opt/itsci-learn
@@ -587,7 +692,7 @@ df -h /                                # พื้นที่ดิสก์
 
 ทุก container ตั้ง `restart: unless-stopped` จึงกลับมาเองหลังเครื่อง reboot และ log ของ Docker ถูกจำกัดไว้ที่ไฟล์ละ 10 MB × 3 ไฟล์ (`/etc/docker/daemon.json`)
 
-### 10.6 ไฟล์ `.env` บนเซิร์ฟเวอร์
+### 10.7 ไฟล์ `.env` บนเซิร์ฟเวอร์
 
 ```ini
 SITE_ADDRESS=10.1.245.36
@@ -624,7 +729,7 @@ nano .env
 docker compose up -d           # สร้าง db และ api ใหม่ ข้อมูลไม่หาย
 ```
 
-### 10.7 Backup และ restore ฐานข้อมูล
+### 10.8 Backup และ restore ฐานข้อมูล
 
 Cron ของผู้ใช้ที่ deploy (`crontab -l`) รัน backup ทุกวันเวลา 02:30:
 
@@ -666,7 +771,7 @@ gunzip -c /srv/backup/itsci-learn-2026-10-28.sql.gz \
 scp itsci-learn:/srv/backup/itsci-learn-2026-10-28.sql.gz .
 ```
 
-### 10.8 ใบรับรอง HTTPS
+### 10.9 ใบรับรอง HTTPS
 
 Caddy ออกใบรับรองเองด้วย CA ภายใน (`tls internal`) เพราะเป็น IP ในเครือข่ายมหาวิทยาลัยที่ไม่มีชื่อโดเมน ผู้ใช้จะเห็นคำเตือนจนกว่าจะติดตั้ง root certificate:
 
@@ -686,7 +791,7 @@ Import-Certificate -FilePath .\itsci-learn-root.crt -CertStoreLocation Cert:\Cur
 - `caddy/Caddyfile` ตั้ง `default_sni {$SITE_ADDRESS}` ไว้ เพราะ Windows ไม่ส่ง SNI เมื่อเข้าด้วย IP ถ้าไม่มีบรรทัดนี้ HTTPS จะเชื่อมต่อไม่ได้
 - ถ้าภายหลังได้ชื่อโดเมน ให้ตั้ง `SITE_ADDRESS` เป็นชื่อโดเมนใน `.env` และเปลี่ยน `tls internal` เป็นใบรับรองของมหาวิทยาลัย
 
-### 10.9 ติดตั้งเซิร์ฟเวอร์ใหม่ตั้งแต่ต้น
+### 10.10 ติดตั้งเซิร์ฟเวอร์ใหม่ตั้งแต่ต้น
 
 ใช้เมื่อย้ายไปเครื่องใหม่หรือติดตั้งใหม่ (Ubuntu 24.04 ขึ้นไป) รันด้วยบัญชีที่มีสิทธิ์ `sudo`
 
@@ -727,7 +832,7 @@ Docker publish port ได้โดยไม่ผ่าน ufw จึงให�
 git clone https://github.com/wsarachai/itsci-learn.git /opt/itsci-learn
 cd /opt/itsci-learn
 cp .env.example .env && chmod 600 .env
-nano .env          # ตั้ง SITE_ADDRESS เป็น IP ของเครื่อง และรหัสผ่านใหม่ตามข้อ 10.6
+nano .env          # ตั้ง SITE_ADDRESS เป็น IP ของเครื่อง และรหัสผ่านใหม่ตามข้อ 10.7
 ```
 
 สร้างรหัสผ่านสุ่มได้ด้วย `openssl rand -hex 16`
@@ -739,7 +844,7 @@ docker compose up -d --build
 docker compose ps
 ```
 
-**4. ตั้ง backup** สร้าง `backup.sh.local` ตาม[ข้อ 10.7](#107-backup-และ-restore-ฐานข้อมูล) แล้ว:
+**4. ตั้ง backup** สร้าง `backup.sh.local` ตาม[ข้อ 10.8](#108-backup-และ-restore-ฐานข้อมูล) แล้ว:
 
 ```bash
 chmod 700 /opt/itsci-learn/backup.sh.local
@@ -747,14 +852,32 @@ echo "backup.sh.local" >> /opt/itsci-learn/.git/info/exclude
 (crontab -l 2>/dev/null; echo "30 2 * * * /opt/itsci-learn/backup.sh.local >> /srv/backup/backup.log 2>&1") | crontab -
 ```
 
-**5. ความปลอดภัยเพิ่มเติม (แนะนำ)** หลังยืนยันว่าเข้าด้วย SSH key ได้แล้ว ให้ปิดการ login SSH ด้วยรหัสผ่าน:
+**5. ให้บัญชีนักศึกษา deploy ได้ (ทำครั้งเดียวต่อเครื่อง)**
+
+นักศึกษาเข้าด้วย username / password ([ข้อ 10.2](#102-เข้าเซิร์ฟเวอร์ด้วย-ssh-username--password)) จึงต้องเปิด SSH แบบ password ไว้ (ค่าเริ่มต้นของ Ubuntu) และให้กลุ่ม `docker` แก้โฟลเดอร์โปรเจกต์ได้:
 
 ```bash
-echo 'PasswordAuthentication no' | sudo tee /etc/ssh/sshd_config.d/10-no-password.conf
-sudo systemctl reload ssh
+sudo chgrp -R docker /opt/itsci-learn /srv/backup
+sudo chmod -R g+rwX /opt/itsci-learn /srv/backup
+sudo find /opt/itsci-learn /srv/backup -type d -exec chmod g+s {} +   # ไฟล์ใหม่ได้กลุ่ม docker ตาม
+sudo chmod 640 /opt/itsci-learn/.env                       # นักศึกษาอ่านได้ (compose ต้องใช้) แต่แก้ไม่ได้
+git -C /opt/itsci-learn config core.sharedRepository group
+sudo git config --system --add safe.directory /opt/itsci-learn
 ```
 
-### 10.10 การตั้งค่าที่ไม่ควรเปลี่ยน
+**6. สร้างบัญชีนักศึกษา (ทำต่อคน)**
+
+```bash
+sudo adduser <user>                 # ตั้ง password เริ่มต้น แล้วแจ้งนักศึกษา
+sudo usermod -aG docker <user>      # ให้รัน docker compose ได้
+sudo chage -d 0 <user>              # บังคับเปลี่ยน password ตอน login ครั้งแรก
+```
+
+ลบบัญชีเมื่อเลิกใช้: `sudo deluser --remove-home <user>`
+
+> ⚠️ สมาชิกกลุ่ม `docker` มีสิทธิ์เทียบเท่า root บนเครื่องนี้ (สั่ง container ให้เข้าถึงไฟล์ทั้งหมดได้) ให้เฉพาะนักศึกษาที่ต้อง deploy และให้ตั้ง password ที่เดายาก
+
+### 10.11 การตั้งค่าที่ไม่ควรเปลี่ยน
 
 - เว็บเข้าได้ทั้ง `http://` และ `https://` (ไม่ redirect) ยกเว้น `/phpmyadmin` ที่บังคับไป `https://` เพราะ session ของ phpMyAdmin ใช้ข้าม http / https บน host เดียวกันไม่ได้ และไม่ควรส่งรหัสฐานข้อมูลแบบไม่เข้ารหัส Caddy จะลบ cookie phpMyAdmin เก่าที่ตั้งผ่าน `http` ให้อัตโนมัติ
 - phpMyAdmin ปิดการส่ง error report (`phpmyadmin/config.user.inc.php`) เพราะ extension ใน browser (เช่น MetaMask) ทำให้เกิด JavaScript error แล้ว request error-report ไปเปลี่ยน session ระหว่าง login ทำให้ขึ้น `Failed to set session cookie`
