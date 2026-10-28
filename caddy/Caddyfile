@@ -6,9 +6,13 @@
 	default_sni {$SITE_ADDRESS}
 }
 
-{$SITE_ADDRESS} {
-	tls internal
+(app) {
 	encode zstd gzip
+
+	redir /phpmyadmin /phpmyadmin/
+	handle /phpmyadmin/* {
+		reverse_proxy phpmyadmin:80
+	}
 
 	handle /api/* {
 		reverse_proxy api:8080
@@ -17,4 +21,14 @@
 	handle {
 		reverse_proxy web:3000
 	}
+}
+
+https://{$SITE_ADDRESS} {
+	tls internal
+	import app
+}
+
+# เปิดให้เข้าด้วย http:// ได้ด้วย (ไม่ redirect ไป https)
+http://{$SITE_ADDRESS} {
+	import app
 }

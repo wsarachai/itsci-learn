@@ -52,6 +52,19 @@ services:
       retries: 10
       start_period: 20s
 
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 64M
+      TZ: Asia/Bangkok
+    volumes:
+      - ./phpmyadmin/alias.conf:/etc/apache2/conf-enabled/zz-phpmyadmin-alias.conf:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
@@ -68,6 +81,7 @@ services:
     depends_on:
       - web
       - api
+      - phpmyadmin
 
 volumes:
   mysql-data:
