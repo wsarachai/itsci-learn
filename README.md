@@ -12,14 +12,17 @@ http://<SITE_ADDRESS>  และ  https://<SITE_ADDRESS>
 ```
 
 มีเพียง caddy ที่เปิด port ออกนอกเครื่อง (80, 443) ส่วน web / api / phpmyadmin / db อยู่ใน network ภายในของ Compose
-เข้าได้ทั้ง `http://` และ `https://` (ไม่ redirect)
+เข้าได้ทั้ง `http://` และ `https://` (ไม่ redirect) ยกเว้น `/phpmyadmin` ที่บังคับไป `https://`
 
 ## phpMyAdmin
 
 เข้าที่ `/phpmyadmin/` แล้ว login ด้วยบัญชี MySQL ใน `.env`: `MYSQL_USER` / `MYSQL_PASSWORD` สำหรับฐาน `MYSQL_DATABASE`
 หรือ `root` / `MYSQL_ROOT_PASSWORD` เมื่อต้องจัดการทั้งเซิร์ฟเวอร์
 
-ควร login ผ่าน `https://` เพราะ `http://` ส่งรหัสผ่านแบบไม่เข้ารหัสในเครือข่าย
+phpMyAdmin ใช้ได้เฉพาะ `https://` (`http://.../phpmyadmin` จะ redirect ให้) เพราะ session ของ phpMyAdmin
+ใช้ข้าม http/https บน host เดียวกันไม่ได้: browser ส่ง cookie ที่ตั้งผ่าน http มากับ request https ด้วย
+ทำให้ขึ้น "Failed to set session cookie" หรือ "mismatch between HTTPS indicated on the server and client"
+Caddy จะลบ cookie phpMyAdmin เก่าที่ตั้งผ่าน http ให้อัตโนมัติ
 
 ## รัน
 

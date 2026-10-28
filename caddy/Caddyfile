@@ -25,10 +25,23 @@
 
 https://{$SITE_ADDRESS} {
 	tls internal
+
+	# ลบ cookie phpMyAdmin ที่เคยตั้งผ่าน http (browser ส่ง cookie ที่ไม่ secure มาทาง https ด้วย
+	# ทำให้ phpMyAdmin สับสน session/HTTPS) — ฝั่ง https ใช้ชื่อ __Secure-*_https อยู่แล้ว
+	@pma path /phpmyadmin/*
+	header @pma {
+		+Set-Cookie "phpMyAdmin=; Path=/phpmyadmin/; Max-Age=0"
+		+Set-Cookie "pma_lang=; Path=/phpmyadmin/; Max-Age=0"
+		+Set-Cookie "pmaUser-1=; Path=/phpmyadmin/; Max-Age=0"
+		+Set-Cookie "pmaAuth-1=; Path=/phpmyadmin/; Max-Age=0"
+	}
+
 	import app
 }
 
 # เปิดให้เข้าด้วย http:// ได้ด้วย (ไม่ redirect ไป https)
+# ยกเว้น phpMyAdmin: session ของมันใช้ข้าม http/https บน host เดียวกันไม่ได้ และไม่ควรส่งรหัส DB แบบไม่เข้ารหัส
 http://{$SITE_ADDRESS} {
+	redir /phpmyadmin* https://{host}{uri} 308
 	import app
 }
