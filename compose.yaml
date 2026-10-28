@@ -61,6 +61,7 @@ services:
       TZ: Asia/Bangkok
     volumes:
       - ./phpmyadmin/alias.conf:/etc/apache2/conf-enabled/zz-phpmyadmin-alias.conf:ro
+      - ./phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro
     depends_on:
       db:
         condition: service_healthy
