@@ -1,0 +1,6 @@
+# ให้ไฟล์ข้อความใน repo เป็น LF เสมอ (กัน Windows แปลงเป็น CRLF แล้ว script/Docker build พัง)
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ico binary
+*.png binary

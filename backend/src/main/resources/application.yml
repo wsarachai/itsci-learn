@@ -1,10 +1,14 @@
 spring:
   application:
     name: backend
+  config:
+    # ตอนพัฒนาบนเครื่อง (รันจากโฟลเดอร์ backend) อ่านรหัส DB จาก .env ที่ root ของ repo
+    # ใน Docker ไม่มีไฟล์นี้ และ compose ส่ง SPRING_DATASOURCE_* มาทาง env แทน
+    import: optional:file:../.env[.properties]
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/itsci_learn}
-    username: ${SPRING_DATASOURCE_USERNAME:itsci}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/${MYSQL_DATABASE:itsci_learn}}
+    username: ${SPRING_DATASOURCE_USERNAME:${MYSQL_USER:itsci}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${MYSQL_PASSWORD:}}
   jpa:
     hibernate:
       ddl-auto: update
