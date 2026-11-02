@@ -1,0 +1,79 @@
+### 1. Get all wellness hubs
+GET http://localhost:8080/api/wellness-hubs
+
+### 2. Add new wellness hub (Insert Wellness Hub)
+POST http://localhost:8080/api/wellness-hubs
+Content-Type: application/json
+
+{
+  "wellnessHubName": "ฟ้าล้านนา สปา (Fah Lanna Spa)",
+  "licenseId": "15001002567",
+  "categoryId": "C01",
+  "districtId": 1,
+  "address": "57/1 ถนนจ่าบ้าน ตำบลศรีภูมิ อำเภอเมือง เชียงใหม่ 50200",
+  "latitude": 18.7889,
+  "longitude": 98.9853,
+  "phone": "053-416191",
+  "email": "info@fahlanna.com",
+  "website": "https://www.fahlanna.com",
+  "wellnessHubDescription": "สปาท่ามกลางธรรมชาติตกแต่งสไตล์ล้านนาแท้ใจกลางเมืองเชียงใหม่ มีบริการนวดตอกเส้นและนวดไทยสมุนไพร",
+  "img": "fahlanna_cover.jpg",
+  "images": "[\"fahlanna_1.jpg\", \"fahlanna_2.jpg\"]",
+  "services": "[\"นวดตอกเส้น\", \"นวดสปาสมุนไพร\", \"อโรมาเธอราพี\"]",
+  "standards": "[\"SHA Extra Plus\", \"Thailand Wellness Gold\"]",
+  "operatingHours": "{\"mon\":{\"active\":true,\"open\":\"10:00\",\"close\":\"22:00\"},\"tue\":{\"active\":true,\"open\":\"10:00\",\"close\":\"22:00\"}}"
+}
+
+### 3. Get all main routes
+GET http://localhost:8080/api/main-routes
+
+### 4. Add new main route (Insert Main Route)
+POST http://localhost:8080/api/main-routes
+Content-Type: application/json
+
+{
+  "routeName": "เส้นทางผ่อนคลายล้านนาและสปาน้ำพุร้อนแม่ออน",
+  "routeDescription": "เริ่มต้นผ่อนคลายในตัวเมืองเชียงใหม่ แล้วเดินทางต่อไปยังธรรมชาติและน้ำพุร้อนอำเภอแม่ออน",
+  "startDistrict": "เมืองเชียงใหม่",
+  "endDistrict": "แม่ออน",
+  "img": "route_mueang_maeon.jpg",
+  "districtCount": 2,
+  "wellnessHubCount": 8,
+  "districts": [
+    { "districtId": 1, "orderNumber": 1 },
+    { "districtId": 3, "orderNumber": 2 }
+  ]
+}
+
+### 5. Get all official articles
+GET http://localhost:8080/api/official-articles
+
+### 6. Add new official article (Insert Official Article)
+POST http://localhost:8080/api/official-articles
+Content-Type: application/json
+
+{
+  "title": "คู่มือการท่องเที่ยวเชิงสุขภาพเชียงใหม่ 2026",
+  "content": "<p>เชียงใหม่เมืองแห่งสุขภาพและการผ่อนคลาย รวบรวมสปาและที่พักฟื้นฟูสุขภาพชั้นนำ...</p>",
+  "author": "ศูนย์ส่งเสริมสุขภาพเชียงใหม่",
+  "img": "article_health_2026.jpg",
+  "articleImages": "[\"art_1.jpg\", \"art_2.jpg\"]",
+  "category": "WELLNESS_GUIDE",
+  "isPublished": true
+}
+
+### 7. Submit Account Request
+POST http://localhost:8080/api/account-requests
+Content-Type: application/json
+
+{
+  "businessName": "ปานวิมาน เชียงใหม่ รีสอร์ท",
+  "licenseNumber": "15001007788",
+  "category": "C02",
+  "district": "แม่ริม",
+  "contactName": "คุณวิภาดา สุขใจ",
+  "phone": "089-7776655",
+  "email": "contact@panviman.com",
+  "address": "197 หมู่ 1 ต.โป่งแยง อ.แม่ริม จ.เชียงใหม่"
+}
+

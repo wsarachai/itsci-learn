@@ -1,0 +1,448 @@
+/* การจัดโครงสร้างหน้าหลักแบบรวม Sidebar ตัวเดิม */
+.admin-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: "Sarabun", sans-serif;
+  box-sizing: border-box;
+}
+
+/* ส่วนแสดงผลขวาเนื้อหาหลัก */
+.main-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* กรอบการจัดการดีไซน์สไตล์ราชการ */
+.form-card {
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  padding: 30px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* เส้นกั้นแบ่งสัดส่วนหมวดฟอร์ม */
+.section-divider {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1c7430;
+  /* คุมโทนเขียวหลักของระบบสุขภาพเชียงใหม่ */
+  border-bottom: 2px solid #1c7430;
+  padding-bottom: 8px;
+  margin-top: 25px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* จัดฟิลด์แบบแถวกลุ่ม 2 ช่องคู่ขนาน */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* จัดตำแหน่งช่อง */
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.char-counter {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* รูปแบบอินพุต เหลี่ยม คม ชัดเจน */
+.gov-input-field {
+  border: 1px solid #000000;
+  padding: 10px 14px;
+  font-size: 14px;
+  background-color: #ffffff;
+  outline: none;
+  height: 40px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.gov-input-field:focus {
+  border-color: #1c7430;
+  box-shadow: 0 0 0 2px rgba(28, 116, 48, 0.1);
+}
+
+/* พื้นที่กล่องข้อความยาว */
+.gov-textarea {
+  height: 90px !important;
+  resize: vertical;
+}
+
+/* แถบจัดวางปุ่มคำสั่งด้านล่างฟอร์ม */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  border-top: 1px solid #eaeaea;
+  padding-top: 20px;
+}
+
+/* ปุ่มยกเลิก */
+.btn-gov-cancel {
+  background-color: #ffffff;
+  color: #555555;
+  border: 1px solid #cccccc;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  height: 40px;
+  transition: all 0.2s ease;
+}
+
+.btn-gov-cancel:hover:not(:disabled) {
+  background-color: #f5f5f5;
+  border-color: #bbbbbb;
+}
+
+/* ปุ่มบันทึกข้อมูลระบบหลัก */
+.btn-gov-save {
+  background-color: #1c7430;
+  color: #ffffff;
+  border: 1px solid #145522;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-gov-save:hover:not(:disabled) {
+  background-color: #176028;
+}
+
+.btn-gov-save:disabled,
+.btn-gov-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.popup-icon {
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 36px;
+  font-weight: bold;
+
+  color: white;
+}
+
+.popup-icon.success {
+  background: #28a745;
+}
+
+.popup-icon.error {
+  background: #dc3545;
+}
+
+.popup h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.popup p {
+  text-align: center;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.popup .confirm-btn {
+  width: 100%;
+}
+
+/* ==========================================================================
+   ดรอปดาวน์เลือกหลายตัวเลือก สไตล์ราชการ (เหลี่ยม คม ชัดเจน พอดีกับฟอร์ม)
+   ========================================================================== */
+.gov-multi-select {
+  position: relative;
+  width: 100%;
+  font-family: inherit;
+}
+
+.gov-multi-select * {
+  box-sizing: border-box;
+}
+
+/* กล่องอินพุต ทรงสี่เหลี่ยมคมชัดเหมือน .gov-input-field */
+.gov-multi-select-trigger {
+  min-height: 40px;
+  height: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 4px 10px;
+  border: 1px solid #000000;
+  background-color: #ffffff;
+  border-radius: 0 !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gov-multi-select.open .gov-multi-select-trigger,
+.gov-multi-select-trigger:hover {
+  border-color: #1c7430;
+}
+
+.gov-multi-select.open .gov-multi-select-trigger {
+  box-shadow: 0 0 0 2px rgba(28, 116, 48, 0.1);
+}
+
+.gov-multi-select-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.gov-multi-select-placeholder {
+  color: #757575;
+  font-size: 13.5px;
+}
+
+.gov-multi-select-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+}
+
+/* แท็กป้ายแบบสี่เหลี่ยมกะทัดรัด */
+.gov-multi-select-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #e8f5e9;
+  color: #1c7430;
+  border: 1px solid #c8e6c9;
+  border-radius: 0;
+  padding: 1px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.gov-multi-select-tag-del {
+  background: none;
+  border: none;
+  color: #1c7430;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 1px;
+  line-height: 1;
+}
+
+.gov-multi-select-tag-del:hover {
+  color: #c62828;
+}
+
+.gov-multi-select-caret {
+  color: #777777;
+  font-size: 11px;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+/* กล่องดรอปดาวน์รายการตัวเลือก ทรงสี่เหลี่ยม */
+.gov-multi-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  border-top: none;
+  border-radius: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.gov-multi-select-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 12px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.gov-multi-select-btn-all {
+  background: none;
+  border: none;
+  color: #1c7430;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 1px 4px;
+}
+
+.gov-multi-select-btn-all:hover {
+  text-decoration: underline;
+}
+
+.gov-multi-select-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* แต่ละรายการตัวเลือก ขนาดเล็ก ชิดกัน เรียงแถวสวยงาม */
+.gov-multi-select-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 10px !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border-bottom: 1px solid #f1f1f1 !important;
+  background-color: #ffffff;
+  transition: background-color 0.15s ease;
+}
+
+.gov-multi-select-item:last-child {
+  border-bottom: none !important;
+}
+
+.gov-multi-select-item:hover {
+  background-color: #f8f9fa !important;
+}
+
+/* =====================================================
+   DYNAMIC CERTIFICATE INPUTS (1 CERTIFICATE PER ROW)
+===================================================== */
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.gov-cert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.gov-cert-header label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  margin: 0;
+}
+
+.gov-btn-add-cert {
+  background-color: #1e4620;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.gov-btn-add-cert:hover {
+  background-color: #143216;
+  transform: translateY(-1px);
+}
+
+.gov-cert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.gov-cert-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.gov-cert-row .gov-input-field {
+  flex: 1;
+  width: 100%;
+}
+
+.gov-btn-del-cert {
+  background-color: #fff1f2;
+  color: #e11d48;
+  border: 1px solid #fecdd3;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.gov-btn-del-cert:hover {
+  background-color: #ffe4e6;
+  border-color: #fda4af;
+  color: #be123c;
+}
+
+/* ป้ายบอกสถานะสร้างอัตโนมัติ */
+.badge-autogen {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  color: #1c7430;
+  background-color: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  padding: 1px 6px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* ช่องที่ระบบเจนให้อัตโนมัติ (Readonly) */
+.gov-readonly-field {
+  background-color: #f8f9fa !important;
+  color: #333333 !important;
+  cursor: default;
+  font-weight: 600;
+  border: 1px solid #000000 !important;
+}

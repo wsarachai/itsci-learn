@@ -1,0 +1,344 @@
+/* ==========================================================================
+   AdminStatusModal - ป๊อปอัปแจ้งเตือนสถานะสำหรับผู้ดูแลระบบ (Admin)
+   สไตล์: มินิมอล ทางการ คมชัด ไม่มีส่วนโค้งมน (Strictly 0px Border-Radius)
+   เน้น: ไอคอนเด่นชัด ข้อความกระชับ 1-2 บรรทัด อ่านง่าย สบายตา
+   ========================================================================== */
+
+/* พื้นหลัง Overlay */
+.admin-status-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* กล่อง Modal ทรงเหลี่ยม คมชัด */
+.admin-status-modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 0px !important;
+  border: 1px solid #cbd5e1;
+  box-shadow:
+    0 20px 40px -10px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: "Sarabun", "Prompt", sans-serif;
+  animation: modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* แถบสีนำสายตาด้านบน */
+.admin-modal-top-accent {
+  width: 100%;
+  height: 4px;
+}
+
+.modal-theme-loading .admin-modal-top-accent {
+  background: linear-gradient(90deg, #144231, #16a34a, #22c55e, #144231);
+  background-size: 200% 100%;
+  animation: accentFlow 2s linear infinite;
+}
+
+.modal-theme-success .admin-modal-top-accent {
+  background-color: #16a34a;
+}
+
+.modal-theme-warning .admin-modal-top-accent {
+  background-color: #d97706;
+}
+
+.modal-theme-info .admin-modal-top-accent {
+  background-color: #2563eb;
+}
+
+.modal-theme-error .admin-modal-top-accent {
+  background-color: #dc2626;
+}
+
+@keyframes accentFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+/* ปุ่มปิดมุมขวาบน */
+.admin-status-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  color: #94a3b8;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px !important;
+  transition: all 0.15s ease;
+  z-index: 2;
+}
+
+.admin-status-close-btn:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+
+/* ส่วนเนื้อหาหลัก */
+.admin-status-body {
+  padding: 26px 24px 20px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+/* กรอบไอคอนทรงเหลี่ยม คมชัด */
+.admin-status-icon-frame {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 0px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.modal-theme-loading .admin-status-icon-frame {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+
+.modal-theme-success .admin-status-icon-frame {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+}
+
+.modal-theme-warning .admin-status-icon-frame {
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #d97706;
+}
+
+.modal-theme-info .admin-status-icon-frame {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #2563eb;
+}
+
+.modal-theme-error .admin-status-icon-frame {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.admin-status-main-icon {
+  font-size: 22px;
+}
+
+.icon-spin {
+  animation: spinIcon 1s linear infinite;
+}
+
+@keyframes spinIcon {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ข้อความสั้น 1-2 บรรทัด */
+.admin-status-text-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-status-title {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.35;
+}
+
+.admin-status-message {
+  margin: 0;
+  font-size: 14.5px;
+  color: #475569;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* ส่วนเสริมสำหรับแสดงข้อมูลเพิ่มเติม */
+.admin-status-custom-content {
+  padding: 0 24px 16px;
+  box-sizing: border-box;
+}
+
+/* แถบ Progress Bar เล็ก สำหรับ Loading */
+.admin-status-progress-track {
+  width: 100%;
+  height: 4px;
+  background-color: #e2e8f0;
+  border-radius: 0px !important;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.admin-status-progress-bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #144231, #22c55e, #16a34a, #144231);
+  background-size: 200% 100%;
+  border-radius: 0px !important;
+  animation: progressAnim 1.6s ease-in-out infinite;
+}
+
+@keyframes progressAnim {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* แถบปุ่มคำสั่งด้านล่าง */
+.admin-status-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 24px 16px;
+  background-color: #ffffff;
+}
+
+.btn-admin-action {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: 0px !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+  outline: none;
+  width: 100%;
+}
+
+.btn-admin-primary {
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+/* ปุ่มสำเร็จ */
+.btn-success-glow {
+  background-color: #16a34a;
+  border-color: #15803d;
+}
+
+.btn-success-glow:hover {
+  background-color: #15803d;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+}
+
+/* ปุ่มแจ้งเตือน/คำเตือน */
+.btn-warning-glow {
+  background-color: #d97706;
+  border-color: #b45309;
+}
+
+.btn-warning-glow:hover {
+  background-color: #b45309;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+}
+
+/* ปุ่มข้อมูล/ข่าวสาร */
+.btn-info-glow {
+  background-color: #2563eb;
+  border-color: #1d4ed8;
+}
+
+.btn-info-glow:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* ปุ่มข้อผิดพลาด */
+.btn-error-glow {
+  background-color: #dc2626;
+  border-color: #b91c1c;
+}
+
+.btn-error-glow:hover {
+  background-color: #b91c1c;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+.btn-action-icon-right {
+  font-size: 13px;
+  transition: transform 0.15s ease;
+}
+
+.btn-admin-primary:hover .btn-action-icon-right {
+  transform: translateX(3px);
+}
+
+.btn-action-icon-left {
+  font-size: 13px;
+}

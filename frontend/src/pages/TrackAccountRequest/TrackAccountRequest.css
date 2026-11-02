@@ -1,0 +1,963 @@
+:root {
+  --track-green-900: #0f3d26;
+  --track-green-800: #1b5336;
+  --track-green-700: #25704a;
+  --track-green-500: #38a169;
+  --track-bg: #f3f9f4;
+  --track-soft: #f0fdf4;
+  --track-surface: #ffffff;
+  --track-border: #dbeef0;
+  --track-text: #153826;
+  --track-text-soft: #4a6354;
+  --track-text-muted: #6b8074;
+
+  --track-approved: #246b46;
+  --track-approved-bg: #eef7f1;
+  --track-approved-border: #bcd8c7;
+
+  --track-pending: #8a5d13;
+  --track-pending-bg: #fff8e9;
+  --track-pending-border: #e8cf98;
+
+  --track-rejected: #9b3842;
+  --track-rejected-bg: #fff4f4;
+  --track-rejected-border: #e4bec2;
+}
+
+/* ==========================================================================
+   PAGE
+   ========================================================================== */
+
+.track-request-page {
+  min-height: 100vh;
+  background: var(--track-bg);
+  color: var(--track-text);
+  font-family: "Anuphan", "Sarabun", sans-serif;
+}
+
+.track-request-page *,
+.track-request-page *::before,
+.track-request-page *::after {
+  box-sizing: border-box;
+}
+
+.track-request-container {
+  width: min(1280px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   HERO (UNIFIED MODERN STYLE)
+   ========================================================================== */
+
+.track-request-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 68px 0 128px;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(251, 191, 36, 0.3), transparent 30%),
+    radial-gradient(circle at 10% 90%, rgba(132, 204, 22, 0.25), transparent 35%),
+    linear-gradient(135deg, #1b5336 0%, #25704a 48%, #38a169 100%);
+}
+
+.track-request-hero::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  z-index: -1;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(249, 115, 22, 0.45) 0%,
+    rgba(251, 191, 36, 0.25) 55%,
+    transparent 75%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.track-request-hero::after {
+  content: "";
+  position: absolute;
+  right: -80px;
+  bottom: -100px;
+  z-index: -1;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(163, 230, 53, 0.4) 0%,
+    rgba(56, 161, 105, 0.2) 60%,
+    transparent 75%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.track-request-eyebrow {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 10px;
+  color: #a3e635;
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.track-request-hero h1 {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0;
+  color: #ffffff;
+  font-family: "Anuphan", sans-serif;
+  font-size: clamp(32px, 3.8vw, 48px);
+  font-weight: 850;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.track-request-hero__description {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   CONTENT
+   ========================================================================== */
+
+.track-request-content {
+  position: relative;
+  z-index: 2;
+  margin-top: -90px;
+  padding-bottom: 100px;
+}
+
+/* ==========================================================================
+   SEARCH
+   ========================================================================== */
+
+.track-request-search-section {
+  padding: 32px 36px;
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(6, 35, 29, 0.08);
+  box-shadow: 0 20px 45px rgba(6, 35, 29, 0.08);
+}
+
+.track-request-search-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.track-request-search-heading__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  color: #059669;
+  background: #ecfdf5;
+  border-radius: 12px;
+  border: 1px solid #d1fae5;
+}
+
+.track-request-search-heading__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.track-request-search-heading h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.track-request-search-heading p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.track-request-search-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.track-request-search-input {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.track-request-search-input > svg {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.track-request-search-input input {
+  width: 100%;
+  height: 52px;
+  padding: 0 75px 0 46px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  font-size: 15px;
+  color: #0f172a;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.track-request-search-char-count {
+  position: absolute;
+  right: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.track-request-search-input input::placeholder {
+  color: #94a3b8;
+}
+
+.track-request-search-input input:hover {
+  border-color: #cbd5e1;
+  background: #ffffff;
+}
+
+.track-request-search-input input:focus {
+  border-color: #059669;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
+}
+
+.track-request-search-form > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 28px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+  color: #ffffff;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 750;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.track-request-search-form > button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #047857 0%, #0f766e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+.track-request-search-form > button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.track-request-search-form > button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.track-request-search-form > button svg {
+  width: 17px;
+  height: 17px;
+}
+
+.track-request-button-spinner {
+  animation: track-request-spin 0.85s linear infinite;
+}
+
+/* ==========================================================================
+   SEARCH ERROR
+   ========================================================================== */
+
+.track-request-search-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 14px;
+  padding: 12px 16px;
+  color: var(--track-rejected);
+  background: var(--track-rejected-bg);
+  border: 1px solid var(--track-rejected-border);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.track-request-search-error svg {
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   RESULTS
+   ========================================================================== */
+
+.track-request-results {
+  margin-top: 48px;
+}
+
+.track-request-results__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.track-request-results__heading > div:first-child > p {
+  margin: 0 0 4px;
+  color: var(--track-green-700);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.track-request-results__heading h2 {
+  margin: 0;
+  color: var(--track-green-900);
+  font-size: 26px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.track-request-results__heading > div:first-child > span {
+  display: block;
+  margin-top: 5px;
+  color: var(--track-text-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.track-request-results__count {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  flex-shrink: 0;
+  color: var(--track-green-900);
+}
+
+.track-request-results__count strong {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.track-request-results__count span {
+  color: var(--track-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   TABLE
+   ========================================================================== */
+
+.track-request-table-wrapper {
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(6, 35, 29, 0.08);
+  box-shadow: 0 20px 50px rgba(6, 35, 29, 0.08);
+}
+
+.track-request-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.track-request-table th {
+  padding: 16px 20px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-align: left;
+  border-bottom: 1.5px solid #e2e8f0;
+}
+
+.track-request-table th:nth-child(1) {
+  width: 18%;
+}
+
+.track-request-table th:nth-child(2) {
+  width: 32%;
+}
+
+.track-request-table th:nth-child(3) {
+  width: 16%;
+}
+
+.track-request-table th:nth-child(4) {
+  width: 34%;
+}
+
+.track-request-table td {
+  padding: 20px 20px;
+  font-size: 14px;
+  color: #334155;
+  background: #ffffff;
+  border-bottom: 1px solid #edf2eb;
+  line-height: 1.55;
+  vertical-align: top;
+  transition: background 180ms ease;
+}
+
+.track-request-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.track-request-table tbody tr:hover td {
+  background: #fcfdfc;
+}
+
+/* ==========================================================================
+   LICENSE & USERNAME
+   ========================================================================== */
+
+.track-request-table__license > span {
+  color: #06231d;
+  font-size: 14px;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+.track-request-table__username-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 999px;
+  color: #065f46;
+}
+
+.track-request-table__username-box svg {
+  color: #059669;
+  flex-shrink: 0;
+}
+
+.track-request-table__username-box strong {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #065f46;
+}
+
+/* ==========================================================================
+   HUB
+   ========================================================================== */
+
+.track-request-table__hub {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.track-request-table__hub-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  color: #059669;
+  background: #ecfdf5;
+  border-radius: 10px;
+  border: 1px solid #d1fae5;
+}
+
+.track-request-table__hub-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.track-request-table__hub > div:last-child {
+  min-width: 0;
+}
+
+.track-request-table__hub strong {
+  display: block;
+  color: #0f172a;
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.track-request-table__hub span {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 12.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.track-request-hub-license {
+  color: #64748b !important;
+  font-size: 12px;
+}
+
+.track-request-hub-email {
+  color: #059669 !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.track-request-processed-time {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* ==========================================================================
+   STATUS
+   ========================================================================== */
+
+.track-request-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.track-request-status svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.track-request-status--approved {
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.track-request-status--pending {
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.track-request-status--rejected {
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+/* ==========================================================================
+   DETAIL
+   ========================================================================== */
+
+.track-request-detail p {
+  margin: 0;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.track-request-detail > span {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 11.5px;
+}
+
+.track-request-rejection-reason {
+  margin-top: 10px;
+  padding: 10px 14px;
+  color: #991b1b;
+  background: #fef2f2;
+  border-left: 3px solid #dc2626;
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.track-request-rejection-reason strong {
+  font-weight: 750;
+}
+
+/* ==========================================================================
+   LOADING / EMPTY
+   ========================================================================== */
+
+.track-request-state {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+  padding: 40px 24px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(6, 35, 29, 0.08);
+  box-shadow: 0 15px 40px rgba(6, 35, 29, 0.05);
+}
+
+.track-request-state__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 16px;
+  color: #059669;
+  background: #ecfdf5;
+  border-radius: 50%;
+  border: 1px solid #d1fae5;
+}
+
+.track-request-state__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.track-request-state h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.track-request-state p {
+  max-width: 520px;
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.track-request-state p strong {
+  color: var(--track-green-900);
+}
+
+.track-request-state__spinner {
+  animation: track-request-spin 0.85s linear infinite;
+}
+
+/* ==========================================================================
+   IMPORTANT NOTE
+   ========================================================================== */
+
+.track-request-note {
+  margin-top: 32px;
+  padding: 22px 26px;
+  background: #f0fdf4;
+  border-radius: 20px;
+  border: 1px solid #bbf7d0;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.track-request-note > svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  color: #059669;
+}
+
+.track-request-note h3 {
+  margin: 0;
+  color: #065f46;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.track-request-note p {
+  margin: 4px 0 0;
+  color: #166534;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   ANIMATION
+   ========================================================================== */
+
+@keyframes track-request-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   FOCUS
+   ========================================================================== */
+
+.track-request-search-input input:focus-visible,
+.track-request-search-form > button:focus-visible {
+  outline: 3px solid var(--track-green-500);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   TABLET
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .track-request-container {
+    width: calc(100% - 32px);
+  }
+
+  .track-request-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .track-request-table {
+    min-width: 820px;
+  }
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 650px) {
+  .track-request-container {
+    width: calc(100% - 24px);
+  }
+
+  .track-request-hero {
+    padding: 60px 0 110px;
+  }
+
+  .track-request-hero h1 {
+    font-size: 32px;
+  }
+
+  .track-request-hero__description {
+    font-size: 13px;
+  }
+
+  .track-request-content {
+    margin-top: -60px;
+    padding-bottom: 52px;
+  }
+
+  .track-request-search-section {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .track-request-search-heading {
+    align-items: flex-start;
+  }
+
+  .track-request-search-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .track-request-search-input,
+  .track-request-search-form > button {
+    width: 100%;
+  }
+
+  .track-request-results {
+    margin-top: 30px;
+  }
+
+  .track-request-results__heading {
+    align-items: flex-start;
+  }
+
+  .track-request-results__heading h2 {
+    font-size: 21px;
+  }
+
+  .track-request-table-wrapper {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .track-request-table {
+    min-width: 0;
+  }
+
+  .track-request-table thead {
+    display: none;
+  }
+
+  .track-request-table,
+  .track-request-table tbody,
+  .track-request-table tr,
+  .track-request-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .track-request-table tr {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #ffffff;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(6, 35, 29, 0.06);
+  }
+
+  .track-request-table tr::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background: var(--track-green-700);
+    content: "";
+  }
+
+  .track-request-table td {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px 16px 14px 20px;
+    border-bottom: 1px solid var(--track-border-soft);
+  }
+
+  .track-request-table td::before {
+    color: var(--track-text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    content: attr(data-label);
+  }
+
+  .track-request-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .track-request-table tbody tr:hover td {
+    background: #ffffff;
+  }
+
+  .track-request-status {
+    width: fit-content;
+  }
+
+  .track-request-note {
+    margin-top: 24px;
+    padding: 18px;
+    border-radius: 18px;
+  }
+}
+
+/* ==========================================================================
+   SMALL PHONE
+   ========================================================================== */
+
+@media (max-width: 420px) {
+  .track-request-hero h1 {
+    font-size: 28px;
+  }
+
+  .track-request-results__heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .track-request-table td {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}
+
+.track-request-table__username-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #eef7f1;
+  color: #076653;
+  border-radius: 99px;
+  font-size: 13.5px;
+  border: 1px solid #c2e2d0;
+}
+
+.track-request-hub-license {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+.track-request-hub-email {
+  display: block;
+  font-size: 12px;
+  color: #7b8981;
+}
+
+.track-request-processed-time {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 5px;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .track-request-page *,
+  .track-request-page *::before,
+  .track-request-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

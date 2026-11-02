@@ -1,0 +1,732 @@
+/* List WellnessHub.css */
+:root {
+  --gov-green-dark: #155724;
+  --gov-green-header: #1c3b1e;
+  --gov-green-main: #28a745;
+  --gov-bg: #f4f6f9;
+  --gov-border: #222222;
+  --sidebar-dark: #12243b;
+  --gov-text: #222222;
+}
+
+/* ครอบคลุมฟอนต์และมิติพื้นฐานภายในส่วนราชการ */
+.gov-container {
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+/* Header Section */
+.gov-header {
+  width: 100%;
+  border-bottom: 3px double var(--gov-green-dark);
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.gov-header h2 {
+  font-family: "Anuphan", "Sarabun", sans-serif !important;
+  color: var(--gov-green-dark);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+}
+
+.gov-header p {
+  font-family: "Sarabun", sans-serif;
+  color: #333333;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Layout โครงสร้างหลัก - บังคับให้ Sidebar เต็มจอและ Main เลื่อนได้ */
+.admin-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--gov-bg);
+  font-family: "Sarabun", sans-serif;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   --- SIDEBAR STYLE (FIXED & NO SCROLL) ---
+   ========================================================================== */
+.sidebar-menu {
+  width: 260px;
+  height: 100vh;
+  /* บังคับให้สูงเท่าหน้าจอเสมอ */
+  background-color: var(--sidebar-dark);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-right: 2px solid var(--gov-border);
+  position: relative;
+}
+
+/* ส่วนเมนูด้านบนที่ปล่อยให้ Scroll ได้ภายในตัวเองหากหน้าจอเตี้ยเกินไป */
+.sidebar-top {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+.sidebar-logo {
+  padding: 25px 20px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gov-green-main);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-profile-box {
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 15px 15px 20px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-profile-box i {
+  font-size: 24px;
+  color: var(--gov-green-main);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-label {
+  font-size: 10px;
+  color: #a0aec0;
+  text-transform: uppercase;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.menu-label {
+  padding: 15px 20px 5px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: #ced4da;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.1s;
+  border-left: 4px solid transparent;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.menu-item.active {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: white;
+  font-weight: bold;
+  border-left: 4px solid var(--gov-green-main);
+}
+
+.badge-counter {
+  background-color: #dc3545;
+  padding: 2px 6px;
+  font-size: 10px;
+  margin-left: auto;
+  font-weight: bold;
+  border-radius: 0px !important;
+  /* ลบความโค้งมนออกคงสไตล์ราชการ */
+}
+
+/* ปุ่ม Logout ล่างสุด - ล็อคอยู่กับที่ถาวรไม่เลื่อนหนีไปไหน */
+.btn-sidebar-logout {
+  background-color: #bd2130;
+  /* ปรับสีแดงให้ดูเข้มเป็นทางการและชัดเจน */
+  color: white;
+  border: none;
+  border-top: 1px solid var(--gov-border);
+  padding: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  flex-shrink: 0;
+  /* บังคับไม่ให้โดนบีบอัดหายไป */
+  transition: background-color 0.1s;
+}
+
+.btn-sidebar-logout:hover {
+  background-color: #dc3545;
+}
+
+/* ==========================================================================
+   --- MAIN CONTENT STYLE (SCROLLABLE TABLE ONLY) ---
+   ========================================================================== */
+.main-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  margin-left: 0;
+  background-color: var(--gov-bg);
+  padding: 30px 40px 60px;
+  box-sizing: border-box;
+}
+
+/* จัดระเบียบแถบคัดกรองข้อมูลทรงเหลี่ยม */
+.gov-filter-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: #ffffff;
+  padding: 15px;
+  border: 1px solid var(--gov-border);
+  box-sizing: border-box;
+}
+
+.gov-input,
+.gov-select {
+  font-family: "Sarabun", sans-serif;
+  font-size: 14px;
+  border: 1px solid var(--gov-border);
+  padding: 10px 12px;
+  border-radius: 0px !important;
+  background-color: #ffffff;
+  color: var(--gov-text);
+  height: 40px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.gov-input {
+  flex: 2;
+}
+
+.gov-select {
+  flex: 1;
+  cursor: pointer;
+}
+
+.gov-input:focus,
+.gov-select:focus {
+  border: 2px solid var(--gov-green-dark);
+}
+
+/* ปุ่มค้นหาแบบราชการสีเขียวชัดเจน */
+.btn-gov-search {
+  background: var(--gov-green-main);
+  color: white;
+  border: 1px solid var(--gov-border);
+  padding: 0 25px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 0px !important;
+}
+
+.btn-gov-search:hover {
+  background: var(--gov-green-dark);
+}
+
+.action-bar-top {
+  width: 100%;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: flex-end;
+  box-sizing: border-box;
+}
+
+/* ปุ่มเพิ่มสถานประกอบการ */
+.btn-gov-add {
+  background-color: var(--sidebar-dark);
+  color: white;
+  min-height: 42px;
+  padding: 0 20px;
+  border: 1px solid #0b1727;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 0px !important;
+  box-sizing: border-box;
+}
+
+.btn-gov-add:hover {
+  background-color: #0b1727;
+}
+
+/* ==========================================================================
+   Table Section (มีเส้นคั่นชัดเจนทุกด้านสไตล์เอกสารราชการ)
+   ========================================================================== */
+.gov-table-container {
+  width: 100%;
+  background: white;
+  border: 2px solid var(--gov-border);
+  border-radius: 0px;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.list-table th {
+  background: var(--gov-green-header);
+  color: white;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  padding: 13px 10px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 14px;
+  font-family: "Sarabun", sans-serif;
+}
+
+.list-table td {
+  border: 1px solid var(--gov-border);
+  /* เส้นคั่นกั้นทุกด้านชัดเจน */
+  padding: 12px 15px;
+  vertical-align: middle;
+  color: var(--gov-text);
+}
+
+/* การสลับสีบรรทัดให้เห็นชัดเจนขึ้นเวลาเลื่อนสายตา */
+.list-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.list-table tbody tr:hover {
+  background-color: #f1f5f1;
+  /* เปลี่ยนสีเมื่อ hover เล็กน้อย */
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+/* ข้อความสถานะระบบ */
+.status-text {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   --- ส่วนปุ่มในตารางและการสื่อความหมายผู้ใช้ (UX Colors) ---
+   ========================================================================== */
+.action-group {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-suspend,
+.btn-activate {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  background: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 0px !important;
+  /* คงความเหลี่ยมสนิทสไตล์ข้าราชการ */
+  transition: 0.1s;
+}
+
+/* ปุ่มแก้ไข: สีน้ำเงินเข้มชัดเจน สื่อถึงการดำเนินการต่ออย่างปลอดภัย */
+.btn-edit {
+  color: #0056b3;
+  border: 1px solid #0056b3 !important;
+}
+
+.btn-edit:hover {
+  background: #0056b3;
+  color: white;
+}
+
+/* ปุ่มระงับ/ลบ: สีแดงเข้มข้น ดึงดูดสายตาและเตือนสติผู้ใช้ถึงความอันตรายก่อนดำเนินการ */
+.btn-delete,
+.btn-suspend {
+  color: #c53030;
+  border: 1px solid #c53030 !important;
+}
+
+.btn-delete:hover,
+.btn-suspend:hover {
+  background: #c53030;
+  color: white;
+}
+
+/* ปุ่มเปิดใช้งาน: สีเขียวเข้มข้น สื่อถึงการเปิดให้บริการสถานประกอบการ */
+.btn-activate {
+  color: #16a34a;
+  border: 1px solid #16a34a !important;
+}
+
+.btn-activate:hover {
+  background: #16a34a;
+  color: white;
+}
+
+/* Pagination */
+.gov-pagination {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.gov-pagination button {
+  background-color: #ffffff;
+  border: 1px solid var(--gov-border);
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 0px !important;
+  color: var(--gov-text);
+}
+
+.gov-pagination button:hover:not(:disabled) {
+  background-color: var(--gov-green-dark);
+  color: white;
+}
+
+.gov-pagination button:disabled {
+  background-color: #e9ecef;
+  color: #adb5bd;
+  border-color: #ced4da;
+  cursor: not-allowed;
+}
+
+.gov-pagination span {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* โครงสร้างหลักของกล่องป๊อปอัพแบบแจ้งเตือนข้ามหน้า */
+.gov-toast-alert {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  min-width: 320px;
+  max-width: 450px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 9999;
+  animation: slideInLeftToast 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* สีแจ้งเตือนเมื่อระบบทำงานสำเร็จ (สีเขียว) */
+.gov-toast-alert.alert-success {
+  background-color: #e6f4ea;
+  border-left: 5px solid #137333;
+  color: #137333;
+}
+
+/* สีแจ้งเตือนเมื่อระบบมีข้อผิดพลาดพังลงมา (สีแดง) */
+.gov-toast-alert.alert-error {
+  background-color: #fce8e6;
+  border-left: 5px solid #c5221f;
+  color: #c5221f;
+}
+
+.toast-content-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.toast-content-wrapper i {
+  font-size: 18px;
+}
+
+.btn-close-toast {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  padding: 4px;
+  transition: opacity 0.2s;
+}
+
+.btn-close-toast:hover {
+  opacity: 1;
+}
+
+.gov-loading-row {
+  text-align: center;
+  padding: 30px 0 !important;
+  color: #666;
+  font-size: 14px;
+  height: 72px;
+}
+
+@keyframes slideInLeftToast {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* =======================================================
+   Popup ยืนยันการลบสถานประกอบการ (Admin Hub Delete Modal)
+   จัดข้อความตรงกลาง สวยงาม ทางการ คมชัด สี่เหลี่ยม 0px
+======================================================= */
+
+.hub-delete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: hubModalFadeIn 0.2s ease-out;
+}
+
+@keyframes hubModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hub-delete-modal {
+  width: 100%;
+  max-width: 440px;
+  padding: 32px 28px 26px;
+  background: #ffffff;
+  border-radius: 0px !important;
+  border: 1px solid #cbd5e1;
+  border-top: 5px solid #dc2626;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  text-align: center;
+  animation: hubModalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes hubModalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.hub-delete-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 16px;
+  border-radius: 0px !important;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  box-sizing: border-box;
+}
+
+.hub-delete-title {
+  margin: 0 0 14px 0;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.hub-delete-body {
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+.hub-delete-desc {
+  margin: 0 0 8px 0;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.hub-delete-name-card {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  margin: 8px 0;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #dc2626;
+  border-radius: 0px !important;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  box-sizing: border-box;
+  word-break: break-word;
+}
+
+.hub-delete-confirm-q {
+  margin: 8px 0 0 0;
+  color: #475569;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.hub-delete-warning-note {
+  margin: 10px 0 0 0;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.hub-delete-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.btn-hub-delete-cancel,
+.btn-hub-delete-confirm {
+  flex: 1;
+  min-height: 42px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 0px !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.btn-hub-delete-cancel {
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-hub-delete-cancel:hover:not(:disabled) {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.hub-delete-modal.hub-delete-modal--activate {
+  border-top: 5px solid #16a34a;
+}
+
+.hub-delete-icon.hub-delete-icon--activate {
+  color: #16a34a;
+  background: #f0fdf4;
+  border: 2px solid #bbf7d0;
+}
+
+.hub-delete-name-card.hub-delete-name-card--activate {
+  border-left: 4px solid #16a34a;
+}
+
+.hub-delete-warning-note.hub-delete-warning-note--activate {
+  color: #15803d;
+}
+
+.btn-hub-activate-confirm {
+  flex: 1;
+  min-height: 42px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 0px !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+  background: #16a34a;
+  color: #ffffff;
+  border: 1px solid #15803d;
+}
+
+.btn-hub-activate-confirm:hover:not(:disabled) {
+  background: #15803d;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+}
+
+.btn-hub-activate-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-hub-delete-cancel:disabled,
+.btn-hub-delete-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

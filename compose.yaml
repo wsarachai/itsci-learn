@@ -1,42 +1,47 @@
-name: itsci-learn
+name: chiang-mai-wellness
 
 services:
   db:
-    image: mysql:8.4
+    image: postgres:17-alpine
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       TZ: Asia/Bangkok
-    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 30s
+      start_period: 20s
 
   api:
     build: ./backend
     restart: unless-stopped
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}
-      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
       TZ: Asia/Bangkok
+    volumes:
+      - ./uploads:/app/uploads
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost:8080/api/actuator/health"]
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/api/districts"]
       interval: 15s
       timeout: 5s
       retries: 10
-      start_period: 60s
+      start_period: 40s
 
   web:
     build: ./frontend
@@ -46,22 +51,18 @@ services:
     depends_on:
       - api
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/ || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 10
       start_period: 20s
 
-  phpmyadmin:
-    image: phpmyadmin:5.2
+  adminer:
+    image: adminer:4
     restart: unless-stopped
     environment:
-      PMA_HOST: db
-      UPLOAD_LIMIT: 64M
+      ADMINER_DEFAULT_SERVER: db
       TZ: Asia/Bangkok
-    volumes:
-      - ./phpmyadmin/alias.conf:/etc/apache2/conf-enabled/zz-phpmyadmin-alias.conf:ro
-      - ./phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro
     depends_on:
       db:
         condition: service_healthy
@@ -82,9 +83,8 @@ services:
     depends_on:
       - web
       - api
-      - phpmyadmin
 
 volumes:
-  mysql-data:
+  postgres-data:
   caddy-data:
   caddy-config:

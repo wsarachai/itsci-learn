@@ -1,0 +1,802 @@
+.account-request-page {
+  --request-green: #28a745;
+  --request-green-dark: #155724;
+  --request-green-header: #1c3b1e;
+  --request-sidebar: #12243b;
+  --request-background: #f4f6f9;
+  --request-border: #222222;
+  --request-red: #c82333;
+  --request-blue: #0056b3;
+
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--request-background);
+  font-family: "Sarabun", sans-serif;
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.account-request-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  width: 275px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  color: #ffffff;
+  background: var(--request-sidebar);
+  border-right: 1px solid #0b1727;
+  overflow: hidden;
+}
+
+.account-request-sidebar-top {
+  flex: 1;
+  min-height: 0;
+  padding-bottom: 20px;
+  overflow-y: auto;
+}
+
+.account-request-sidebar-top::-webkit-scrollbar {
+  width: 0;
+}
+
+.account-request-sidebar-logo {
+  min-height: 82px;
+  padding: 0 22px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: var(--request-green);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  font-size: 22px;
+  font-weight: 800;
+  box-sizing: border-box;
+}
+
+.account-request-user-profile {
+  margin: 20px 15px;
+  padding: 15px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.account-request-user-profile>svg {
+  color: var(--request-green);
+  font-size: 25px;
+}
+
+.account-request-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-request-user-label {
+  color: #aeb9c8;
+  font-size: 10px;
+}
+
+.account-request-user-name {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.account-request-menu-label {
+  margin: 0;
+  padding: 18px 40px 8px;
+
+  color: #8fa2b8;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.account-request-menu-label-management {
+  margin-top: 10px;
+}
+
+.account-request-menu-item {
+  min-height: 42px;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #d4dce6;
+  text-decoration: none;
+  font-size: 14px;
+
+  border-left: 4px solid transparent;
+  box-sizing: border-box;
+}
+
+.account-request-menu-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.account-request-menu-item.active {
+  color: #ffffff;
+  font-weight: 800;
+  background: rgba(40, 167, 69, 0.18);
+  border-left-color: var(--request-green);
+}
+
+.account-request-badge {
+  margin-left: auto;
+  padding: 2px 7px;
+
+  color: #ffffff;
+  background: #dc3545;
+  border-radius: 2px;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.account-request-logout-button {
+  width: 275px;
+  height: 55px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  color: #ffffff;
+  background: #b52b24;
+  border: 0;
+  border-radius: 0;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-request-logout-button:hover {
+  background: #99231e;
+}
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.account-request-main {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  margin-left: 0;
+  padding: 30px 40px 60px;
+
+  background: var(--request-background);
+  box-sizing: border-box;
+}
+
+.account-request-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.account-request-header {
+  width: 100%;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+
+  border-bottom: 3px double var(--request-green-dark);
+
+  box-sizing: border-box;
+}
+
+.account-request-header h2 {
+  font-family: "Anuphan", "Sarabun", sans-serif !important;
+  margin: 0 0 5px;
+  color: var(--request-green-dark);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.account-request-header p {
+  font-family: "Sarabun", sans-serif;
+  margin: 0;
+  color: #333333;
+  font-size: 14px;
+}
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+.account-request-filter-bar {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 15px;
+
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  background: #ffffff;
+  border: 1px solid var(--request-border);
+  border-radius: 0px !important;
+  box-sizing: border-box;
+}
+
+.account-request-filter-input,
+.account-request-filter-select {
+  height: 40px;
+  padding: 10px 12px;
+
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid var(--request-border);
+  border-radius: 0px !important;
+
+  font-family: "Sarabun", sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.account-request-filter-input {
+  flex: 2;
+}
+
+.account-request-filter-select {
+  flex: 1;
+  min-width: 180px;
+  cursor: pointer;
+}
+
+.account-request-filter-input:focus,
+.account-request-filter-select:focus {
+  border: 2px solid var(--request-green-dark);
+}
+
+.account-request-search-button,
+.account-request-reset-button {
+  height: 40px;
+  padding: 0 25px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  color: #ffffff;
+  border-radius: 0px !important;
+
+  font-family: "Sarabun", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.account-request-search-button {
+  background: var(--request-green);
+  border: 1px solid var(--request-border);
+}
+
+.account-request-search-button:hover {
+  background: var(--request-green-dark);
+}
+
+.account-request-reset-button {
+  background: #6c757d;
+  border: 1px solid var(--request-border);
+}
+
+.account-request-reset-button:hover {
+  background: #5a6268;
+}
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.account-request-error-box {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #842029;
+  background: #f8d7da;
+  border: 1px solid #dc3545;
+
+  box-sizing: border-box;
+}
+
+.account-request-error-box button {
+  margin-left: auto;
+  padding: 7px 14px;
+
+  color: #ffffff;
+  background: #c82333;
+  border: 1px solid #a71d2a;
+  border-radius: 0;
+
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.account-request-table-card {
+  width: 100%;
+  overflow-x: auto;
+
+  background: #ffffff;
+  border: 2px solid var(--request-border);
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.account-request-table {
+  width: 100%;
+  min-width: 1150px;
+
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.account-request-table th {
+  padding: 13px 10px;
+
+  color: #ffffff;
+  background: var(--request-green-header);
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+
+  text-align: center;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.account-request-table td {
+  padding: 12px;
+
+  color: #222222;
+  background: #ffffff;
+  border-right: 1px solid #777777;
+  border-bottom: 1px solid #777777;
+
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.account-request-table th:last-child,
+.account-request-table td:last-child {
+  border-right: 0;
+}
+
+.account-request-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.account-request-table tbody tr:nth-child(even) td {
+  background: #f8f8f8;
+}
+
+.account-request-table tbody tr:hover td {
+  background: #f1f8f2;
+}
+
+.request-column-number {
+  width: 6%;
+}
+
+.request-column-license {
+  width: 12%;
+}
+
+.request-column-name {
+  width: 19%;
+}
+
+.request-column-contact {
+  width: 12%;
+}
+
+.request-column-tel {
+  width: 11%;
+}
+
+.request-column-email {
+  width: 17%;
+}
+
+.request-column-status {
+  width: 11%;
+}
+
+.request-column-action {
+  width: 14%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.request-number-cell {
+  font-weight: 800;
+}
+
+.request-name-cell {
+  text-align: left;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.request-status-pending {
+  color: #946200;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.request-status-approved {
+  color: #1c7430;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.request-status-rejected {
+  color: #c82333;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* =====================================================
+   ACTION
+===================================================== */
+
+.account-request-action-group {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.account-request-view-button,
+.account-request-consider-button {
+  min-height: 34px;
+  padding: 0 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  background: #ffffff;
+  border-radius: 0;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-request-view-button {
+  color: var(--request-blue);
+  border: 1px solid var(--request-blue);
+}
+
+.account-request-view-button:hover {
+  color: #ffffff;
+  background: var(--request-blue);
+}
+
+.account-request-consider-button {
+  color: var(--request-green);
+  border: 1px solid var(--request-green);
+}
+
+.account-request-consider-button:hover {
+  color: #ffffff;
+  background: var(--request-green);
+}
+
+/* =====================================================
+   LOADING / EMPTY
+===================================================== */
+
+.account-request-loading,
+.account-request-empty {
+  height: 100px;
+  padding: 30px !important;
+
+  text-align: center;
+  font-weight: 700;
+}
+
+.account-request-loading {
+  color: #555555;
+}
+
+.account-request-empty {
+  color: #c82333;
+}
+
+.account-request-loading svg,
+.account-request-empty svg {
+  margin-right: 8px;
+}
+
+/* =====================================================
+   PAGINATION
+===================================================== */
+
+.account-request-pagination {
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.account-request-pagination button {
+  min-width: 90px;
+  height: 38px;
+
+  color: #ffffff;
+  background: var(--request-green);
+  border: 1px solid #1e7e34;
+  border-radius: 0;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-request-pagination button:hover:not(:disabled) {
+  background: #218838;
+}
+
+.account-request-pagination button:disabled {
+  color: #777777;
+  background: #dddddd;
+  border-color: #bbbbbb;
+  cursor: not-allowed;
+}
+
+.account-request-pagination span {
+  color: #333333;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* =====================================================
+   POPUP
+===================================================== */
+
+.popup-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+
+  box-sizing: border-box;
+}
+
+.account-request-page .popup {
+  width: 100%;
+  max-width: 440px;
+  padding: 30px 24px 24px;
+
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-top: 5px solid #16a34a;
+  border-radius: 0px !important;
+
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.35);
+  text-align: center;
+
+  box-sizing: border-box;
+}
+
+.account-request-page .popup.reject-popup {
+  border-top-color: #dc2626;
+}
+
+.account-request-page .popup.logout-confirm-popup {
+  border-top-color: #dc2626;
+}
+
+.account-request-page .popup h3 {
+  margin: 0 0 10px;
+
+  color: #0f172a;
+  font-size: 19px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.account-request-page .popup p {
+  margin: 0;
+
+  color: #475569;
+  font-size: 14.5px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.account-request-page .popup-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 0px !important;
+  font-size: 24px;
+  box-sizing: border-box;
+}
+
+.account-request-page .popup-icon.error {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+}
+
+.account-request-page .popup-icon.logout {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+}
+
+.account-request-page .popup-buttons {
+  margin-top: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.account-request-page .confirm-btn,
+.account-request-page .cancel-btn,
+.account-request-page .logout-confirm-btn {
+  flex: 1;
+  min-height: 42px;
+  padding: 8px 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border-radius: 0px !important;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+  box-sizing: border-box;
+
+  transition: all 0.15s ease;
+}
+
+.account-request-page .confirm-btn {
+  color: #ffffff;
+  background: #16a34a;
+  border: 1px solid #15803d;
+}
+
+.account-request-page .confirm-btn:hover {
+  background: #15803d;
+}
+
+.account-request-page .cancel-btn {
+  color: #475569;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+}
+
+.account-request-page .cancel-btn:hover {
+  color: #0f172a;
+  background: #e2e8f0;
+}
+
+.account-request-page .logout-confirm-popup {
+  max-width: 420px;
+}
+
+.account-request-page .logout-confirm-btn {
+  color: #ffffff;
+  background: #dc2626;
+  border: 1px solid #b91c1c;
+}
+
+.account-request-page .logout-confirm-btn:hover {
+  background: #b91c1c;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1100px) {
+  .account-request-filter-bar {
+    flex-wrap: wrap;
+  }
+
+  .account-request-main {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 760px) {
+  .account-request-sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .account-request-logout-button {
+    width: 100%;
+  }
+
+  .account-request-main {
+    width: 100%;
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .account-request-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .account-request-filter-input,
+  .account-request-filter-select,
+  .account-request-search-button,
+  .account-request-reset-button {
+    width: 100%;
+  }
+}

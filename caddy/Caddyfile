@@ -1,17 +1,14 @@
 {
 	# SITE_ADDRESS เช่น 10.1.245.36 หรือ localhost (ตั้งใน .env)
-	# ใช้ CA ภายในของ Caddy เพราะเป็น IP ในเครือข่ายมหาลัย
 	local_certs
-	# client บางตัว (เช่น Windows schannel) ไม่ส่ง SNI เมื่อเข้าด้วย IP
 	default_sni {$SITE_ADDRESS}
 }
 
 (app) {
 	encode zstd gzip
 
-	redir /phpmyadmin /phpmyadmin/
-	handle /phpmyadmin/* {
-		reverse_proxy phpmyadmin:80
+	handle /uploads/* {
+		reverse_proxy api:8080
 	}
 
 	handle /api/* {
@@ -25,23 +22,9 @@
 
 https://{$SITE_ADDRESS} {
 	tls internal
-
-	# ลบ cookie phpMyAdmin ที่เคยตั้งผ่าน http (browser ส่ง cookie ที่ไม่ secure มาทาง https ด้วย
-	# ทำให้ phpMyAdmin สับสน session/HTTPS) — ฝั่ง https ใช้ชื่อ __Secure-*_https อยู่แล้ว
-	@pma path /phpmyadmin/*
-	header @pma {
-		+Set-Cookie "phpMyAdmin=; Path=/phpmyadmin/; Max-Age=0"
-		+Set-Cookie "pma_lang=; Path=/phpmyadmin/; Max-Age=0"
-		+Set-Cookie "pmaUser-1=; Path=/phpmyadmin/; Max-Age=0"
-		+Set-Cookie "pmaAuth-1=; Path=/phpmyadmin/; Max-Age=0"
-	}
-
 	import app
 }
 
-# เปิดให้เข้าด้วย http:// ได้ด้วย (ไม่ redirect ไป https)
-# ยกเว้น phpMyAdmin: session ของมันใช้ข้าม http/https บน host เดียวกันไม่ได้ และไม่ควรส่งรหัส DB แบบไม่เข้ารหัส
 http://{$SITE_ADDRESS} {
-	redir /phpmyadmin* https://{host}{uri} 308
 	import app
 }

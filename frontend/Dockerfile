@@ -1,21 +1,15 @@
-FROM node:22-alpine AS deps
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci --no-audit --no-fund
-
+# Stage 1: Build React SPA
 FROM node:22-alpine AS build
 WORKDIR /app
-ENV NEXT_TELEMETRY_DISABLED=1
-COPY --from=deps /app/node_modules ./node_modules
+COPY package.json package-lock.json ./
+RUN npm ci --legacy-peer-deps --no-audit --no-fund
 COPY . .
+ENV NODE_ENV=production
 RUN npm run build
 
-FROM node:22-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
-COPY --from=build --chown=node:node /app/public ./public
-COPY --from=build --chown=node:node /app/.next/standalone ./
-COPY --from=build --chown=node:node /app/.next/static ./.next/static
-USER node
+# Stage 2: Serve static files with lightweight Nginx
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]

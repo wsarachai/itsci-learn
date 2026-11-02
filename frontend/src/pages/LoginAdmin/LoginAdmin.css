@@ -1,0 +1,175 @@
+:root {
+    --primary-green: #28a745;
+    --dark-green: #1e5631;
+    --bg-gov: #f1f5f9;
+    --white: #ffffff;
+    --text-main: #1e293b;
+    --text-sub: #475569;
+    --border-gov: #64748b; /* เส้นขอบที่เข้มขึ้นให้ดูคม */
+    --input-focus: #166534;
+}
+
+.login-page-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* เปลี่ยนจาก Gradient อ่อนเป็นสีพื้นเรียบๆ แบบทางการ */
+    background-color: var(--bg-gov);
+    font-family: "Sarabun", sans-serif;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+.login-card {
+    background: var(--white);
+    padding: 40px;
+    /* ปรับให้เหลี่ยมสนิท */
+    border-radius: 0px; 
+    border: 2px solid var(--border-gov);
+    box-shadow: none; /* ตัดเงาออกเพื่อให้ดูเหมือนเอกสาร */
+    text-align: center;
+}
+
+.admin-logo-text {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--dark-green);
+    margin-bottom: 5px;
+    text-decoration: underline; /* เพิ่มเส้นใต้ให้ดูเป็นหัวข้อทางการ */
+}
+
+.subtitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-sub);
+    margin-bottom: 35px;
+    letter-spacing: 2px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 5px;
+    border-left: 4px solid var(--primary-green); /* เพิ่มขีดข้างหน้า label */
+    padding-left: 8px;
+}
+
+.input-wrapper {
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.input-wrapper input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    background: #ffffff;
+    /* กรอบเหลี่ยมเส้นคม */
+    border: 1.5px solid var(--border-gov);
+    border-radius: 0px; 
+    color: var(--text-main);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--input-focus);
+    background-color: #f0fdf4; /* เปลี่ยนสีพื้นหลังนิดหน่อยเวลา focus */
+}
+
+.input-wrapper--password {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-wrapper--password input {
+    padding-right: 44px;
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-sub);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    transition: color 0.15s ease;
+}
+
+.btn-toggle-password:hover {
+    color: var(--text-main);
+}
+
+.btn-admin-login {
+    width: 100%;
+    background: var(--primary-green);
+    color: white;
+    border: 1px solid var(--dark-green);
+    padding: 14px;
+    /* ปุ่มเหลี่ยม */
+    border-radius: 0px; 
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+
+.btn-admin-login:hover {
+    background: var(--dark-green);
+    transform: none; /* ไม่ต้องขยับให้ดูขี้เล่น */
+}
+
+.error-message {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 0px;
+    border: 1px solid #dc2626;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.footer-links {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px double var(--border-gov); /* เส้นประหรือเส้นคู่คั่นส่วนล่าง */
+}
+
+.back-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-sub);
+    text-decoration: underline;
+}
+
+.system-tag {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #64748b;
+    margin-top: 30px;
+    text-align: center;
+    font-weight: 400;
+}

@@ -1,0 +1,442 @@
+/* ==========================================================================
+   CHIANG MAI WELLNESS ROUTE - FOOTER STYLING (ECO-WELLNESS HARMONY)
+   ========================================================================== */
+
+.footer {
+  width: 100%;
+  background: #0f3d26;
+  color: #d1ded7;
+  position: relative;
+  margin-top: auto;
+  font-family: "Anuphan", "Sarabun", sans-serif;
+}
+
+/* 🌿 เส้น Accent สีเวลเนสไล่เฉดทองและส้มธรรมชาติ */
+.footer__top-accent {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    #1b5336 0%,
+    #2e8b5c 35%,
+    #38a169 55%,
+    #fbbf24 78%,
+    #f97316 100%
+  );
+}
+
+.footer__container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 48px 24px 24px;
+}
+
+/* 🌟 1. Grid 4 คอลัมน์สมดุลและทันสมัย */
+.footer__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 36px;
+  padding-bottom: 38px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================================================================
+   COLUMN 1: BRAND & CO-BRANDING PARTNERS
+   ========================================================================== */
+
+.footer__brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer__brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer__brand-logo-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+  overflow: hidden;
+  padding: 2px;
+}
+
+.footer__brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.footer__brand-fallback-icon {
+  font-size: 24px;
+}
+
+.footer__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.footer__brand-title {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #ffffff;
+}
+
+.footer__brand-sub {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-top: 2px;
+}
+
+.footer__brand-desc {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #b3cdc0;
+  margin: 0;
+}
+
+/* Co-branding Partner Ribbons */
+.footer__partners-wrap {
+  margin-top: 6px;
+}
+
+.footer__partners-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #92b6a3;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+
+.footer__partners-grid {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.footer__partner-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer__partner-badge:hover {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.footer__partner-badge img {
+  height: 22px;
+  width: auto;
+  max-width: 36px;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   COLUMNS 2, 3, 4: HEADINGS & NAVIGATION
+   ========================================================================== */
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__heading {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 16px 0;
+  letter-spacing: 0.5px;
+  position: relative;
+  display: inline-block;
+}
+
+.footer__heading::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 24px;
+  height: 2.5px;
+  background: #fbbf24;
+  border-radius: 2px;
+}
+
+.footer__col-desc {
+  font-size: 12.5px;
+  color: #9abfb0;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.footer__nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer__link {
+  color: #c4dcd0;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer__link:hover {
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+.footer__link--highlight {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.footer__link--highlight:hover {
+  color: #fde68a;
+}
+
+.footer__link--subtle {
+  color: #7d9e8e;
+  font-size: 12.5px;
+  margin-top: 4px;
+}
+
+.footer__link--subtle:hover {
+  color: #c4dcd0;
+}
+
+.footer__subtle-icon {
+  font-size: 11px;
+}
+
+/* Action Link for Registration */
+.footer__action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #1b5336 0%, #2e8b5c 100%);
+  border: 1px solid rgba(167, 243, 208, 0.3);
+  border-radius: 8px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 12.5px;
+  font-weight: 750;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.footer__action-link:hover {
+  background: linear-gradient(135deg, #14422b 0%, #25704a 100%);
+  transform: translateY(-1.5px);
+}
+
+/* Category Quick Chips in Footer (C01-C05 Colors Preserved) */
+.footer__category-chips {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.footer__chips-title {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #92b6a3;
+  margin-bottom: 8px;
+}
+
+.footer__chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.footer__cat-chip {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 750;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-left: 3px solid transparent;
+}
+
+.footer__cat-chip--c01 {
+  border-left-color: #E02873;
+}
+
+.footer__cat-chip--c02 {
+  border-left-color: #004CB4;
+}
+
+.footer__cat-chip--c03 {
+  border-left-color: #0B7D31;
+}
+
+.footer__cat-chip--c04 {
+  border-left-color: #5E27AB;
+}
+
+.footer__cat-chip--c05 {
+  border-left-color: #009BB0;
+}
+
+/* ==========================================================================
+   COLUMN 4: EMERGENCY HOTLINES & ASSISTANCE
+   ========================================================================== */
+
+.footer__hotlines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.footer__hotline-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.footer__hotline-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.footer__hotline-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.footer__hotline-icon--med {
+  background: #f87171;
+  color: #ffffff;
+}
+
+.footer__hotline-icon--tour {
+  background: #38bdf8;
+  color: #ffffff;
+}
+
+.footer__hotline-number {
+  display: block;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.footer__hotline-label {
+  display: block;
+  font-size: 11px;
+  color: #b3cdc0;
+  margin-top: 2px;
+}
+
+.footer__support-note {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #83a594;
+  margin: 0;
+}
+
+/* ==========================================================================
+   2. BOTTOM BAR (COPYRIGHT)
+   ========================================================================== */
+
+.footer__bottom {
+  padding-top: 22px;
+  text-align: center;
+}
+
+.footer__copyright {
+  font-size: 12px;
+  color: #8ba99b;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.footer__copyright strong {
+  color: #c4ded0;
+}
+
+.footer__link-icon {
+  font-size: 12px;
+  color: #92b6a3;
+  width: 14px;
+}
+
+.footer__link:hover .footer__link-icon {
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .footer__main {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer__container {
+    padding: 36px 18px 20px;
+  }
+
+  .footer__main {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer__bottom {
+    text-align: center;
+  }
+}

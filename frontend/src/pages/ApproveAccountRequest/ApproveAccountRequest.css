@@ -1,0 +1,854 @@
+/* ==========================================
+   Layout
+========================================== */
+
+.admin-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f6f9;
+  box-sizing: border-box;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  margin-left: 0;
+  padding: 30px;
+  background: #f4f6f9;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   Sidebar
+========================================== */
+
+.sidebar-menu {
+  width: 275px;
+
+  height: 100vh;
+
+  position: fixed;
+
+  top: 0;
+
+  left: 0;
+
+  background: #12243b;
+
+  display: flex;
+
+  flex-direction: column;
+
+  z-index: 1000;
+}
+
+.sidebar-top {
+  flex: 1;
+
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 25px 20px;
+
+  color: #28a745;
+
+  font-size: 20px;
+
+  font-weight: bold;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-profile-box {
+  margin: 15px;
+
+  padding: 15px;
+
+  background: rgba(0, 0, 0, 0.2);
+
+  color: white;
+
+  display: flex;
+
+  gap: 10px;
+
+  align-items: center;
+}
+
+.menu-label {
+  color: #94a3b8;
+
+  padding: 15px 20px 5px;
+
+  font-size: 12px;
+
+  font-weight: bold;
+}
+
+.menu-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 12px 20px;
+
+  color: #ced4da;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  border-left: 4px solid transparent;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  color: white;
+}
+
+.menu-item.active {
+  background: rgba(40, 167, 69, 0.15);
+
+  color: white;
+
+  border-left: 4px solid #28a745;
+}
+
+.btn-sidebar-logout {
+  height: 55px;
+
+  background: #b91c1c;
+
+  color: white;
+
+  border: none;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.btn-sidebar-logout:hover {
+  background: #991b1b;
+}
+
+/* ==========================================
+   Header
+========================================== */
+
+.gov-header {
+  border-bottom: 3px double #14532d;
+
+  padding-bottom: 12px;
+
+  margin-bottom: 25px;
+}
+
+.gov-header h2 {
+  margin: 0;
+
+  color: #14532d;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+.gov-header p {
+  margin-top: 5px;
+
+  color: #444;
+}
+
+/* ==========================================
+   Request Card
+========================================== */
+
+.request-card {
+  width: 900px;
+
+  max-width: 100%;
+
+  margin: 0 auto;
+
+  background: white;
+
+  border: 1px solid #333;
+
+  padding: 35px 40px;
+
+  box-sizing: border-box;
+}
+
+.request-card h3 {
+  margin-top: 0;
+
+  margin-bottom: 20px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 2px solid #28a745;
+
+  color: #14532d;
+
+  font-size: 18px;
+}
+
+/* ==========================================
+   Detail
+========================================== */
+
+.detail-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+.detail-grid label {
+  font-weight: bold;
+
+  display: block;
+
+  color: #333;
+
+  margin-bottom: 5px;
+}
+
+.detail-grid p {
+  margin: 0;
+
+  border: 1px solid #999;
+
+  padding: 10px;
+
+  background: #fafafa;
+}
+
+.request-card>p {
+  border: 1px solid #999;
+
+  padding: 15px;
+
+  line-height: 1.6;
+}
+
+/* ==========================================
+   PDF
+========================================== */
+
+.pdf-box {
+  border: 1px solid #999;
+
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 10px;
+}
+
+.pdf-box svg {
+  font-size: 35px;
+
+  color: #dc2626;
+}
+
+.pdf-box span {
+  flex: 1;
+}
+
+.pdf-box button {
+  background: white;
+
+  border: 1px solid #333;
+
+  padding: 8px 20px;
+
+  cursor: pointer;
+}
+
+/* ==========================================
+   Action
+========================================== */
+
+.action-area {
+  margin-top: 35px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid #ddd;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 15px;
+}
+
+.approve-btn {
+  background: #28a745;
+
+  color: white;
+
+  border: 1px solid #1e7e34;
+
+  padding: 12px 35px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.approve-btn:hover {
+  background: #218838;
+}
+
+.reject-btn {
+  background: #dc2626;
+
+  color: white;
+
+  border: 1px solid #991b1b;
+
+  padding: 12px 35px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.reject-btn:hover {
+  background: #b91c1c;
+}
+
+/* ==========================================
+   Popup Modal (Administrative Formal Theme)
+========================================== */
+
+.popup-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.popup {
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 0px !important;
+  border: 1px solid #cbd5e1;
+  border-top: 5px solid #16a34a;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.35);
+  padding: 24px 28px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.popup.reject-confirm-popup {
+  border-top-color: #dc2626;
+}
+
+.approve-popup-header,
+.reject-popup-header {
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.approve-popup-badge,
+.reject-popup-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  border-radius: 0px !important;
+}
+
+.approve-popup-badge {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.reject-popup-badge {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.popup h3 {
+  margin: 0 0 6px 0;
+  color: #0f172a;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.popup p.popup-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+/* Account Info Card */
+.approve-info-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #16a34a;
+  border-radius: 0px !important;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.approve-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.approve-info-label {
+  color: #475569;
+  font-weight: 600;
+  min-width: 130px;
+  flex-shrink: 0;
+}
+
+.approve-info-value {
+  color: #0f172a;
+  font-weight: 500;
+  text-align: right;
+  word-break: break-all;
+}
+
+.credential-badge {
+  font-family: 'Consolas', 'Courier New', monospace;
+  background: #e2e8f0;
+  padding: 3px 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 0px;
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 13.5px;
+}
+
+.credential-password-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f5f9;
+}
+
+.password-masked-text {
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.password-toggle-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  padding: 2px 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.password-toggle-icon-btn:hover {
+  color: #0f172a;
+  transform: scale(1.1);
+}
+
+/* Email Preview Accordion */
+.email-preview-accordion-section {
+  margin-bottom: 16px;
+}
+
+.email-preview-accordion-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0px;
+  cursor: pointer;
+  color: #1d4ed8;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.email-preview-accordion-btn:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.email-preview-accordion-btn.open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.email-preview-accordion-btn--reject {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.email-preview-accordion-btn--reject:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.email-preview-accordion-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-badge-icon {
+  font-size: 15px;
+  color: #2563eb;
+}
+
+.info-badge-icon--reject {
+  color: #dc2626;
+}
+
+.accordion-arrow-icon {
+  font-size: 12px;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+/* Email Preview Wrapper */
+.email-preview-wrapper {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-left: 3px solid #2563eb;
+  border-radius: 0px;
+  margin-bottom: 8px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.email-preview-wrapper--reject {
+  border-left-color: #b91c1c;
+  border-radius: 0px;
+}
+
+.email-preview-header {
+  background: #f1f5f9;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.email-preview-body {
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1e293b;
+}
+
+.email-preview-meta {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  font-size: 12.5px;
+  color: #475569;
+}
+
+.email-preview-content {
+  color: #334155;
+}
+
+.email-preview-content p {
+  margin: 4px 0;
+}
+
+.email-cred-box {
+  background: #f8fafc;
+  border: 1px dashed #94a3b8;
+  border-radius: 0px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+}
+
+/* Reject Form Controls */
+.reject-form-section {
+  margin-bottom: 16px;
+}
+
+.reject-form-group label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.reject-form-group select,
+.reject-form-group textarea {
+  width: 100%;
+  border: 1px solid #94a3b8;
+  border-radius: 0px;
+  padding: 8px 10px;
+  font-size: 13.5px;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.reject-form-group select:focus,
+.reject-form-group textarea:focus {
+  outline: none;
+  border-color: #0f172a;
+}
+
+/* Modal Action Buttons */
+.popup-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 16px;
+}
+
+.popup-buttons button {
+  margin: 0;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 0px !important;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.popup .confirm-btn {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #15803d;
+}
+
+.popup .confirm-btn:hover {
+  background: #15803d;
+}
+
+.popup .confirm-btn--reject {
+  background: #dc2626;
+  border-color: #b91c1c;
+}
+
+.popup .confirm-btn--reject:hover {
+  background: #b91c1c;
+}
+
+.popup .cancel-btn {
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.popup .cancel-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width: 900px) {
+  .main-content {
+    margin-left: 0;
+  }
+
+  .sidebar-menu {
+    display: none;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .request-card {
+    width: 100%;
+  }
+}
+
+/* ==========================================
+   Extra Detail
+========================================== */
+
+.full-width-detail {
+  margin-top: 20px;
+}
+
+.full-width-detail label {
+  font-weight: bold;
+  display: block;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.address-text {
+  border: 1px solid #999;
+  padding: 12px;
+  background: #fafafa;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   Google Map
+========================================== */
+
+.map-link-box {
+  margin-top: 20px;
+}
+
+.map-link-box label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.maps-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 0px;
+  border: 1px solid #1d4ed8;
+  font-weight: bold;
+}
+
+.maps-btn:hover {
+  background: #1d4ed8;
+}
+
+/* ==========================================
+   Image Preview
+========================================== */
+
+.image-preview-box {
+  margin-top: 25px;
+}
+
+.image-preview-box label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.img-container {
+  width: 300px;
+  height: 200px;
+  border: 1px solid #999;
+  overflow: hidden;
+}
+
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================
+   Certificate Display List (1 per line)
+========================================== */
+.approve-cert-display-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.approve-cert-display-item {
+  margin: 0;
+  border: 1px solid #999;
+  padding: 10px;
+  background: #fafafa;
+  color: #333;
+  line-height: 1.5;
+  border-radius: 0;
+  word-break: break-word;
+}

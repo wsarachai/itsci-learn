@@ -1,0 +1,657 @@
+/* ==========================================================================
+   ARTICLE DETAIL - CHIANG MAI WELLNESS DESIGN SYSTEM
+   โทนสีและดีไซน์เอกภาพเดียวกันกับหน้าอื่นในระบบ
+   ========================================================================== */
+
+:root {
+  --route-ink-900: #0f3d26;
+  --route-ink-800: #1b5336;
+  --route-ink-700: #25704a;
+
+  --route-green-600: #25704a;
+  --route-green-500: #38a169;
+  --route-green-400: #48bb78;
+
+  --route-cream: #ffffff;
+  --route-white: #ffffff;
+  --route-soft: #f3f9f4;
+
+  --route-lime: #a3e635;
+  --route-mint: #f0fdf4;
+  --route-gold: #fbbf24;
+  --route-orange: #f97316;
+
+  --route-text: #3f5e4d;
+  --route-muted: #6b8074;
+
+  --route-border: rgba(15, 61, 38, 0.09);
+  --route-shadow-card: 0 8px 24px rgba(15, 61, 38, 0.06);
+}
+
+/* ==========================================================================
+   PAGE BASE
+   ========================================================================== */
+
+.gov-article-page {
+  min-height: 100vh;
+  color: var(--route-ink-800);
+  background: var(--route-soft);
+  font-family: "Anuphan", "Sarabun", sans-serif;
+  line-height: 1.7;
+}
+
+.gov-article-page *,
+.gov-article-page *::before,
+.gov-article-page *::after {
+  box-sizing: border-box;
+}
+
+.gov-article-container {
+  width: min(calc(100% - 36px), 1080px);
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   1. HERO MASTHEAD (เหมือนหน้า ArticleList)
+   ========================================================================== */
+
+.gov-article-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 38px 0 48px;
+  color: var(--route-cream);
+  background:
+    radial-gradient(circle at 80% 10%, rgba(251, 191, 36, 0.3), transparent 30%),
+    radial-gradient(circle at 10% 90%, rgba(132, 204, 22, 0.25), transparent 35%),
+    linear-gradient(135deg, #1b5336 0%, #25704a 48%, #38a169 100%);
+  border-bottom: 3px solid var(--route-gold);
+  box-shadow: 0 4px 14px rgba(15, 61, 38, 0.12);
+}
+
+.gov-article-hero .gov-article-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+/* Back Button */
+.gov-article-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 16px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 99px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.gov-article-back:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateX(-3px);
+}
+
+.gov-article-hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.gov-article-eyebrow {
+  margin: 0 0 8px;
+  color: #cde6d2;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gov-article-hero-title {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: clamp(24px, 3.2vw, 34px);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.gov-article-hero-desc {
+  margin: 0;
+  color: var(--route-mint);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 740px;
+}
+
+/* ==========================================================================
+   2. ARTICLE DOCUMENT CARD (การ์ดเอกสารเนื้อหาบทความ)
+   ========================================================================== */
+
+.gov-article-body-wrapper {
+  padding: 32px 0 64px;
+}
+
+.gov-article-doc {
+  background: var(--route-white);
+  border-radius: 16px;
+  border: 1px solid var(--route-border);
+  box-shadow: var(--route-shadow-card);
+  padding: 44px 50px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   ARTICLE HEADER (หัวข้อบทความ & วันที่/ผู้เผยแพร่)
+   ========================================================================== */
+
+.gov-article-header {
+  margin-bottom: 28px;
+}
+
+.gov-article-category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  background: var(--route-mint);
+  color: var(--route-green-600);
+  border: 1px solid rgba(7, 102, 83, 0.2);
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.gov-article-title {
+  margin: 0 0 16px;
+  color: var(--route-ink-900);
+  font-size: clamp(24px, 3.2vw, 32px);
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+/* Metadata Bar */
+.gov-article-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  padding: 10px 16px;
+  background: #f8faf8;
+  border: 1px solid rgba(6, 35, 29, 0.06);
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--route-text);
+}
+
+.gov-article-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.gov-article-meta-item strong {
+  color: var(--route-ink-800);
+  font-weight: 700;
+}
+
+.gov-article-meta-item svg {
+  color: var(--route-green-600);
+  flex-shrink: 0;
+}
+
+/* Divider */
+.gov-article-divider {
+  margin-top: 22px;
+  height: 3px;
+  background: linear-gradient(to right, var(--route-green-600) 0%, var(--route-gold) 45%, rgba(6, 35, 29, 0.08) 100%);
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   3. FEATURED COVER IMAGE (รูปภาพหน้าปกหลักพอดีกับตัวรูป)
+   ========================================================================== */
+
+.gov-article-cover-section {
+  margin: 0 0 32px;
+}
+
+.gov-article-cover-frame {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--route-border);
+  background: transparent;
+  box-shadow: 0 4px 16px rgba(6, 35, 29, 0.06);
+  cursor: pointer;
+  display: block;
+}
+
+.gov-article-cover-img {
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.gov-article-cover-frame:hover .gov-article-cover-img {
+  transform: scale(1.015);
+}
+
+.gov-article-cover-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 20px;
+  background: #f8faf8;
+  border: 1px dashed var(--route-border);
+  border-radius: 12px;
+  color: var(--route-muted);
+  text-align: center;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   4. PROSE CONTENT (เนื้อหาบทความ)
+   ========================================================================== */
+
+.gov-article-content-section {
+  margin-bottom: 36px;
+}
+
+.gov-article-prose {
+  color: #2c3e35;
+  font-size: 17.5px;
+  line-height: 1.95;
+  text-align: justify;
+  overflow-wrap: anywhere;
+}
+
+.gov-article-prose p {
+  margin: 0 0 20px;
+  text-indent: 2.2em;
+}
+
+.gov-article-prose strong,
+.gov-article-prose b {
+  color: var(--route-ink-900);
+  font-weight: 750;
+}
+
+.gov-article-prose h2 {
+  margin: 36px 0 16px;
+  color: var(--route-green-600);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.45;
+  border-left: 4px solid var(--route-green-500);
+  padding-left: 12px;
+  text-indent: 0;
+}
+
+.gov-article-prose h3 {
+  margin: 28px 0 12px;
+  color: var(--route-ink-800);
+  font-size: 19px;
+  font-weight: 750;
+  text-indent: 0;
+}
+
+.gov-article-prose h4 {
+  margin: 22px 0 10px;
+  color: var(--route-ink-700);
+  font-size: 17px;
+  font-weight: 700;
+  text-indent: 0;
+}
+
+.gov-article-prose ul,
+.gov-article-prose ol {
+  margin: 0 0 24px;
+  padding-left: 36px;
+}
+
+.gov-article-prose li {
+  margin-bottom: 8px;
+}
+
+.gov-article-prose blockquote {
+  margin: 24px 0;
+  padding: 16px 20px;
+  background: #fdfbf3;
+  border-left: 4px solid var(--route-gold);
+  border-radius: 0 8px 8px 0;
+  color: #7c5806;
+  font-size: 16.5px;
+}
+
+.gov-article-prose blockquote p {
+  text-indent: 0;
+  margin: 0;
+}
+
+.gov-article-prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--route-border);
+  margin: 20px auto;
+  display: block;
+}
+
+.gov-article-prose a {
+  color: var(--route-green-600);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+.gov-article-empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--route-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   5. PHOTO GALLERY (รูปภาพประกอบเพิ่มเติม)
+   ========================================================================== */
+
+.gov-article-gallery-section {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(6, 35, 29, 0.08);
+}
+
+.gov-article-gallery-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: var(--route-ink-800);
+}
+
+.gov-article-gallery-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.gov-article-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.gov-article-gallery-item {
+  margin: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--route-border);
+  background: var(--route-white);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  aspect-ratio: 4 / 3;
+}
+
+.gov-article-gallery-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(6, 35, 29, 0.1);
+}
+
+.gov-article-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==========================================================================
+   6. OFFICIAL FOOTER / AGENCY ACCREDITATION
+   ========================================================================== */
+
+.gov-article-footer {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(6, 35, 29, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.gov-article-agency-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #f8faf8;
+  border: 1px solid rgba(6, 35, 29, 0.07);
+  border-radius: 10px;
+}
+
+.gov-article-agency-icon {
+  color: var(--route-green-600);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.gov-article-agency-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.gov-article-agency-info strong {
+  color: var(--route-ink-900);
+  font-weight: 700;
+}
+
+.gov-article-agency-info span {
+  color: var(--route-muted);
+}
+
+.gov-article-footer-nav {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.gov-article-btn-back-bottom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: #f1f4f2;
+  color: var(--route-ink-800);
+  border: 1px solid var(--route-border);
+  border-radius: 99px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.gov-article-btn-back-bottom:hover {
+  background: #e2e8e4;
+  color: var(--route-ink-900);
+  transform: translateX(-3px);
+}
+
+/* ==========================================================================
+   MODAL LIGHTBOX
+   ========================================================================== */
+
+.gov-article-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.gov-article-modal__content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.gov-article-modal__content img {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 8px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+  display: block;
+}
+
+.gov-article-modal__close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0f172a;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.gov-article-modal__close:hover {
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   ERROR STATE
+   ========================================================================== */
+
+.gov-article-error-wrap {
+  padding: 40px 0;
+}
+
+.gov-article-state--error {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #fecaca;
+  padding: 40px 24px;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: var(--route-shadow-card);
+}
+
+.gov-article-state__icon {
+  color: #dc2626;
+  margin-bottom: 12px;
+}
+
+.gov-article-state--error h1 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  color: #991b1b;
+}
+
+.gov-article-state--error p {
+  margin: 0 0 20px;
+  color: var(--route-muted);
+  font-size: 14px;
+}
+
+.gov-article-state__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.gov-article-btn-retry,
+.gov-article-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: 99px;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gov-article-btn-retry {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+}
+
+.gov-article-btn-retry:hover {
+  background: #e2e8f0;
+}
+
+.gov-article-btn-back {
+  background: var(--route-green-600);
+  border: 1px solid var(--route-green-600);
+  color: #ffffff;
+}
+
+.gov-article-btn-back:hover {
+  background: var(--route-ink-900);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .gov-article-doc {
+    padding: 24px 18px;
+    border-radius: 12px;
+  }
+
+  .gov-article-title {
+    font-size: 22px;
+  }
+
+  .gov-article-prose {
+    font-size: 16.5px;
+  }
+
+  .gov-article-prose p {
+    text-indent: 1.5em;
+  }
+
+  .gov-article-meta-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .gov-article-gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}

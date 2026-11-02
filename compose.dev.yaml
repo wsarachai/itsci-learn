@@ -1,12 +1,12 @@
-# ใช้ตอนพัฒนาบนเครื่องตัวเอง: เปิด MySQL และ phpMyAdmin ให้เข้าจาก Windows ได้ (เฉพาะ 127.0.0.1)
-#   docker compose -f compose.yaml -f compose.dev.yaml up -d db phpmyadmin
+# ใช้ตอนพัฒนาบนเครื่องตัวเอง: เปิด PostgreSQL และ Adminer ให้เข้าจาก Windows ได้ (เฉพาะ 127.0.0.1)
+#   docker compose -f compose.yaml -f compose.dev.yaml up -d db adminer
 # ห้ามใช้ไฟล์นี้บนเซิร์ฟเวอร์
 
 services:
   db:
     ports:
-      - "127.0.0.1:3306:3306"
+      - "127.0.0.1:5432:5432"
 
-  phpmyadmin:
+  adminer:
     ports:
-      - "127.0.0.1:8081:80"
+      - "127.0.0.1:8088:8080"

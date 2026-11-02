@@ -1,0 +1,141 @@
+/* ==========================================================================
+   UNIFIED LOADING STATE - CHIANG MAI WELLNESS ROUTE
+   Consistent, beautiful, centered loading pattern across the entire application
+   ========================================================================== */
+
+.unified-loading-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8faf8;
+  font-family: "Sarabun", "Inter", -apple-system, sans-serif;
+  padding: 40px 24px;
+}
+
+.unified-loading-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.unified-loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 380px;
+  padding: 56px 24px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.unified-loading-state--full {
+  min-height: calc(70vh - 100px);
+}
+
+/* Spinner Wrap - บังคับขนาดกว้างยาวเท่ากัน 1:1 ป้องกันการเบี้ยว/รี */
+.unified-loading-spinner-wrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  max-width: 56px;
+  max-height: 56px;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  box-sizing: border-box;
+}
+
+/* Spinner Ring Animation - วงกลมสมบูรณ์แบบ 100% หมุนแบบ Linear สม่ำเสมอ */
+.unified-loading-spinner {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 4px solid rgba(7, 102, 83, 0.14);
+  border-top-color: #076653;
+  border-right-color: #159060;
+  box-shadow: 0 0 20px rgba(7, 102, 83, 0.12);
+  animation: unifiedSpinnerRotate 0.9s linear infinite;
+}
+
+/* Center Pulse Glow - จุดตรงกลางกึ่งกลางพอดี */
+.unified-loading-pulse-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -6px;
+  margin-left: -6px;
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #076653 0%, #159060 100%);
+  box-shadow: 0 0 10px rgba(21, 144, 96, 0.5);
+  animation: unifiedPulseGlow 1.6s ease-in-out infinite;
+}
+
+@keyframes unifiedSpinnerRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes unifiedPulseGlow {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* Typography */
+.unified-loading-title {
+  margin: 0 0 10px 0;
+  font-size: clamp(20px, 2.5vw, 24px);
+  font-weight: 800;
+  color: #0c342c;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.unified-loading-message {
+  margin: 0;
+  font-size: 14.5px;
+  color: #64748b;
+  max-width: 460px;
+  line-height: 1.65;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .unified-loading-spinner {
+    animation: unifiedSpinnerRotate 2s linear infinite;
+  }
+
+  .unified-loading-pulse-dot {
+    animation: none;
+    opacity: 0.8;
+  }
+}

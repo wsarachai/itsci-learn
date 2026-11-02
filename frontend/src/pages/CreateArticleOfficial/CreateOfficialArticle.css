@@ -1,0 +1,578 @@
+/* ==========================================
+   Layout
+========================================== */
+
+.admin-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f6f9;
+  box-sizing: border-box;
+}
+
+/* พื้นที่เนื้อหาหลังหักความกว้าง Sidebar */
+.main-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+
+  margin-left: 0;
+  padding: 30px;
+
+  background: #f4f6f9;
+  box-sizing: border-box;
+}
+
+/* Header และฟอร์มอยู่ในพื้นที่เดียวกัน */
+.gov-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+/* ==========================================
+   Sidebar Fixed
+========================================== */
+
+.sidebar-menu {
+  width: 275px;
+
+  height: 100vh;
+
+  position: fixed;
+
+  top: 0;
+
+  left: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: #12243b;
+
+  overflow: hidden;
+
+  z-index: 1000;
+}
+
+/* ส่วนเมนู */
+
+.sidebar-top {
+  height: calc(100vh - 55px);
+
+  overflow-y: auto;
+}
+
+.sidebar-top::-webkit-scrollbar {
+  display: none;
+}
+
+/* Logout ติดล่าง */
+
+.btn-sidebar-logout {
+  position: fixed;
+
+  bottom: 0;
+
+  left: 0;
+
+  width: 275px;
+
+  height: 55px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 10px;
+
+  background: #b91c1c;
+
+  color: white;
+
+  border: none;
+
+  font-size: 15px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  z-index: 2000;
+}
+
+.btn-sidebar-logout:hover {
+  background: #991b1b;
+}
+
+/* ==========================================
+   Header
+========================================== */
+
+.gov-header {
+  border-bottom: 3px double #1c3b1e;
+
+  padding-bottom: 12px;
+
+  margin-bottom: 25px;
+}
+
+.gov-header h2 {
+  margin: 0;
+
+  color: #14532d;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+.gov-header p {
+  margin-top: 5px;
+
+  color: #444;
+
+  font-size: 14px;
+}
+
+/* ==========================================
+   Article Card
+========================================== */
+
+.article-card {
+  width: 760px;
+  max-width: 100%;
+
+  margin: 20px auto 50px;
+
+  background: #ffffff;
+  border: 1px solid #333333;
+
+  padding: 35px 40px;
+  box-sizing: border-box;
+}
+/* ==========================================
+   Label
+========================================== */
+
+.article-card > label {
+  display: block;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  color: #222;
+
+  margin-top: 22px;
+
+  margin-bottom: 8px;
+}
+
+/* ==========================================
+   Input
+========================================== */
+
+.gov-input-field {
+  width: 100%;
+
+  height: 42px;
+
+  border: 1px solid #777;
+
+  padding: 10px 12px;
+
+  font-size: 14px;
+
+  background: white;
+
+  box-sizing: border-box;
+
+  border-radius: 0;
+}
+
+.gov-input-field:focus {
+  outline: none;
+
+  border-color: #28a745;
+}
+/* ==========================================
+   Cover Upload
+========================================== */
+
+.cover-box {
+  width: 100%;
+  height: 180px;
+
+  border: 1px dashed #999999;
+  background: #f8f9fa;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  cursor: pointer;
+  color: #555555;
+
+  box-sizing: border-box;
+}
+
+.cover-box svg {
+  display: block;
+  font-size: 42px;
+  color: #28a745;
+  margin: 0 0 12px 0;
+}
+
+.cover-box span {
+  display: block;
+  width: auto;
+  margin-top: 10%;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.cover-box small {
+  display: block;
+  width: auto;
+  margin: 6px 0 0 0;
+  color: #777777;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.cover-box:hover {
+  border-color: #28a745;
+  background: #f1fff4;
+}
+
+.cover-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================
+   Gallery 4 ช่อง
+========================================== */
+
+.gallery {
+  display: flex;
+
+  gap: 15px;
+
+  margin-top: 10px;
+}
+
+.gallery-box {
+  width: 100px;
+
+  height: 100px;
+
+  border: 1px dashed #999;
+
+  background: #fafafa;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+}
+
+.gallery-box label {
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.gallery-box svg {
+  font-size: 28px;
+
+  color: #28a745;
+}
+
+.gallery-box:hover {
+  border-color: #28a745;
+
+  background: #f1fff4;
+}
+
+.gallery-box img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* ==========================================
+   Editor
+========================================== */
+
+.toolbar {
+  height: 42px;
+
+  border: 1px solid #999;
+
+  border-bottom: none;
+
+  background: #f5f5f5;
+
+  display: flex;
+
+  align-items: center;
+
+  padding-left: 10px;
+
+  gap: 5px;
+}
+
+.toolbar button {
+  width: 35px;
+
+  height: 30px;
+
+  border: 1px solid #aaa;
+
+  background: white;
+
+  cursor: pointer;
+}
+
+.toolbar button:hover {
+  background: #28a745;
+
+  color: white;
+}
+
+.article-editor {
+  width: 100%;
+
+  height: 280px;
+
+  border: 1px solid #999;
+
+  padding: 15px;
+
+  box-sizing: border-box;
+
+  font-size: 15px;
+
+  line-height: 1.6;
+
+  overflow: auto;
+}
+
+.article-editor:focus {
+  outline: none;
+
+  border-color: #28a745;
+}
+
+/* ==========================================
+   Error
+========================================== */
+
+.error-message {
+  color: #dc2626;
+
+  font-size: 13px;
+
+  font-weight: bold;
+
+  margin-top: 6px;
+}
+
+/* ==========================================
+   Button
+========================================== */
+
+.form-actions {
+  margin-top: 35px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid #ddd;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 15px;
+}
+
+.btn-save {
+  background: #28a745;
+
+  color: white;
+
+  border: 1px solid #1e7e34;
+
+  padding: 12px 35px;
+
+  font-size: 15px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  border-radius: 0;
+}
+
+.btn-save:hover {
+  background: #218838;
+}
+
+.btn-cancel {
+  background: #6c757d;
+
+  color: white;
+
+  border: 1px solid #555;
+
+  padding: 12px 35px;
+
+  font-size: 15px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  border-radius: 0;
+}
+
+.btn-cancel:hover {
+  background: #5a6268;
+}
+.cover-box-container {
+  position: relative;
+  width: 100%;
+}
+
+.btn-remove-cover-image {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #dc2626;
+  color: #ffffff;
+  border: 1px solid #b91c1c;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.btn-remove-cover-image:hover {
+  background-color: #b91c1c;
+  transform: scale(1.05);
+}
+
+.btn-remove-cover-image svg {
+  color: #ffffff !important;
+  font-size: 16px;
+  margin: 0 !important;
+}
+
+.gallery-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-upload-label {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  color: #28a745;
+  cursor: pointer;
+}
+
+.gallery-upload-label span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.btn-remove-article-image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #dc2626;
+  color: #ffffff;
+  
+  border: 1px solid #b91c1c;
+  border-radius: 4px;
+
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-remove-article-image:hover {
+  background-color: #b91c1c;
+  transform: scale(1.05);
+}
+
+.btn-remove-article-image svg {
+  color: #ffffff !important;
+  font-size: 14px;
+}
+
+
+
+
+/* ==========================================
+ Responsive
+========================================== */
+
+@media (max-width: 900px) {
+  .article-card {
+    width: 100%;
+  }
+
+  .gallery {
+    flex-wrap: wrap;
+  }
+}
+
+.char-counter {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 5px;
+}
