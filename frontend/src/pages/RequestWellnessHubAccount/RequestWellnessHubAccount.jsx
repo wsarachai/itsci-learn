@@ -1891,7 +1891,7 @@ export default function RequestWellnessHubAccount() {
                       maxLength={20}
                       value={formData.username}
                       onChange={handleInputChange}
-                      placeholder="กำหนดชื่อผู้ใช้ (ความยาว 4–20 ตัวอักษร ไม่มีช่องว่าง)"
+                      placeholder="กำหนดชื่อผู้ใช้ 4–20 ตัวอักษร"
                       className={
                         formErrors.username
                           ? "request-account-input--error"
@@ -1925,7 +1925,7 @@ export default function RequestWellnessHubAccount() {
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
                       onChange={handleInputChange}
-                      placeholder="กำหนดรหัสผ่านเข้าสู่ระบบ (ความยาว 8 ตัวอักษร)"
+                      placeholder="กำหนดรหัสผ่าน 8 ตัวอักษร"
                       maxLength={8}
                       className={
                         formErrors.password

@@ -6,8 +6,8 @@ function RouteHeroHeader({ routeName, routeDescription }) {
   return (
     <header className="route-detail-hero">
       <div className="route-detail-container">
-        <Link to="/" className="route-detail-back">
-          <ArrowLeft size={16} /> กลับหน้าแรก
+        <Link to="/wellness-routes" className="route-detail-back">
+          <ArrowLeft size={16} /> กลับสู่รายการเส้นทาง
         </Link>
         <p className="route-detail-eyebrow">WELLNESS TOURISM ROUTE</p>
         <h1>{routeName}</h1>

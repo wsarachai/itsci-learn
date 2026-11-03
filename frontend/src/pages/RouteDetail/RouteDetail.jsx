@@ -246,6 +246,60 @@ function escapeHtml(value = "") {
     .replace(/'/g, "&#039;");
 }
 
+// -----------------------------------------------------------------------------
+// ระบบ Cache และวาดเส้นทางสีเขียวเชื่อมอำเภอ 0ms (Instant Preview + Cache + OSRM)
+// -----------------------------------------------------------------------------
+const routeGeometryMemoryCache = new Map();
+
+function getCachedRouteGeometry(cacheKey) {
+  if (!cacheKey) return null;
+  if (routeGeometryMemoryCache.has(cacheKey)) {
+    return routeGeometryMemoryCache.get(cacheKey);
+  }
+  try {
+    const raw = sessionStorage.getItem(`cm_route_geom_${cacheKey}`);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length >= 2) {
+        routeGeometryMemoryCache.set(cacheKey, parsed);
+        return parsed;
+      }
+    }
+  } catch { }
+  return null;
+}
+
+function setCachedRouteGeometry(cacheKey, coordinates) {
+  if (!cacheKey || !Array.isArray(coordinates) || coordinates.length < 2) return;
+  routeGeometryMemoryCache.set(cacheKey, coordinates);
+  try {
+    sessionStorage.setItem(`cm_route_geom_${cacheKey}`, JSON.stringify(coordinates));
+  } catch { }
+}
+
+function renderRouteLine(layerGroup, latlngs) {
+  if (!layerGroup || !Array.isArray(latlngs) || latlngs.length < 2) return;
+  layerGroup.clearLayers();
+
+  // 1. เส้นขอบเงาสีดำ (Outline / Shadow)
+  L.polyline(latlngs, {
+    color: "#000000",
+    weight: 7,
+    opacity: 0.85,
+    lineCap: "round",
+    lineJoin: "round",
+  }).addTo(layerGroup);
+
+  // 2. เส้นทางหลักสีเขียวเข้ม (#147D72)
+  L.polyline(latlngs, {
+    color: "#147D72",
+    weight: 4,
+    opacity: 1,
+    lineCap: "round",
+    lineJoin: "round",
+  }).addTo(layerGroup);
+}
+
 export default function RouteDetail() {
   const { routeId } = useParams();
   const navigate = useNavigate();
@@ -295,6 +349,7 @@ export default function RouteDetail() {
 
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
+  const routeLineLayerRef = useRef(null);
   const hubsLayerRef = useRef(null);
   const districtLayerRef = useRef(null);
   const routingControlRef = useRef(null);
@@ -689,6 +744,7 @@ export default function RouteDetail() {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
+    routeLineLayerRef.current = L.layerGroup().addTo(map);
     hubsLayerRef.current = L.layerGroup().addTo(map);
     districtLayerRef.current = L.layerGroup().addTo(map);
 
@@ -713,6 +769,12 @@ export default function RouteDetail() {
       clearTimeout(timer);
       hubMarkersRef.current.clear();
       hubHighlightRef.current = null;
+      if (routeLineLayerRef.current) {
+        try {
+          routeLineLayerRef.current.clearLayers();
+        } catch { }
+        routeLineLayerRef.current = null;
+      }
       if (routingControlRef.current) {
         try {
           const ctrl = routingControlRef.current;
@@ -736,16 +798,18 @@ export default function RouteDetail() {
     };
   }, [loading, error, routeData]);
 
-  // 🚗 2. คำนวณเส้นทาง OSRM ตามถนนจริง และปักหมุดอำเภอ
+  // 🚗 2. คำนวณเส้นทางสีเขียว 0ms (Instant Preview + Cache + OSRM Background Fetch) และปักหมุดอำเภอ
   useEffect(() => {
     const map = mapRef.current;
     const districtLayer = districtLayerRef.current;
+    const routeLineLayer = routeLineLayerRef.current;
     const mapContainer = mapContainerRef.current;
 
     if (!map || !districtLayer || !mapContainer || !isMapReady(map, mapContainer)) return;
 
     districtLayer.clearLayers();
 
+    // 1. ปักหมุดศูนย์กลางอำเภอ
     visibleDistricts.forEach((district, index) => {
       const coords = extractLatLng(district);
       if (!coords) return;
@@ -768,76 +832,84 @@ export default function RouteDetail() {
       `);
     });
 
-    const activeRouting = routingControlRef.current;
-    if (activeRouting) {
-      try {
-        activeRouting.off();
-        if (activeRouting._map === map) {
-          map.removeControl(activeRouting);
-        }
-      } catch { }
-      routingControlRef.current = null;
-    }
-
     const waypoints = visibleDistricts
       .map((d) => extractLatLng(d))
-      .filter(Boolean)
-      .map((c) => L.latLng(c.lat, c.lng));
+      .filter(Boolean);
 
-    if (waypoints.length === 0) {
-      routeBoundsRef.current = null;
+    if (waypoints.length < 2) {
+      if (routeLineLayer) routeLineLayer.clearLayers();
+      if (waypoints.length === 1) {
+        try {
+          routeBoundsRef.current = L.latLngBounds([[waypoints[0].lat, waypoints[0].lng]]);
+        } catch {
+          routeBoundsRef.current = null;
+        }
+      } else {
+        routeBoundsRef.current = null;
+      }
       return;
     }
 
+    const previewLatLngs = waypoints.map((w) => [w.lat, w.lng]);
     try {
-      const bounds = L.latLngBounds(waypoints);
+      const bounds = L.latLngBounds(previewLatLngs);
       routeBoundsRef.current = bounds.isValid() ? bounds : null;
     } catch {
       routeBoundsRef.current = null;
     }
 
-    let routingControlInstance = null;
+    const cacheKey = waypoints
+      .map((w) => `${Number(w.lat).toFixed(5)},${Number(w.lng).toFixed(5)}`)
+      .join(";");
 
-    if (waypoints.length >= 2) {
-      try {
-        routingControlInstance = L.Routing.control({
-          waypoints,
-          router: L.Routing.osrmv1({
-            serviceUrl: "https://router.project-osrm.org/route/v1",
-            timeout: 15000,
-          }),
-          lineOptions: {
-            styles: [
-              { color: "#000000", weight: 7, opacity: 0.9 },
-              { color: "#147D72", weight: 4, opacity: 1 },
-            ],
-          },
-          createMarker: () => null,
-          show: false,
-          addWaypoints: false,
-          draggableWaypoints: false,
-          fitSelectedRoutes: false,
-        });
-
-        routingControlInstance.addTo(map);
-        routingControlRef.current = routingControlInstance;
-      } catch (err) {
-        console.warn("Routing creation error:", err);
-      }
+    // 2. ตรวจสอบ Cache (Memory + SessionStorage)
+    const cachedGeom = getCachedRouteGeometry(cacheKey);
+    if (cachedGeom && cachedGeom.length >= 2) {
+      // ⚡ Cache Hit: แสดงผลแนวถนนจริงทันทีใน 0ms
+      renderRouteLine(routeLineLayer, cachedGeom);
+      return;
     }
 
-    return () => {
-      if (routingControlInstance) {
-        try {
-          routingControlInstance.off();
-          if (routingControlInstance._map === map) {
-            map.removeControl(routingControlInstance);
+    // 3. ⚡ 0ms Instant Preview: วาดเส้นตรงเชื่อมอำเภอก่อนทันที ไม่ต้องรอเซิร์ฟเวอร์
+    renderRouteLine(routeLineLayer, previewLatLngs);
+
+    // 4. ดึงแนวถนนจริงจาก OSRM ใน Background อย่างเงียบๆ แล้วค่อยปรับเส้นให้โค้งเว้าตามถนนจริง
+    const abortController = new AbortController();
+    const coordinatesParam = waypoints
+      .map((w) => `${w.lng},${w.lat}`)
+      .join(";");
+    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${coordinatesParam}?overview=full&geometries=geojson`;
+
+    fetch(osrmUrl, { signal: abortController.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error(`OSRM status ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (
+          data &&
+          data.routes &&
+          data.routes[0] &&
+          data.routes[0].geometry &&
+          Array.isArray(data.routes[0].geometry.coordinates)
+        ) {
+          const roadLatLngs = data.routes[0].geometry.coordinates.map(
+            ([lng, lat]) => [lat, lng]
+          );
+          setCachedRouteGeometry(cacheKey, roadLatLngs);
+          if (mapRef.current && routeLineLayerRef.current) {
+            renderRouteLine(routeLineLayerRef.current, roadLatLngs);
           }
-        } catch { }
-        if (routingControlRef.current === routingControlInstance) {
-          routingControlRef.current = null;
         }
-      }
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          console.warn("Background OSRM route fetch fallback (kept instant preview):", err);
+        }
+      });
+
+    return () => {
+      abortController.abort();
     };
   }, [visibleDistricts]);
 
@@ -1054,9 +1126,9 @@ export default function RouteDetail() {
                 `
           : hasValue(licenseId)
             ? `
-                  <a href="/wellness-hubs/${safeLicenseId}" target="_blank" rel="noopener noreferrer" class="route-hub-popup__button" data-license-id="${safeLicenseId}">
+                  <a href="/wellness-hubs/${safeLicenseId}" class="route-hub-popup__button" data-license-id="${safeLicenseId}">
                     <span>ดูรายละเอียดเพิ่มเติม</span>
-                    <span class="route-hub-popup__button-arrow" aria-hidden="true">↗</span>
+                    <span class="route-hub-popup__button-arrow" aria-hidden="true">→</span>
                   </a>
                 `
             : ""
@@ -1082,9 +1154,29 @@ export default function RouteDetail() {
           setHubHighlight(coords, catInfo?.color);
         });
 
-        marker.on("popupopen", () => {
+        marker.on("popupopen", (e) => {
           setHubHighlight(coords, catInfo?.color);
           centerMapOnHub(coords);
+
+          // 🔗 SPA Navigation: ส่ง state สถานประกอบการและข้อมูลเส้นทางไปยังหน้า WellnessHubDetail (0ms โหลดทันที)
+          const popupElement = e.popup?.getElement();
+          if (popupElement) {
+            const detailBtn = popupElement.querySelector(".route-hub-popup__button");
+            if (detailBtn) {
+              detailBtn.onclick = (evt) => {
+                evt.preventDefault();
+                navigate(`/wellness-hubs/${safeLicenseId}`, {
+                  state: {
+                    hub,
+                    fromRoute: {
+                      routeId: routeData?.routeId || normalizedRouteId,
+                      routeName: routeData?.routeName || "เส้นทางท่องเที่ยวเชิงสุขภาพ",
+                    },
+                  },
+                });
+              };
+            }
+          }
         });
 
         marker.on("popupclose", () => {
@@ -1107,6 +1199,8 @@ export default function RouteDetail() {
     setHubHighlight,
     removeHubHighlight,
     centerMapOnHub,
+    routeData,
+    normalizedRouteId,
   ]);
 
   const handleToggleFilter = (catId) => {

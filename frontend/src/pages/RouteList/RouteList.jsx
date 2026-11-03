@@ -367,13 +367,13 @@ export default function RouteList() {
             {routes.length === 0 ? (
               <section className="route-list-state">
                 <Search />
-                <h2>ไม่พบข้อมูลเส้นทางท่องเที่ยวเชิงสุขภาพหลัก</h2>
+                <h2>ไม่พบข้อมูลเส้นทางท่องเที่ยว</h2>
               </section>
             ) : filteredRoutes.length === 0 ? (
               <section className="route-list-state">
                 <Search />
-                <h2>ไม่พบข้อมูลเส้นทางท่องเที่ยวเชิงสุขภาพหลัก</h2>
-                <p>ไม่พบข้อมูลที่ตรงกับคำค้นหาหรือตัวกรองที่เลือก</p>
+                <h2>ไม่พบเส้นทางที่ค้นหา</h2>
+                <p>ลองเปลี่ยนคำค้นหาหรือปรับตัวกรองใหม่อีกครั้ง</p>
                 {hasActiveFilters && (
                   <button type="button" onClick={clearFilters}>
                     <X />

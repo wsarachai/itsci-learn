@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import LoadingState from "../../Components/LoadingState/LoadingState";
 import {
@@ -438,9 +438,14 @@ function getNavigationUrl(hub) {
 export default function WellnessHubDetail() {
   const { hubId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [hub, setHub] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const passedHub = location.state?.hub || null;
+  const fromRoute = location.state?.fromRoute || null;
+
+  // 0ms Instant Display: หากมีข้อมูลถูกส่งต่อมาจากหน้าเส้นทาง ให้แสดงผลทันทีโดยไม่ต้องรอหมุนโหลด
+  const [hub, setHub] = useState(passedHub);
+  const [loading, setLoading] = useState(!passedHub);
   const [error, setError] = useState("");
   const [imageError, setImageError] = useState(false);
   const [copiedAddress, setCopiedAddress] = useState(false);
@@ -458,13 +463,17 @@ export default function WellnessHubDetail() {
     const normalizedHubId = String(hubId ?? "").trim();
 
     if (!normalizedHubId) {
-      setHub(null);
-      setError("รหัสสถานประกอบการไม่ถูกต้อง");
+      if (!passedHub) {
+        setHub(null);
+        setError("รหัสสถานประกอบการไม่ถูกต้อง");
+      }
       setLoading(false);
       return;
     }
 
-    setLoading(true);
+    if (!passedHub) {
+      setLoading(true);
+    }
     setError("");
     setImageError(false);
 
@@ -477,19 +486,23 @@ export default function WellnessHubDetail() {
       );
 
       if (!response.data || !response.data.licenseId) {
-        setHub(null);
-        setError("ไม่พบข้อมูลสถานประกอบการที่ต้องการ");
+        if (!passedHub) {
+          setHub(null);
+          setError("ไม่พบข้อมูลสถานประกอบการที่ต้องการ");
+        }
         return;
       }
 
       setHub(response.data);
     } catch (requestError) {
-      setHub(null);
-      setError(getErrorMessage(requestError));
+      if (!passedHub) {
+        setHub(null);
+        setError(getErrorMessage(requestError));
+      }
     } finally {
       setLoading(false);
     }
-  }, [hubId]);
+  }, [hubId, passedHub]);
 
   useEffect(() => {
     loadWellnessHub();
@@ -634,15 +647,27 @@ export default function WellnessHubDetail() {
         <div className="hub-detail-container">
           {/* TOP BAR */}
           <div className="hub-detail-hero__topbar">
-            <button
-              type="button"
-              className="hub-detail-back"
-              onClick={() => navigate(-1)}
-              aria-label="ย้อนกลับ"
-            >
-              <ArrowLeft />
-              <span>ย้อนกลับ</span>
-            </button>
+            {fromRoute ? (
+              <button
+                type="button"
+                className="hub-detail-back hub-detail-back--route"
+                onClick={() => navigate(`/routes/${fromRoute.routeId}`)}
+                aria-label={`กลับสู่เส้นทาง: ${fromRoute.routeName}`}
+              >
+                <ArrowLeft />
+                <span>กลับสู่เส้นทาง: {fromRoute.routeName}</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="hub-detail-back"
+                onClick={() => navigate(-1)}
+                aria-label="ย้อนกลับ"
+              >
+                <ArrowLeft />
+                <span>ย้อนกลับ</span>
+              </button>
+            )}
           </div>
 
           {/* MAIN HERO CONTENT */}

@@ -67,201 +67,24 @@ const leafletIconCache = new Map();
 
 /**
  * ดึง URL หรือรูปภาพของ Marker ตามหมวดหมู่ (ใช้สำหรับแสดงใน Card หรือ Element ทั่วไป)
+ * แสดงผลทันทีแบบ 0ms ด้วยหมุดที่ตัดขอบและโปร่งใสเรียบร้อยแล้ว
  */
 export function getCategoryMarkerImage(categoryInput) {
   const code = normalizeCategoryCode(categoryInput);
-  const rawSrc = CATEGORY_MARKER_SOURCES[code] || markerC01;
-  return cleanedMarkerUrlCache.get(rawSrc) || rawSrc;
+  return CATEGORY_MARKER_SOURCES[code] || markerC01;
 }
 
 /**
- * 1. ลบเฉพาะพื้นหลังด้านนอกด้วย Canvas โดยใช้ Flood Fill เริ่มจากขอบรูปภาพทั้ง 4 ด้าน
- * 2. Crop ขอบโปร่งใสรอบรูปออก (Bounding Box Auto-Crop) เพื่อให้ทุกหมวดมีขนาดแสดงผลเท่ากัน
- * 3. ไม่ยืดภาพ และคงสัดส่วนเดิมไว้
+ * ฟังก์ชันสำหรับ Fallback ตรวจจับความโปร่งใส (ปัจจุบันภาพใน assets ถูกตัดขอบและโปร่งใส 100% แล้ว)
  */
 export function removeOuterBackgroundAndCrop(imageSrc) {
   if (!imageSrc) return Promise.resolve(imageSrc);
-  if (cleanedMarkerUrlCache.has(imageSrc)) {
-    return Promise.resolve(cleanedMarkerUrlCache.get(imageSrc));
-  }
-
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      try {
-        const width = img.naturalWidth || img.width;
-        const height = img.naturalHeight || img.height;
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        if (!ctx) {
-          cleanedMarkerUrlCache.set(imageSrc, imageSrc);
-          resolve(imageSrc);
-          return;
-        }
-
-        ctx.drawImage(img, 0, 0);
-        const imageData = ctx.getImageData(0, 0, width, height);
-        const data = imageData.data;
-
-        // ตรวจสอบพิกัดมุม (0,0)
-        const bgR = data[0];
-        const bgG = data[1];
-        const bgB = data[2];
-        const bgA = data[3];
-
-        const tolerance = 28;
-        const isBgColor = (idx) => {
-          const r = data[idx];
-          const g = data[idx + 1];
-          const b = data[idx + 2];
-          const a = data[idx + 3];
-          if (a === 0) return false;
-          const diffR = Math.abs(r - bgR);
-          const diffG = Math.abs(g - bgG);
-          const diffB = Math.abs(b - bgB);
-          if (diffR <= tolerance && diffG <= tolerance && diffB <= tolerance) {
-            return true;
-          }
-          if (r > 240 && g > 240 && b > 240) {
-            return true;
-          }
-          return false;
-        };
-
-        // Breadth-First Search (BFS) Flood Fill จากขอบทั้ง 4 ด้าน เพื่อลบเฉพาะพื้นหลังด้านนอก
-        const visited = new Uint8Array(width * height);
-        const queue = [];
-
-        // ขอบซ้าย-ขวา
-        for (let y = 0; y < height; y++) {
-          const leftIdx = y * width;
-          const rightIdx = y * width + (width - 1);
-          if (isBgColor(leftIdx * 4) || data[leftIdx * 4 + 3] === 0) {
-            visited[leftIdx] = 1;
-            queue.push(leftIdx);
-          }
-          if (isBgColor(rightIdx * 4) || data[rightIdx * 4 + 3] === 0) {
-            visited[rightIdx] = 1;
-            queue.push(rightIdx);
-          }
-        }
-
-        // ขอบบน-ล่าง
-        for (let x = 0; x < width; x++) {
-          const topIdx = x;
-          const bottomIdx = (height - 1) * width + x;
-          if (!visited[topIdx] && (isBgColor(topIdx * 4) || data[topIdx * 4 + 3] === 0)) {
-            visited[topIdx] = 1;
-            queue.push(topIdx);
-          }
-          if (!visited[bottomIdx] && (isBgColor(bottomIdx * 4) || data[bottomIdx * 4 + 3] === 0)) {
-            visited[bottomIdx] = 1;
-            queue.push(bottomIdx);
-          }
-        }
-
-        let head = 0;
-        while (head < queue.length) {
-          const curr = queue[head++];
-          const currDataIdx = curr * 4;
-          data[currDataIdx + 3] = 0; // ลบพื้นหลังด้านนอกให้โปร่งใส
-
-          const cx = curr % width;
-          const cy = Math.floor(curr / width);
-
-          const neighbors = [
-            cy > 0 ? curr - width : -1,
-            cy < height - 1 ? curr + width : -1,
-            cx > 0 ? curr - 1 : -1,
-            cx < width - 1 ? curr + 1 : -1,
-          ];
-
-          for (const n of neighbors) {
-            if (n !== -1 && !visited[n]) {
-              const nIdx = n * 4;
-              if (isBgColor(nIdx) || data[nIdx + 3] === 0) {
-                visited[n] = 1;
-                queue.push(n);
-              }
-            }
-          }
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-
-        // หา Bounding Box ของส่วนที่ไม่โปร่งใส (Auto-Crop Bounding Box)
-        let minX = width;
-        let minY = height;
-        let maxX = -1;
-        let maxY = -1;
-
-        for (let y = 0; y < height; y++) {
-          for (let x = 0; x < width; x++) {
-            const alpha = data[(y * width + x) * 4 + 3];
-            if (alpha > 15) {
-              if (x < minX) minX = x;
-              if (x > maxX) maxX = x;
-              if (y < minY) minY = y;
-              if (y > maxY) maxY = y;
-            }
-          }
-        }
-
-        if (minX <= maxX && minY <= maxY) {
-          const cropWidth = maxX - minX + 1;
-          const cropHeight = maxY - minY + 1;
-
-          const cropCanvas = document.createElement("canvas");
-          cropCanvas.width = cropWidth;
-          cropCanvas.height = cropHeight;
-          const cropCtx = cropCanvas.getContext("2d", { willReadFrequently: true });
-
-          if (cropCtx) {
-            cropCtx.drawImage(
-              canvas,
-              minX,
-              minY,
-              cropWidth,
-              cropHeight,
-              0,
-              0,
-              cropWidth,
-              cropHeight,
-            );
-            const croppedUrl = cropCanvas.toDataURL("image/png");
-            cleanedMarkerUrlCache.set(imageSrc, croppedUrl);
-            resolve(croppedUrl);
-            return;
-          }
-        }
-
-        const fallbackUrl = canvas.toDataURL("image/png");
-        cleanedMarkerUrlCache.set(imageSrc, fallbackUrl);
-        resolve(fallbackUrl);
-      } catch (err) {
-        console.warn("Canvas marker processing error:", err);
-        cleanedMarkerUrlCache.set(imageSrc, imageSrc);
-        resolve(imageSrc);
-      }
-    };
-
-    img.onerror = () => {
-      cleanedMarkerUrlCache.set(imageSrc, imageSrc);
-      resolve(imageSrc);
-    };
-
-    img.src = imageSrc;
-  });
+  return Promise.resolve(imageSrc);
 }
 
-// Pre-process all marker images on module load
-Object.values(CATEGORY_MARKER_SOURCES).forEach((src) => {
-  removeOuterBackgroundAndCrop(src).then((cleanedUrl) => {
-    cleanedMarkerUrlCache.set(src, cleanedUrl);
-  });
+// Pre-populate cleanedMarkerUrlCache
+Object.entries(CATEGORY_MARKER_SOURCES).forEach(([code, src]) => {
+  cleanedMarkerUrlCache.set(src, src);
 });
 
 /**
@@ -358,7 +181,7 @@ export function getCategoryMarkerIcon(categoryInput, size = UNIFIED_MARKER_SIZE)
   const anchorY = iconH; // 44
   const popupY = -42; // [0, -42]
 
-  const cacheKey = `${code}_${iconW}x${iconH}_${cleanedUrl === rawSrc ? "raw" : "clean"}`;
+  const cacheKey = `${code}_${iconW}x${iconH}`;
   if (leafletIconCache.has(cacheKey)) {
     return leafletIconCache.get(cacheKey);
   }
@@ -372,21 +195,5 @@ export function getCategoryMarkerIcon(categoryInput, size = UNIFIED_MARKER_SIZE)
   });
 
   leafletIconCache.set(cacheKey, iconInstance);
-
-  // If not yet cleaned, process in background and update cache
-  if (!cleanedMarkerUrlCache.has(rawSrc)) {
-    removeOuterBackgroundAndCrop(rawSrc).then((cleaned) => {
-      const cleanKey = `${code}_${iconW}x${iconH}_clean`;
-      const cleanIcon = L.icon({
-        iconUrl: cleaned,
-        iconSize: [iconW, iconH],
-        iconAnchor: [anchorX, anchorY],
-        popupAnchor: [0, popupY],
-        className: "wellness-category-marker-pin",
-      });
-      leafletIconCache.set(cleanKey, cleanIcon);
-    });
-  }
-
   return iconInstance;
 }

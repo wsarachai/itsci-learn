@@ -435,9 +435,9 @@ export default function ArticleList() {
               <section className="article-list-state">
                 <Search />
 
-                <h2>ไม่พบบทความ</h2>
+                <h2>ไม่พบบทความที่ค้นหา</h2>
 
-                <p>ไม่พบข้อมูลที่ตรงกับคำค้นหาหรือตัวกรองที่เลือก</p>
+                <p>ลองเปลี่ยนคำค้นหา หรือเลือกดูหมวดหมู่อื่น</p>
 
                 {hasActiveFilters && (
                   <button type="button" onClick={clearFilters}>

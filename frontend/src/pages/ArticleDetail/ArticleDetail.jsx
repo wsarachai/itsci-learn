@@ -622,13 +622,7 @@ export default function ArticleDetail() {
 
           {/* 🌟 6. OFFICIAL SOURCE & ACCREDITATION FOOTER */}
           <footer className="gov-article-footer">
-            <div className="gov-article-agency-box">
-              <Building2 size={20} className="gov-article-agency-icon" />
-              <div className="gov-article-agency-info">
-                <strong>โครงการเส้นทางท่องเที่ยวเชิงสุขภาพ จังหวัดเชียงใหม่ (Chiang Mai Wellness Route)</strong>
-                <span>กลุ่มงานส่งเสริมสุขภาพ สำนักงานสาธารณสุขจังหวัดเชียงใหม่ ร่วมกับภาคีเครือข่าย</span>
-              </div>
-            </div>
+
 
             <div className="gov-article-footer-nav">
               <Link to="/articles" className="gov-article-btn-back-bottom">

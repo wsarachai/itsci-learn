@@ -66,8 +66,8 @@ function RouteMapToolbar({
             onClick={onToggleEmergencyMode}
             title={
               isEmergencyMode
-                ? "คลิกเพื่อกลับสู่มุมมองสถานประกอบการปกติ"
-                : "คลิกเพื่อเปิดโหมดฉุกเฉินและการแพทย์ทางอากาศ (Sky Doctor / รพ. / กู้ภัย)"
+                ? "คลิกเพื่อปิดโหมดฉุกเฉิน"
+                : "คลิกเพื่อเปิดโหมดฉุกเฉินและ Sky Doctor"
             }
           >
             <span

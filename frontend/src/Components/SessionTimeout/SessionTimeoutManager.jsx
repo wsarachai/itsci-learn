@@ -275,8 +275,8 @@ export default function SessionTimeoutManager() {
     <AdminStatusModal
       isOpen={showModal}
       type="warning"
-      title="เซสชันหมดอายุเนื่องจากไม่มีการใช้งาน"
-      message={`ระบบตรวจพบว่าไม่มีการเคลื่อนไหวหรือทำรายการบนหน้าจอ${roleText}นานเกิน 30 นาที เพื่อความปลอดภัยของข้อมูล ระบบได้ออกจากระบบอัตโนมัติ กรุณาเข้าสู่ระบบใหม่อีกครั้ง`}
+      title="หมดเวลาการใช้งาน"
+      message={`ไม่มีการทำรายการนานเกิน 30 นาที ระบบได้นำท่านออกจากระบบเพื่อความปลอดภัย กรุณาเข้าสู่ระบบใหม่อีกครั้ง`}
       confirmText="เข้าสู่ระบบใหม่"
       onConfirm={handleModalConfirm}
       showCloseButton={false}
