@@ -189,16 +189,6 @@ export default function RequestWellnessHubAccount() {
         const catList = categoriesRes.data || [];
         setCategories(catList);
         setDistricts(districtsRes.data || []);
-
-        const defaultCat = catList.find((c) =>
-          (c.categoryName || c.name || "").includes("นวดและสปา")
-        );
-        if (defaultCat) {
-          setFormData((prev) => ({
-            ...prev,
-            categoryId: prev.categoryId || defaultCat.categoryId || defaultCat.id || "",
-          }));
-        }
       } catch (error) {
         console.error("ไม่สามารถดึงข้อมูลหมวดหมู่หรืออำเภอได้", error);
       }
@@ -1146,7 +1136,7 @@ export default function RequestWellnessHubAccount() {
                     maxLength={100}
                     value={formData.wellnessHubName}
                     onChange={handleInputChange}
-                    placeholder="เช่น นวดแผนไทย เชียงใหม่ (3–100 ตัวอักษร)"
+                    placeholder="ระบุชื่อสถานประกอบการ (3–100 ตัวอักษร)"
                     className={
                       formErrors.wellnessHubName
                         ? "request-account-input--error"
@@ -1178,7 +1168,7 @@ export default function RequestWellnessHubAccount() {
                     maxLength={13}
                     value={formData.licenseId}
                     onChange={handleInputChange}
-                    placeholder="เช่น 5001234567 (10–13 ตัวอักษร)"
+                    placeholder="ระบุเลขที่ใบอนุญาต 10–13 หลัก"
                     className={
                       formErrors.licenseId ? "request-account-input--error" : ""
                     }
@@ -1493,7 +1483,7 @@ export default function RequestWellnessHubAccount() {
                       maxLength={10}
                       value={formData.tellInformation}
                       onChange={handleInputChange}
-                      placeholder="เช่น 0812345678 (9–10 หลัก)"
+                      placeholder="ระบุหมายเลขโทรศัพท์ 9–10 หลัก"
                       className={
                         formErrors.tellInformation
                           ? "request-account-input--error"
@@ -1524,7 +1514,7 @@ export default function RequestWellnessHubAccount() {
                     maxLength={255}
                     value={formData.contactInformation}
                     onChange={handleInputChange}
-                    placeholder="ช่องทางติดต่อเพิ่มเติม"
+                    placeholder="ระบุ LINE ID หรือ Facebook (ถ้ามี)"
                   />
                   <div className="request-account-field-footer">
                     {formErrors.contactInformation ? (
@@ -1551,7 +1541,7 @@ export default function RequestWellnessHubAccount() {
                     maxLength={255}
                     value={formData.wellnessHubDescription}
                     onChange={handleInputChange}
-                    placeholder="อธิบายบริการ จุดเด่น และข้อมูลสำคัญของสถานประกอบการ (ไม่บังคับกรอก สูงสุด 255 ตัวอักษร)"
+                    placeholder="ระบุรายละเอียดบริการหรือจุดเด่น (ถ้ามี ไม่เกิน 255 ตัวอักษร)"
                     className={
                       formErrors.wellnessHubDescription
                         ? "request-account-input--error"
@@ -1863,7 +1853,7 @@ export default function RequestWellnessHubAccount() {
                       type="email"
                       value={formData.userEmail}
                       onChange={handleInputChange}
-                      placeholder="example@email.com"
+                      placeholder="ระบุอีเมลสำหรับรับผลการอนุมัติ"
                       className={
                         formErrors.userEmail
                           ? "request-account-input--error"
