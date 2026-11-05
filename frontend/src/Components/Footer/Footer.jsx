@@ -15,10 +15,8 @@ import itLogo from "../../assets/logo/it.jpg";
 import mophLogo from "../../assets/logo/moph.jpg";
 import ctrdLogo from "../../assets/logo/ctrd.jpg";
 import cbtLogo from "../../assets/logo/cbt.jpg";
+import mainLogo from "../../assets/logo/mainlogo.png";
 import "./Footer.css";
-
-// 🌟 โลโก้หลัก Chiang Mai Wellness Route จากโฟลเดอร์ uploads
-const MAIN_LOGO_URL = "/uploads/logo/เชียงใหม่ เส้นทางแห่งสุขภาพ.png";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -36,7 +34,7 @@ function Footer() {
             <div className="footer__brand-logo">
               <div className="footer__brand-logo-wrap">
                 <img
-                  src={MAIN_LOGO_URL}
+                  src={mainLogo}
                   alt="Chiang Mai Wellness Route"
                   className="footer__brand-logo-img"
                   onError={(e) => {
