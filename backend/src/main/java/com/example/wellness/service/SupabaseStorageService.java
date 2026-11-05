@@ -42,20 +42,28 @@ public class SupabaseStorageService {
         }
 
         String cleanFolder = (folder != null && !folder.trim().isEmpty()) ? folder.trim() + "/" : "";
-        String fullRelativePath = cleanFolder + filename;
+        String objectPath = cleanFolder + filename;
+        String uploadUrl = supabaseUrl + "/storage/v1/object/" + supabaseBucket + "/" + objectPath;
 
         try {
-            java.nio.file.Path uploadDir = java.nio.file.Paths.get("uploads", cleanFolder);
-            java.nio.file.Files.createDirectories(uploadDir);
-            java.nio.file.Path targetFile = uploadDir.resolve(filename);
-            java.nio.file.Files.write(targetFile, bytes);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("apikey", supabaseKey);
+            headers.set("Authorization", "Bearer " + supabaseKey);
+            headers.setContentType(MediaType.parseMediaType(contentType != null ? contentType : "image/jpeg"));
 
-            String publicUrl = "/uploads/" + fullRelativePath;
-            log.info("✅ Uploaded file to local storage: {}", publicUrl);
-            return publicUrl;
+            HttpEntity<byte[]> requestEntity = new HttpEntity<>(bytes, headers);
+            ResponseEntity<String> response = restTemplate.exchange(uploadUrl, HttpMethod.POST, requestEntity, String.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                String publicUrl = supabaseUrl + "/storage/v1/object/public/" + supabaseBucket + "/" + objectPath;
+                log.info("✅ Uploaded file to Supabase Storage: {}", publicUrl);
+                return publicUrl;
+            } else {
+                throw new RuntimeException("Supabase upload returned status: " + response.getStatusCode());
+            }
         } catch (Exception e) {
-            log.error("❌ Failed to save file locally: {}", e.getMessage());
-            throw new RuntimeException("ไม่สามารถบันทึกไฟล์ลงพื้นที่จัดเก็บ: " + e.getMessage(), e);
+            log.error("❌ Failed to upload file to Supabase Storage: {}", e.getMessage());
+            throw new RuntimeException("ไม่สามารถบันทึกไฟล์ลง Supabase Storage: " + e.getMessage(), e);
         }
     }
 
@@ -213,6 +221,32 @@ public class SupabaseStorageService {
      */
     public boolean deleteFile(String publicUrl) {
         if (publicUrl == null || publicUrl.trim().isEmpty()) {
+            return false;
+        }
+
+        String marker = "/storage/v1/object/public/" + supabaseBucket + "/";
+        if (publicUrl.contains(marker)) {
+            try {
+                int idx = publicUrl.indexOf(marker);
+                String objectPath = publicUrl.substring(idx + marker.length());
+                String deleteUrl = supabaseUrl + "/storage/v1/object/" + supabaseBucket;
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("apikey", supabaseKey);
+                headers.set("Authorization", "Bearer " + supabaseKey);
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                Map<String, Object> body = Collections.singletonMap("prefixes", Collections.singletonList(objectPath));
+                HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+                ResponseEntity<String> response = restTemplate.exchange(deleteUrl, HttpMethod.DELETE, requestEntity, String.class);
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    log.info("🗑️ Deleted file from Supabase Storage: {}", objectPath);
+                    return true;
+                }
+            } catch (Exception e) {
+                log.warn("⚠️ Failed to delete file from Supabase {}: {}", publicUrl, e.getMessage());
+            }
             return false;
         }
 
