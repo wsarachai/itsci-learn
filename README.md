@@ -214,17 +214,17 @@ itsci-learn/
 
 ระบบ Caddy จะสร้างใบรับรอง HTTPS ภายในเครือข่ายให้อัตโนมัติ สามารถเข้าใช้งานได้ทันทีที่ `https://10.1.245.36` ครับ
 
-### 8.1 ติดตั้งใต้โดเมนแบบ sub-path (http://itsciproject.mju.ac.th/WellnessTourism)
+### 8.1 ติดตั้งใต้โดเมนแบบ sub-path (https://itsciproject.mju.ac.th/WellnessTourism)
 
-เซิร์ฟเวอร์ใช้ **gateway กลาง** (`/opt/itsci-gateway`, ไฟล์ต้นแบบอยู่ที่ `deploy/gateway/`) เป็นตัวเดียวที่เปิด port 80 แล้วส่ง `/WellnessTourism/*` (ตัด prefix ออก) ไปยัง caddy ของโปรเจกต์นี้ผ่าน docker network `itsci-proxy`
+เซิร์ฟเวอร์ใช้ **gateway กลาง** (`/opt/itsci-gateway`, ไฟล์ต้นแบบอยู่ที่ `deploy/gateway/`) เป็นตัวเดียวที่เปิด port 80/443 (ขอใบรับรอง Let's Encrypt อัตโนมัติ และ redirect http → https ให้เอง) แล้วส่ง `/WellnessTourism/*` (ตัด prefix ออก) ไปยัง caddy ของโปรเจกต์นี้ผ่าน docker network `itsci-proxy`
 
 ```text
-Browser ──► http://itsciproject.mju.ac.th/WellnessTourism/...
+Browser ──► https://itsciproject.mju.ac.th/WellnessTourism/...
               │
               ▼
-   itsci-gateway caddy (:80)  ── handle_path /WellnessTourism/* ──►  wellness-tourism:80 (caddy ของโปรเจกต์)
+   itsci-gateway caddy (:80/:443)── handle_path /WellnessTourism/* ──►  wellness-tourism:80 (caddy ของโปรเจกต์)
    /                → 302 /WellnessTourism/                              ├── /api/*, /uploads/* ─► api:8080
-   http://10.1.245.36/... → 301 ไปที่โดเมน                                └── อื่น ๆ ─► web:3000
+   http://10.1.245.36/... → 301 ไป https โดเมน                          └── อื่น ๆ ─► web:3000
 ```
 
 ใน `.env` ของโปรเจกต์บนเซิร์ฟเวอร์เพิ่ม 2 บรรทัด (คำสั่ง `docker compose` ทุกคำสั่งจะใช้ `compose.gateway.yaml` อัตโนมัติ):

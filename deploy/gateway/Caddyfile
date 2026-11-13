@@ -1,14 +1,16 @@
-# Front gateway for http://itsciproject.mju.ac.th (HTTP only: the name resolves to a
-# private address, so no public certificate can be issued).
+# Front gateway for https://itsciproject.mju.ac.th
+#
+# The public DNS name points to the university's public IP, which forwards
+# ports 80/443 to this server, so Caddy gets a real certificate automatically
+# (Let's Encrypt / ZeroSSL) and redirects http -> https by itself.
+# Inside the campus network the same name resolves to 10.1.245.36; the same
+# certificate is valid there too.
 #
 # Add a project: give its stack an alias on the "itsci-proxy" network, then add
 #   redir /Name /Name/ 308
 #   handle_path /Name/* { reverse_proxy <alias>:80 }
-{
-	auto_https off
-}
 
-http://itsciproject.mju.ac.th {
+itsciproject.mju.ac.th {
 	encode zstd gzip
 
 	# Root: send everyone to the only project for now (302 so it can change later)
@@ -25,9 +27,9 @@ http://itsciproject.mju.ac.th {
 	}
 }
 
-# Any other host (e.g. the old address http://10.1.245.36): move to the domain.
+# Any other host on plain HTTP (e.g. the old address http://10.1.245.36): move to the domain.
 :80 {
 	@project path /WellnessTourism /WellnessTourism/*
-	redir @project http://itsciproject.mju.ac.th{uri} 301
-	redir * http://itsciproject.mju.ac.th/WellnessTourism{uri} 301
+	redir @project https://itsciproject.mju.ac.th{uri} 301
+	redir * https://itsciproject.mju.ac.th/WellnessTourism{uri} 301
 }
