@@ -1,0 +1,37 @@
+# Override for running behind the shared ITSCI gateway (deploy/gateway) under a sub-path,
+# e.g. http://itsciproject.mju.ac.th/WellnessTourism
+#
+# Use it together with compose.yaml. On the server, put this in .env so every
+# `docker compose ...` command picks it up automatically:
+#   COMPOSE_FILE=compose.yaml:compose.gateway.yaml
+#   BASE_PATH=/WellnessTourism
+#
+# What changes compared with compose.yaml alone:
+#   - caddy no longer publishes host ports 80/443 (the gateway owns them)
+#   - caddy listens on plain HTTP :80 and joins the shared network "itsci-proxy"
+#     with the alias "wellness-tourism" (the gateway's upstream)
+#   - the React build is made for the sub-path (PUBLIC_URL=BASE_PATH)
+# The gateway strips the prefix, so the backend still sees /api/... and /uploads/...
+
+services:
+  web:
+    build:
+      context: ./frontend
+      args:
+        PUBLIC_URL: ${BASE_PATH:-/WellnessTourism}
+
+  caddy:
+    ports: !reset []
+    volumes: !override
+      - ./caddy/Caddyfile.gateway:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      default:
+      itsci-proxy:
+        aliases:
+          - wellness-tourism
+
+networks:
+  itsci-proxy:
+    external: true

@@ -1,0 +1,30 @@
+# Shared front gateway for itsciproject.mju.ac.th (one per server).
+# Install on the server at /opt/itsci-gateway:
+#   sudo mkdir -p /opt/itsci-gateway && copy compose.yaml + Caddyfile there
+#   docker compose up -d          (creates the shared network "itsci-proxy")
+# Each project runs its own compose stack WITHOUT host ports, joins "itsci-proxy"
+# with a unique alias, and gets one handle_path block in the Caddyfile.
+name: itsci-gateway
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Bangkok
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - itsci-proxy
+
+networks:
+  itsci-proxy:
+    name: itsci-proxy
+
+volumes:
+  caddy-data:
+  caddy-config:

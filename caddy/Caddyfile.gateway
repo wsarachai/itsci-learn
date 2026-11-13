@@ -1,0 +1,23 @@
+# Caddyfile used behind the shared gateway (compose.gateway.yaml).
+# The gateway already stripped the /WellnessTourism prefix and handles the domain,
+# so this one only routes plain HTTP on :80 inside Docker.
+{
+	auto_https off
+	admin off
+}
+
+:80 {
+	encode zstd gzip
+
+	handle /uploads/* {
+		reverse_proxy api:8080
+	}
+
+	handle /api/* {
+		reverse_proxy api:8080
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+}
