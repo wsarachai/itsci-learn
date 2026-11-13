@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { clearMainRouteCache } from "../ListMainroute/ListMainroute";
 import { clearDashboardCache } from "../Dashboard/Dashboard";
+import { withBase } from "../../utils/basePath";
 
 // 🌟 1. ค่าคงที่และ Helper function ด้านนอก Component
 const REQUIRED_EMERGENCY_CATEGORY_IDS = ["EM01", "EM02"];
@@ -424,9 +425,9 @@ const CreateMainRoute = () => {
       return normalizedValue;
     }
     if (normalizedValue.startsWith("/uploads/")) {
-      return `${normalizedValue}`;
+      return withBase(normalizedValue);
     }
-    return `/uploads/routes/${normalizedValue}`;
+    return withBase(`/uploads/routes/${normalizedValue}`);
   }
 
   function readFileAsDataUrl(file) {

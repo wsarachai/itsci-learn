@@ -16,9 +16,10 @@ import mophLogo from "../../assets/logo/moph.jpg";
 import ctrdLogo from "../../assets/logo/ctrd.jpg";
 import cbtLogo from "../../assets/logo/cbt.jpg";
 import "./Footer.css";
+import { withBase } from "../../utils/basePath";
 
 // 🌟 โลโก้หลัก Chiang Mai Wellness Route จากโฟลเดอร์ uploads
-const MAIN_LOGO_URL = "/uploads/logo/เชียงใหม่ เส้นทางแห่งสุขภาพ.png";
+const MAIN_LOGO_URL = withBase("/uploads/logo/เชียงใหม่ เส้นทางแห่งสุขภาพ.png");
 
 function Footer() {
   const currentYear = new Date().getFullYear();

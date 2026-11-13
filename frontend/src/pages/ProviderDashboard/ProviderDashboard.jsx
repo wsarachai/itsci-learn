@@ -42,6 +42,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import LoadingState from "../../Components/LoadingState/LoadingState";
 import "./ProviderDashboard.css";
+import { withBase } from "../../utils/basePath";
 
 const API_BASE_URL = "/api";
 
@@ -1636,7 +1637,7 @@ export default function ProviderDashboard() {
           <div className="provider-dashboard-topbar__actions">
             {/* Direct Public Preview Link */}
             <a
-              href={`/wellness-hubs/${hub.licenseId}`}
+              href={withBase(`/wellness-hubs/${hub.licenseId}`)}
               target="_blank"
               rel="noreferrer"
               className="provider-dashboard-button provider-dashboard-button--preview"
@@ -1791,7 +1792,7 @@ export default function ProviderDashboard() {
               {/* Sidebar Quick Action to Public View */}
               <div className="provider-dashboard-media-action">
                 <a
-                  href={`/wellness-hubs/${hub.licenseId}`}
+                  href={withBase(`/wellness-hubs/${hub.licenseId}`)}
                   target="_blank"
                   rel="noreferrer"
                   className="provider-dashboard-media-link"

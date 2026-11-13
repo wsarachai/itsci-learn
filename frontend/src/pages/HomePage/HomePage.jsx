@@ -13,6 +13,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import heroImage from "../../assets/logo/hero.png";
 import "./HomePage.css";
+import { withBase } from "../../utils/basePath";
 
 const API_BASE_URL = "/api";
 
@@ -32,7 +33,7 @@ const HERO_SLIDES = [
     ),
     description:
       "ค้นหาเส้นทางท่องเที่ยวเชิงสุขภาพที่รวมจุดแวะ กิจกรรม และประสบการณ์น่าสนใจไว้ให้คุณวางแผนการเดินทางได้ง่ายในที่เดียว",
-    image: heroImage || "/uploads/logo/hero.png",
+    image: heroImage || withBase("/uploads/logo/hero.png"),
     link: "#recommended-routes",
     buttonText: "สำรวจเส้นทางแนะนำ",
   },

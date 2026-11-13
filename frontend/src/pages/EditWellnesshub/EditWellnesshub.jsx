@@ -7,6 +7,7 @@ import AdminSidebar from "../../Components/AdminSidebar/AdminSidebar";
 import AdminStatusModal from "../../Components/AdminStatusModal/AdminStatusModal";
 import { clearWellnessHubCache } from "../ListWellnesshub/ListWellnesshub";
 import { clearDashboardCache } from "../Dashboard/Dashboard";
+import { withBase } from "../../utils/basePath";
 
 function normalizeImageSource(value) {
   if (!value) return "";
@@ -37,7 +38,7 @@ function normalizeImageSource(value) {
     return `data:image/jpeg;base64,${imageSource}`;
   }
   if (!imageSource.includes("/") && !imageSource.includes("\\")) {
-    return `/uploads/${imageSource}`;
+    return withBase(`/uploads/${imageSource}`);
   }
   return imageSource;
 }

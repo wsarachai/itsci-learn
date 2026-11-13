@@ -4,6 +4,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --legacy-peer-deps --no-audit --no-fund
 COPY . .
+# Sub-path ที่เว็บถูกเสิร์ฟ เช่น /WellnessTourism (ว่าง = เสิร์ฟที่ราก /)
+ARG PUBLIC_URL=
+ENV PUBLIC_URL=$PUBLIC_URL
 ENV NODE_ENV=production
 RUN npm run build
 

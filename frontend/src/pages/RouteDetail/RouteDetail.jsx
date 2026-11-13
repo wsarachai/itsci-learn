@@ -26,6 +26,7 @@ import RouteMapToolbar from "./components/RouteMapToolbar";
 import RouteHubCard from "./components/RouteHubCard";
 import MapLegendModal from "./components/MapLegendModal";
 import "./RouteDetail.css";
+import { withBase } from "../../utils/basePath";
 
 const API_BASE_URL = "/api";
 const DEFAULT_CENTER = [18.7883, 98.9853];
@@ -1126,7 +1127,7 @@ export default function RouteDetail() {
                 `
           : hasValue(licenseId)
             ? `
-                  <a href="/wellness-hubs/${safeLicenseId}" class="route-hub-popup__button" data-license-id="${safeLicenseId}">
+                  <a href="${withBase(`/wellness-hubs/${safeLicenseId}`)}" class="route-hub-popup__button" data-license-id="${safeLicenseId}">
                     <span>ดูรายละเอียดเพิ่มเติม</span>
                     <span class="route-hub-popup__button-arrow" aria-hidden="true">→</span>
                   </a>

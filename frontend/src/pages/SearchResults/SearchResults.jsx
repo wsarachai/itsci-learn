@@ -16,6 +16,7 @@ import {
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import LoadingState from "../../Components/LoadingState/LoadingState";
 import "./SearchResults.css";
+import { withBase } from "../../utils/basePath";
 
 const API_BASE_URL = "/api";
 
@@ -95,11 +96,11 @@ function normalizeImageSource(imageValue, defaultFolder = "hubs") {
   }
 
   if (src.startsWith("/uploads/")) {
-    return `${src}`;
+    return withBase(src);
   }
 
   if (!src.includes("/") && !src.includes("\\")) {
-    return `/uploads/${defaultFolder}/${src}`;
+    return withBase(`/uploads/${defaultFolder}/${src}`);
   }
 
   return src;

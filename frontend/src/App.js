@@ -33,9 +33,18 @@ import LoginWellnessHub from "./pages/LoginWellnessHub/LoginWellnessHub";
 import ProviderDashboard from "./pages/ProviderDashboard/ProviderDashboard";
 import ArticleDetail from "./pages/ArticleDetail/ArticleDetail";
 import SessionTimeoutManager from "./Components/SessionTimeout/SessionTimeoutManager";
+import { BASE_PATH, withBase, currentAppPath } from "./utils/basePath";
 
 // ส่ง Session Cookie อัตโนมัติไปกับทุก Request
 axios.defaults.withCredentials = true;
+
+// รองรับการรันใต้ sub-path (เช่น /WellnessTourism): เติม BASE_PATH หน้า /api และ /uploads อัตโนมัติ
+axios.interceptors.request.use((config) => {
+  if (typeof config.url === "string" && /^\/(api|uploads)(\/|$)/.test(config.url)) {
+    config.url = withBase(config.url);
+  }
+  return config;
+});
 
 // ป้องกันการ Register Interceptor ซ้ำ
 let isInterceptorRegistered = false;
@@ -66,7 +75,7 @@ if (!isInterceptorRegistered) {
           "/provider/dashboard",
         ];
 
-        const currentPath = window.location.pathname;
+        const currentPath = currentAppPath();
         const isAdminPath = adminPrefixes.some((path) =>
           currentPath.toLowerCase().startsWith(path.toLowerCase())
         );
@@ -88,7 +97,7 @@ if (!isInterceptorRegistered) {
           );
 
           if (!currentPath.toLowerCase().startsWith("/login")) {
-            window.location.href = "/login";
+            window.location.href = withBase("/login");
           }
         } else if (isProviderPath) {
           // จัดการกรณีหลุดเซสชันเฉพาะฝั่งสถานประกอบการ
@@ -97,7 +106,7 @@ if (!isInterceptorRegistered) {
           localStorage.removeItem("wellnessProviderName");
 
           if (!currentPath.toLowerCase().startsWith("/provider/login")) {
-            window.location.href = "/provider/login";
+            window.location.href = withBase("/provider/login");
           }
         }
         // ฝั่งผู้ใช้ทั่วไป ไม่ต้อง redirect และไม่มีเซสชันมารบกวน
@@ -163,7 +172,7 @@ function PublicLayout({ children }) {
 
 function App() {
   return (
-    <Router>
+    <Router basename={BASE_PATH || undefined}>
       <ScrollToTop />
       <SessionTimeoutManager />
       <div className="App">

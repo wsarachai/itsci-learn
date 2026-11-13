@@ -25,6 +25,7 @@ import AdminStatusModal from "../../Components/AdminStatusModal/AdminStatusModal
 import { clearAccountRequestsCache } from "../ListAccountRequest/ListAccountRequest";
 import { clearWellnessHubCache } from "../ListWellnesshub/ListWellnesshub";
 import { clearDashboardCache } from "../Dashboard/Dashboard";
+import { withBase } from "../../utils/basePath";
 
 // Helper Functions จัดฟอร์แมตข้อมูล
 
@@ -128,7 +129,7 @@ const getImageUrl = (imgData) => {
   if (imgData.startsWith("data:image") || imgData.startsWith("http")) {
     return imgData;
   }
-  return `/uploads/${imgData}`;
+  return withBase(`/uploads/${imgData}`);
 };
 
 // 4. แปลง Gallery JSON Array ป้องกัน JSON.parse error
@@ -707,7 +708,7 @@ function ApproveAccountRequest() {
     } else {
       const targetUrl = fileData.startsWith("http")
         ? fileData
-        : `/uploads/${fileData}`;
+        : withBase(`/uploads/${fileData}`);
       window.open(targetUrl, "_blank");
     }
   };

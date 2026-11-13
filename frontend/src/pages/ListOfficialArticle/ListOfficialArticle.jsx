@@ -22,6 +22,7 @@ import AdminSidebar from "../../Components/AdminSidebar/AdminSidebar";
 import AdminStatusModal from "../../Components/AdminStatusModal/AdminStatusModal";
 import { clearArticleListCache } from "../ArticleList/ArticleList";
 import { clearArticleDetailCache } from "../ArticleDetail/ArticleDetail";
+import { withBase } from "../../utils/basePath";
 
 const API_URL = "/api/articles";
 const ROWS_PER_PAGE = 10;
@@ -260,7 +261,7 @@ function ListOfficialArticle() {
         article.img.startsWith("https://") ||
         article.img.startsWith("data:")
         ? article.img
-        : `/uploads/articles/${article.img}`;
+        : withBase(`/uploads/articles/${article.img}`);
 
     return (
       <img
