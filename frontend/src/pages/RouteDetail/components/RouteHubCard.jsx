@@ -35,7 +35,9 @@ function RouteHubCard({
     >
       <div className="route-detail-hub-card__category">
         {isSkyDoc ? (
-          <span className="route-detail-skydoc-tag-icon">🚁</span>
+          <span className="route-detail-skydoc-tag-icon">
+            <Navigation size={14} aria-hidden="true" />
+          </span>
         ) : (
           <img
             src={getCategoryMarkerImage(hub)}

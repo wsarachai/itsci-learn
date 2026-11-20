@@ -80,7 +80,7 @@ export default function MapLegendModal({ isOpen, onClose, categories = [] }) {
               <div className="route-detail-legend-item route-detail-legend-item--skydoc">
                 <span className="route-detail-legend-dot route-detail-legend-dot--skydoc" />
                 <span className="route-detail-legend-label route-detail-legend-label--skydoc">
-                  🚁 Sky Doctor (แพทย์ฉุกเฉินทางอากาศ)
+                  Sky Doctor (แพทย์ฉุกเฉินทางอากาศ)
                 </span>
               </div>
               <div className="route-detail-legend-item">

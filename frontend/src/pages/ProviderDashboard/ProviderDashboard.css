@@ -2861,3 +2861,16 @@
     padding: 24px 18px !important;
   }
 }
+
+
+@media (max-width: 768px) {
+  .provider-dashboard-field input,
+  .provider-dashboard-field select,
+  .provider-dashboard-field textarea,
+  .provider-dashboard-same-time-field input[type="time"],
+  .provider-dashboard-hours__row input[type="time"],
+  .provider-dashboard-cert-row input,
+  .provider-dashboard-pwd-modal-form .provider-dashboard-field input {
+    font-size: 16px;
+  }
+}

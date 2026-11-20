@@ -967,3 +967,11 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+
+@media (max-width: 768px) {
+  .article-list-search-input input,
+  .article-list-filter-group select {
+    font-size: 16px;
+  }
+}

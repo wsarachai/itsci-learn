@@ -898,7 +898,7 @@ export default function RequestWellnessHubAccount() {
         return;
       }
     } catch (err) {
-      console.warn("⚠️ ไม่สามารถเช็กข้อมูลซ้ำล่วงหน้าได้:", err);
+      console.warn("ไม่สามารถเช็กข้อมูลซ้ำล่วงหน้าได้:", err);
     }
 
     try {

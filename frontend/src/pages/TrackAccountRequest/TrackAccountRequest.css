@@ -992,3 +992,10 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+
+@media (max-width: 768px) {
+  .track-request-search-input input {
+    font-size: 16px;
+  }
+}

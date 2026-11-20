@@ -9,6 +9,7 @@ import {
   EyeOff,
   Layers,
   Pencil,
+  ShieldAlert,
 } from "lucide-react";
 
 function RouteMapToolbar({
@@ -75,7 +76,7 @@ function RouteMapToolbar({
               aria-hidden="true"
             />
             <span className="route-detail-emergency-btn__icon">
-              {isEmergencyMode ? "🚨" : "🚁"}
+              <ShieldAlert size={16} aria-hidden="true" />
             </span>
             <span className="route-detail-emergency-btn__label">
               {isEmergencyMode

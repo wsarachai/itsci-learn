@@ -725,3 +725,11 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+@media (max-width: 768px) {
+  .search-results-select,
+  .search-results-form__input input {
+    font-size: 16px;
+  }
+}

@@ -765,3 +765,10 @@
     align-items: flex-start;
   }
 }
+
+
+@media (max-width: 768px) {
+  .provider-login-input input {
+    font-size: 16px;
+  }
+}

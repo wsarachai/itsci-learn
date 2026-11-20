@@ -782,13 +782,6 @@ export default function HomePage() {
         <div className="homepage-container">
           <div className="homepage-section__header">
             <div>
-              <div className="homepage-section__kicker">
-                <span className="homepage-section__kicker-bar" />
-                <span className="homepage-section__kicker-label">
-                  Wellness Stories & Tips
-                </span>
-              </div>
-
               <h2 className="homepage-section__title">บทความสุขภาพล่าสุด</h2>
 
               <p className="homepage-section__description">

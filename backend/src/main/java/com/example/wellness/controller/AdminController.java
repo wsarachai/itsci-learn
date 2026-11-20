@@ -32,10 +32,10 @@ public class AdminController {
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9]{3,20}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^.{1,100}$");
 
-    public AdminController(AdminService adminService, 
-                           AccountGeneratorService accountGeneratorService,
-                           com.example.wellness.service.StorageMigrationService storageMigrationService,
-                           com.example.wellness.service.DatabaseExportService databaseExportService) {
+    public AdminController(AdminService adminService,
+            AccountGeneratorService accountGeneratorService,
+            com.example.wellness.service.StorageMigrationService storageMigrationService,
+            com.example.wellness.service.DatabaseExportService databaseExportService) {
         this.adminService = adminService;
         this.accountGeneratorService = accountGeneratorService;
         this.storageMigrationService = storageMigrationService;
@@ -43,7 +43,8 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody(required = false) Map<String, Object> payload, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody(required = false) Map<String, Object> payload,
+            HttpServletRequest request) {
         if (payload == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("success", false, "message", "ข้อมูลไม่ถูกต้อง"));
@@ -81,8 +82,7 @@ public class AdminController {
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "message", "เข้าสู่ระบบสำเร็จ",
-                "data", responseData
-        ));
+                "data", responseData));
     }
 
     @PostMapping("/logout")
@@ -93,8 +93,7 @@ public class AdminController {
         }
         return ResponseEntity.ok(Map.of(
                 "success", true,
-                "message", "ออกจากระบบสำเร็จ"
-        ));
+                "message", "ออกจากระบบสำเร็จ"));
     }
 
     @GetMapping("/ping")
@@ -107,8 +106,7 @@ public class AdminController {
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "message", "Session active",
-                "username", session.getAttribute("adminUsername")
-        ));
+                "username", session.getAttribute("adminUsername")));
     }
 
     @PostMapping("/generate-account")

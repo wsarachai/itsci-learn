@@ -1865,13 +1865,72 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .route-detail-map-actions {
+  /* 🌟 Toolbar บนจอมือถือ: จัดหัวข้อด้านบน และปุ่มกดให้สมส่วน ไม่บีบอัด */
+  .route-detail-map-toolbar {
+    padding: 14px 16px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  .route-detail-map-toolbar__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .route-detail-map-toolbar__title-area {
     width: 100%;
   }
 
-  .route-detail-map-action {
-    flex: 1;
-    font-size: 13px;
+  .route-detail-map-toolbar__title {
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  .route-detail-map-toolbar__subtitle {
+    font-size: 12px;
+    margin-top: 1px;
+  }
+
+  .route-detail-map-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* ปุ่มฉุกเฉิน Sky Doctor ขยายเต็มแถวบน */
+  .route-detail-emergency-btn {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+    min-height: 42px;
+  }
+
+  /* อีก 2 ปุ่มวางคู่กันครึ่งๆ สวยงาม */
+  .route-detail-map-action:not(.route-detail-emergency-btn) {
+    width: 100%;
+    justify-content: center;
+    min-height: 38px;
+    font-size: 12.5px;
+    padding: 0 8px;
+  }
+
+  /* ชิปหมวดหมู่: จัดเป็นเม็ดยาวกะทัดรัด (Pills) เรียงร้อยสวยงาม ไม่ยืดเต็มแถวให้กินที่ */
+  .route-detail-filter-list {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .route-detail-filter-chip {
+    width: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px !important;
+    font-size: 12.5px !important;
+    border-radius: 999px !important;
   }
 
   .route-detail-map-card {
@@ -1894,21 +1953,6 @@
   }
 
   .route-detail-summary {
-    grid-template-columns: 1fr;
-  }
-
-  .route-detail-map-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .route-detail-map-action,
-  .route-detail-filter-chip {
-    width: 100%;
-  }
-
-  .route-detail-filter-list {
-    display: grid;
     grid-template-columns: 1fr;
   }
 
@@ -2117,5 +2161,16 @@
 
   .route-detail-hub-card:hover .route-detail-hub-card__focus-arrow {
     transform: none;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .route-hub-popup__meta-row {
+    font-size: 12px;
+  }
+
+  .route-hub-popup__description {
+    font-size: 12.5px;
   }
 }

@@ -7,14 +7,7 @@ import {
   faHospital,
   faLocationDot,
   faShieldHalved,
-  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
-// โลโก้หน่วยงานร่วมพัฒนา
-import cmuLogo from "../../assets/logo/cmulogo.jpg";
-import itLogo from "../../assets/logo/it.jpg";
-import mophLogo from "../../assets/logo/moph.jpg";
-import ctrdLogo from "../../assets/logo/ctrd.jpg";
-import cbtLogo from "../../assets/logo/cbt.jpg";
 import mainLogo from "../../assets/logo/mainlogo.png";
 import "./Footer.css";
 
@@ -39,9 +32,6 @@ function Footer() {
                   className="footer__brand-logo-img"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
-                    if (e.currentTarget.parentElement) {
-                      e.currentTarget.parentElement.innerHTML = '<span class="footer__brand-fallback-icon">🌿</span>';
-                    }
                   }}
                 />
               </div>
@@ -50,35 +40,6 @@ function Footer() {
                 <span className="footer__brand-sub">
                   ระบบสารสนเทศเส้นทางสุขภาพเชียงใหม่
                 </span>
-              </div>
-            </div>
-
-            <p className="footer__brand-desc">
-              ระบบสารสนเทศภูมิศาสตร์เพื่อการท่องเที่ยวเชิงสุขภาพและการแพทย์ (GIS for Medical & Wellness Tourism)
-              ยกระดับมาตรฐานเส้นทางสุขภาพและสถานประกอบการชั้นนำในจังหวัดเชียงใหม่
-            </p>
-
-            {/* แถบโลโก้หน่วยงานร่วมพัฒนา */}
-            <div className="footer__partners-wrap">
-              <span className="footer__partners-label">
-                ร่วมพัฒนาโดยมหาวิทยาลัยและหน่วยงานภาครัฐ:
-              </span>
-              <div className="footer__partners-grid">
-                <div className="footer__partner-badge" title="มหาวิทยาลัยเชียงใหม่ (CMU)">
-                  <img src={cmuLogo} alt="CMU" />
-                </div>
-                <div className="footer__partner-badge" title="สำนักบริการเทคโนโลยีสารสนเทศ (IT CMU)">
-                  <img src={itLogo} alt="IT CMU" />
-                </div>
-                <div className="footer__partner-badge" title="กระทรวงสาธารณสุข (MOPH)">
-                  <img src={mophLogo} alt="MOPH" />
-                </div>
-                <div className="footer__partner-badge" title="ศูนย์วิจัยและพัฒนาการท่องเที่ยว (CTRD)">
-                  <img src={ctrdLogo} alt="CTRD" />
-                </div>
-                <div className="footer__partner-badge" title="การท่องเที่ยวโดยชุมชน (CBT)">
-                  <img src={cbtLogo} alt="CBT" />
-                </div>
               </div>
             </div>
           </div>

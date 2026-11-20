@@ -920,7 +920,7 @@ export default function WellnessHubDetail() {
                   <MapContainer
                     center={mapPosition}
                     zoom={15}
-                    scrollWheelZoom={true}
+                    scrollWheelZoom={false}
                     touchZoom={true}
                     doubleClickZoom={true}
                     className="hub-detail-leaflet-map"

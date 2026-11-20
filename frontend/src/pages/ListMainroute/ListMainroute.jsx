@@ -76,7 +76,7 @@ const ListMainRoute = () => {
       setRoutes(routeData);
       setHasError(false);
     } catch (err) {
-      console.error("❌ ขัดข้องในการดึงข้อมูลตารางทะเบียนเส้นทางสุขภาพ", err);
+      console.error("ขัดข้องในการดึงข้อมูลตารางทะเบียนเส้นทางสุขภาพ", err);
       if (!mainRouteCache) {
         setHasError(true);
         setStatusModal({
@@ -241,7 +241,7 @@ const ListMainRoute = () => {
                       fontSize: "14px",
                     }}
                   >
-                    ❌ เกิดข้อผิดพลาดในการโหลดข้อมูล กรุณาลองใหม่อีกครั้ง
+                    เกิดข้อผิดพลาดในการโหลดข้อมูล กรุณาลองใหม่อีกครั้ง
                   </td>
                 </tr>
               ) : sortedRoutes.length === 0 ? (

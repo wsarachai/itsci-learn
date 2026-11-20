@@ -387,7 +387,7 @@ function ApproveAccountRequest() {
                 gap: "6px",
               }}
             >
-              <span>📧 ข้อมูลการแจ้งผลที่จัดส่ง (Notify Request Result)</span>
+              <span>ข้อมูลการแจ้งผลที่จัดส่ง (Notify Request Result)</span>
             </div>
             <div>
               <strong>สถานประกอบการ:</strong>{" "}
@@ -563,7 +563,7 @@ function ApproveAccountRequest() {
                 gap: "6px",
               }}
             >
-              <span>📧 ข้อมูลการแจ้งผลที่จัดส่ง (Notify Request Result)</span>
+              <span>ข้อมูลการแจ้งผลที่จัดส่ง (Notify Request Result)</span>
             </div>
             <div>
               <strong>สถานประกอบการ:</strong>{" "}

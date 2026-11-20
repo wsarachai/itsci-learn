@@ -942,3 +942,15 @@
     flex-wrap: wrap;
   }
 }
+
+
+@media (max-width: 768px) {
+  .route-list-search-input input,
+  .route-list-filter-group select {
+    font-size: 16px;
+  }
+
+  .route-list-card__path span {
+    font-size: 11px;
+  }
+}

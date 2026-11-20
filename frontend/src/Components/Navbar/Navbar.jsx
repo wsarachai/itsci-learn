@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { X } from "lucide-react";
 import "./Navbar.css";
 
 // 🌟 นำเข้ารูปภาพโลโก้จากโฟลเดอร์ logo
@@ -75,21 +76,51 @@ function Navbar() {
       <div className="navbar__topbar">
         <div className="navbar__topbar-container">
           <div className="navbar__topbar-logos">
-            <div className="navbar__partner-item" title="มหาวิทยาลัยเชียงใหม่ (CMU)">
+            <a
+              href="https://www.cmu.ac.th"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="navbar__partner-item"
+              title="มหาวิทยาลัยเชียงใหม่ (CMU)"
+            >
               <img src={cmuLogo} alt="CMU Logo" />
-            </div>
-            <div className="navbar__partner-item" title="สำนักบริการเทคโนโลยีสารสนเทศ (IT CMU)">
-              <img src={itLogo} alt="IT Logo" />
-            </div>
-            <div className="navbar__partner-item" title="กระทรวงสาธารณสุข (MOPH)">
+            </a>
+            <a
+              href="https://itsci.mju.ac.th/itsciweb/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="navbar__partner-item"
+              title="สาขาวิชาเทคโนโลยีสารสนเทศ มหาวิทยาลัยแม่โจ้ (ITSCI MJU)"
+            >
+              <img src={itLogo} alt="ITSCI MJU Logo" />
+            </a>
+            <a
+              href="https://www.moph.go.th"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="navbar__partner-item"
+              title="กระทรวงสาธารณสุข (MOPH)"
+            >
               <img src={mophLogo} alt="MOPH Logo" />
-            </div>
-            <div className="navbar__partner-item" title="ศูนย์วิจัยและพัฒนาการท่องเที่ยว (CTRD)">
+            </a>
+            <a
+              href="https://ctrd.cmu.ac.th"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="navbar__partner-item"
+              title="ศูนย์วิจัยและพัฒนาการท่องเที่ยว (CTRD)"
+            >
               <img src={ctrdLogo} alt="CTRD Logo" />
-            </div>
-            <div className="navbar__partner-item" title="การท่องเที่ยวโดยชุมชน (CBT Chiang Mai)">
+            </a>
+            <a
+              href="https://www.facebook.com/cbtnetworkchiangmai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="navbar__partner-item"
+              title="การท่องเที่ยวโดยชุมชน (CBT Chiang Mai)"
+            >
               <img src={cbtLogo} alt="CBT Logo" />
-            </div>
+            </a>
           </div>
         </div>
       </div>
@@ -113,9 +144,6 @@ function Navbar() {
                 className="navbar__brand-logo-img"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
-                  if (e.currentTarget.parentElement) {
-                    e.currentTarget.parentElement.innerHTML = '<span class="navbar__brand-icon">🌿</span>';
-                  }
                 }}
               />
             </div>
@@ -166,6 +194,18 @@ function Navbar() {
               />
               <span>เข้าสู่ระบบสถานบริการ</span>
             </Link>
+          </div>
+
+          {/* ปุ่มปิดด้านล่างสำหรับหน้าจอมือถือเพื่อให้กดปิดได้ง่าย */}
+          <div className="navbar__drawer-footer">
+            <button
+              type="button"
+              className="navbar__drawer-dismiss-btn"
+              onClick={closeMenu}
+            >
+              <X size={16} />
+              <span>ปิดหน้าต่างเมนู</span>
+            </button>
           </div>
         </nav>
 

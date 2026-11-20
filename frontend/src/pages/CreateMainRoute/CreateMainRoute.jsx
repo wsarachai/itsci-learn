@@ -465,7 +465,7 @@ const CreateMainRoute = () => {
       setImageFileName(file.name);
       setImageError("");
     } catch (err) {
-      console.error("❌ ไม่สามารถอ่านไฟล์รูปภาพได้", err);
+      console.error("ไม่สามารถอ่านไฟล์รูปภาพได้", err);
       setImageError("ไม่สามารถอ่านไฟล์ได้ กรุณาลองอีกครั้ง");
     }
   };
@@ -594,7 +594,7 @@ const CreateMainRoute = () => {
         setStatusModal((prev) => ({ ...prev, isOpen: false }));
       } catch (err) {
         if (controller.signal.aborted) return;
-        console.error("❌ ดึงข้อมูลล้มเหลว", err);
+        console.error("ดึงข้อมูลล้มเหลว", err);
         const is404 = err.response && err.response.status === 404;
         setStatusModal({
           isOpen: true,
@@ -1278,7 +1278,7 @@ const CreateMainRoute = () => {
         message: "ระบบได้บันทึกข้อมูลเส้นทางใหม่เรียบร้อยแล้ว",
       });
     } catch (err) {
-      console.error("❌ ไม่สามารถบันทึกข้อมูลเส้นทางได้", err);
+      console.error("ไม่สามารถบันทึกข้อมูลเส้นทางได้", err);
       setIsSubmitting(false);
       if (id) {
         const is400 = err.response && err.response.status === 400;
@@ -1374,7 +1374,7 @@ const CreateMainRoute = () => {
                   color: "#1e293b",
                 }}
               >
-                📊 สรุปจำนวนหมุดในเส้นทาง
+                สรุปจำนวนหมุดในเส้นทาง
               </h3>
 
               <table
