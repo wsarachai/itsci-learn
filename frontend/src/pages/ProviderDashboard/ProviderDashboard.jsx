@@ -541,11 +541,15 @@ export default function ProviderDashboard() {
       setHub((prev) => ({ ...prev, password: newPass }));
       setFormData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
 
+      // ป้องกันความปลอดภัย: ไม่บันทึกรหัสผ่านลงใน localStorage และลบออกหากเคยมีตกค้าง
       const savedProvider = localStorage.getItem("wellnessProvider");
       if (savedProvider) {
         try {
           const parsed = JSON.parse(savedProvider);
-          localStorage.setItem("wellnessProvider", JSON.stringify({ ...parsed, password: newPass }));
+          if (parsed && parsed.password) {
+            delete parsed.password;
+            localStorage.setItem("wellnessProvider", JSON.stringify(parsed));
+          }
         } catch (_) {}
       }
 
@@ -677,6 +681,12 @@ export default function ProviderDashboard() {
 
     try {
       const parsedProvider = JSON.parse(storedProvider);
+
+      // เคลียร์รหัสผ่านตกค้างใน storage ถ้ามี
+      if (parsedProvider?.password) {
+        delete parsedProvider.password;
+        localStorage.setItem("wellnessProvider", JSON.stringify(parsedProvider));
+      }
 
       const isActive =
         String(parsedProvider?.status || "").toUpperCase() === "ACTIVE";
